@@ -14,21 +14,22 @@ bot = commands.Bot(command_prefix='/')
 bot.guild_subscriptions = True
 
 jst = timezone(timedelta(hours=9), name='JAPAN')
-FARM_SERVER_GUILD = bot.get_guild(572150608283566090)
-SABAKAN_ROLE = FARM_SERVER_GUILD.get_role(572157809399955456)
 
 
-@bot.command()
+@bot.command
 async def nullpo(ctx):
     ctx.message.channel.send("ｶﾞｯ")
+    FARM_SERVER_GUILD = bot.get_guild(572150608283566090)
+    SABAKAN_ROLE = FARM_SERVER_GUILD.get_role(572157809399955456)
+    print(SABAKAN_ROLE)
 
 
-@bot.command()
+@bot.command
 async def kokorozashi(ctx):
     ctx.message.channel.send("NG")
 
 
-@bot.command()
+@bot.command
 async def neko(ctx):
     rand = random.random()
     if 0 <= rand and rand < 0.001:
