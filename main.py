@@ -11,7 +11,7 @@ TOKEN = os.environ['DiscordToken']
 
 # 接続に必要なオブジェクトを生成
 bot = commands.Bot(command_prefix='/')
-bot.guild_subscriptions = True
+discord.Intents.members = True
 
 jst = timezone(timedelta(hours=9), name='JAPAN')
 #FARM_SERVER_GUILD = bot.get_guild(572150608283566090)
@@ -31,22 +31,22 @@ async def kokorozashi(ctx):
 @bot.command()
 async def neko(ctx):
     rand = random()
-    if 0 <= rand and rand < 0.001:
+    if 0 <= rand and rand < 0.001: # 0.1%の確率で SCP-040-JP
         next = 'ねこですよろしくおねがいします'
-    elif(0.001 <= rand and rand < 0.05):
+    elif(0.001 <= rand and rand < 0.05): # 5%の確率で現場猫
         if random() <= 0.5:
             next = 'ヨシ！'
         else:
             next = 'どうして……'
-    else:
+    else: # 残りは'にゃーん'
         next = 'にゃーん'
-    #next = 'ねこですよろしくおねがいします' if random.random() <= 0.05 else 'にゃーん'
     await ctx.channel.send(next)
 
 
 # 起動時に動作する処理
 @bot.event
 async def on_ready():
+    """起動時に動作する処理"""
     # 起動したらターミナルにログイン通知が表示される
     unser_development = discord.CustomActivity(
         "開発中なのだ", emoji='🚀', state='開発中なのだ', type=discord.ActivityType.custom)
@@ -56,9 +56,22 @@ async def on_ready():
     print('ログインしました')
 
 
-# メッセージ受信時に動作する処理
+FARM_SERVER_GUILD_ID = 572150608283566090
+
+LARGE_KUSA_EMBED = discord.Embed(
+    title='https://www.nicovideo.jp/watch/sm33789162')
+LARGE_KUSA_EMBED.set_author(name='test', url='https://www.nicovideo.jp/watch/sm33789162',
+                            icon_url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
+LARGE_KUSA_EMBED.set_image(
+    url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
+
+SMALL_KUSA_EMBED = discord.Embed(
+    title='https://www.nicovideo.jp/watch/sm33789162')
+
+
 @bot.event
 async def on_message(message):
+    """メッセージ受信時に動作する処理"""
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
         return
@@ -71,18 +84,10 @@ async def on_message(message):
             now.hour, now.minute, now.second))
     if 'SEックス' in message.content:
         await message.channel.send('やめないか！')
-    if '草' in message.content and message.guild.id != 572150608283566090:
-        embed = discord.Embed(
-            title='https://www.nicovideo.jp/watch/sm33789162')
-        embed.set_author(name='test', url='https://www.nicovideo.jp/watch/sm33789162',
-                         icon_url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
-        embed.set_image(
-            url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
-        await message.channel.send(embed=embed)
-    if '草草の草' in message.content and message.guild.id == 572150608283566090:  # ファーム鯖のみ
-        embed = discord.Embed(
-            title='https://www.nicovideo.jp/watch/sm33789162')
-        await message.channel.send(embed=embed)
+    if '草' in message.content and message.guild.id != 572150608283566090: # ファーム鯖以外では"草"で反応
+        await message.channel.send(embed=LARGE_KUSA_EMBED)
+    if '草草の草' in message.content and message.guild.id == FARM_SERVER_GUILD_ID:  # ファーム鯖のみ"草草の草"で反応
+        await message.channel.send(embed=SMALL_KUSA_EMBED)
         # await message.channel.send('https://www.nicovideo.jp/watch/sm33789162')
     await bot.process_commands(message)
 
