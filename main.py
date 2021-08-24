@@ -84,6 +84,7 @@ async def on_message(message):
             title='https://www.nicovideo.jp/watch/sm33789162')
         await message.channel.send(embed=embed)
         # await message.channel.send('https://www.nicovideo.jp/watch/sm33789162')
+    await bot.process_commands(message)
 
 
 @bot.event
