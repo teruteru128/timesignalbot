@@ -10,8 +10,7 @@ import os
 TOKEN = os.environ['DiscordToken']
 
 # 接続に必要なオブジェクトを生成
-bot = commands.Bot(command_prefix='/')
-discord.Intents.members = True
+bot = commands.Bot(command_prefix='/', intents=discord.Intents.all())
 
 jst = timezone(timedelta(hours=9), name='JAPAN')
 #FARM_SERVER_GUILD = bot.get_guild(572150608283566090)
@@ -31,14 +30,14 @@ async def kokorozashi(ctx):
 @bot.command()
 async def neko(ctx):
     rand = random()
-    if 0 <= rand and rand < 0.001: # 0.1%の確率で SCP-040-JP
+    if 0 <= rand and rand < 0.001:  # 0.1%の確率で SCP-040-JP
         next = 'ねこですよろしくおねがいします'
-    elif(0.001 <= rand and rand < 0.05): # 5%の確率で現場猫
+    elif(0.001 <= rand and rand < 0.05):  # 5%の確率で現場猫
         if random() <= 0.5:
             next = 'ヨシ！'
         else:
             next = 'どうして……'
-    else: # 残りは'にゃーん'
+    else:  # 残りは'にゃーん'
         next = 'にゃーん'
     await ctx.channel.send(next)
 
@@ -70,7 +69,7 @@ SMALL_KUSA_EMBED = discord.Embed(
 
 
 @bot.event
-async def on_message(message):
+async def on_message(message: discord.Message):
     """メッセージ受信時に動作する処理"""
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
@@ -78,13 +77,10 @@ async def on_message(message):
     if message.content == 'やったぜ。':
         youbi = ['月', '火', '水', '木', '金', '土', '日']
         now = datetime.now(jst)
-        await message.channel.send("投稿者：{} （{}月{}日（{}）{}時{}分{}秒）".format(
-            message.author.display_name,
-            now.month, now.day, youbi[now.weekday()],
-            now.hour, now.minute, now.second))
+        await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{youbi[now.weekday()]}）{now.hour}時{now.minute}分{now.second}秒）")
     if 'SEックス' in message.content:
         await message.channel.send('やめないか！')
-    if '草' in message.content and message.guild.id != 572150608283566090: # ファーム鯖以外では"草"で反応
+    if '草' in message.content and message.guild.id != 572150608283566090:  # ファーム鯖以外では"草"で反応
         await message.channel.send(embed=LARGE_KUSA_EMBED)
     if '草草の草' in message.content and message.guild.id == FARM_SERVER_GUILD_ID:  # ファーム鯖のみ"草草の草"で反応
         await message.channel.send(embed=SMALL_KUSA_EMBED)
@@ -93,28 +89,32 @@ async def on_message(message):
 
 
 @bot.event
-async def on_member_join(member):
+async def on_member_join(member: discord.Member):
     if member.bot:
         return
-    print(member.display_name)
-    print('来たぜ。')
+    print(f'{member.display_name}が来たぜ。')
+    # メッセージ出力先のチャンネルを指定
+    channel = bot.get_channel(879315010218774531)
+    # カカポ
+    m = 'https://cultofthepartyparrot.com/parrots/hd/reverseparrot.gif'
+    # カカポをチャンネルに出力
+    await channel.send(m)
 
 
 @bot.event
-async def on_member_update(befoer, after):
+async def on_member_update(befoer: discord.Member, after: discord.Member):
     print('memberが更新したぜ。')
 
 
 @bot.event
-async def on_member_remove(member):
+async def on_member_remove(member: discord.Member):
     if member.bot:
         return
-    print(member.display_name)
-    print('去ったぜ。')
+    print(f'{member.display_name}が去ったぜ。')
 
 
 @bot.event
-async def on_user_update(before, after):
+async def on_user_update(before: discord.User, after: discord.User):
     print('userがやったぜ。')
 
 
