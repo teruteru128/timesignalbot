@@ -1,7 +1,7 @@
 
-import discord
+from discord import Embed, Game, Intents, Member, Message, Status, User
 from discord.ext import tasks, commands
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from random import random
 import re as regex
 import os
@@ -10,7 +10,7 @@ import os
 TOKEN = os.environ['DiscordToken']
 
 # 接続に必要なオブジェクトを生成
-bot = commands.Bot(command_prefix='/', intents=discord.Intents.all())
+bot = commands.Bot(command_prefix='/', intents=Intents.all())
 
 jst = timezone(timedelta(hours=9), name='JAPAN')
 FARM_SERVER_GUILD_ID = 572150608283566090
@@ -45,32 +45,32 @@ async def neko(ctx: commands.Context):
 
 #unser_development = discord.CustomActivity("開発中なのだ", emoji='🚀', state='開発中なのだ', type=discord.ActivityType.custom)
 #unser_development2 = discord.Activity(name="開発中なのだ")
-game = discord.Game(name='開発中なのだ')
+game = Game(name='開発中なのだ')
 
 
 @bot.event
 async def on_ready():
     """起動時に動作する処理"""
     # 起動したらターミナルにログイン通知が表示される
-    await bot.change_presence(activity=game, status=discord.Status.online)
+    await bot.change_presence(activity=game, status=Status.online)
     print('ログインしました')
 
 
 youbi = ['月', '火', '水', '木', '金', '土', '日']
 
-LARGE_KUSA_EMBED = discord.Embed(
+LARGE_KUSA_EMBED = Embed(
     title='https://www.nicovideo.jp/watch/sm33789162')
 LARGE_KUSA_EMBED.set_author(name='test', url='https://www.nicovideo.jp/watch/sm33789162',
                             icon_url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
 LARGE_KUSA_EMBED.set_image(
     url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
 
-SMALL_KUSA_EMBED = discord.Embed(
+SMALL_KUSA_EMBED = Embed(
     title='https://www.nicovideo.jp/watch/sm33789162')
 
 
 @bot.event
-async def on_message(message: discord.Message):
+async def on_message(message: Message):
     """メッセージ受信時に動作する処理"""
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
@@ -89,7 +89,7 @@ async def on_message(message: discord.Message):
 
 
 @bot.event
-async def on_member_join(member: discord.Member):
+async def on_member_join(member: Member):
     if member.bot:
         return
     if member.guild != FARM_SERVER_GUILD:
@@ -103,41 +103,45 @@ async def on_member_join(member: discord.Member):
 
 
 @bot.event
-async def on_member_update(before: discord.Member, after: discord.Member):
-    print(
-        f'memberが更新したぜ。: {before.display_name}, {before.status}, {before.activity}, {before.nick}, {before.roles}, {before.roles}, {before.pending}→{after.display_name}, {after.status}, {after.activity}, {after.nick}, {after.roles}, {after.roles}, {after.pending}')
+async def on_member_update(before: Member, after: Member):
+    """Member がプロフィールを編集したとき呼び出されます。"""
+    # うるさいのでコメントアウト
+    # print(f'memberが更新したぜ。: {before.display_name}, {before.status}, {before.activity}, {before.nick}, {before.roles}, {before.roles}, {before.pending}→{after.display_name}, {after.status}, {after.activity}, {after.nick}, {after.roles}, {after.roles}, {after.pending}')
+    pass
 
 
 @bot.event
-async def on_member_remove(member: discord.Member):
+async def on_member_remove(member: Member):
     if member.bot:
         return
     print(f'{member.display_name}が去ったぜ。')
 
 
 @bot.event
-async def on_user_update(before: discord.User, after: discord.User):
+async def on_user_update(before: User, after: User):
     print(f'userがやったぜ。{before.avatar}, {before.username}, {before.discriminator}→{after.avatar}, {after.username}, {after.discriminator}')
 
+SANDBOX_SERVER_GENERAL = bot.get_channel(838388401592991747)
+TEST_SERVER_GENERAL = bot.get_channel(879315010218774531)
+FARN_SERVER_INITIALLY_SPAWN = bot.get_channel(572151278428225537)
+
+MAYONAKA_TEXT = '真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'
 
 @tasks.loop(seconds=1)
 async def loop():
-    sandbox_server = bot.get_channel(838388401592991747)
-    test_server = bot.get_channel(879315010218774531)
-    farn_server = bot.get_channel(572151278428225537)
     now = datetime.now(jst)
     strtime = now.strftime('%H:%M:%S')
     if now.hour == 0 and now.minute == 0 and now.second == 0:
-        await sandbox_server.send('真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ')
-        await test_server.send('真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ')
-        await farn_server.send('真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ')
+        await SANDBOX_SERVER_GENERAL.send(MAYONAKA_TEXT)
+        await TEST_SERVER_GENERAL.send(MAYONAKA_TEXT)
+        await FARN_SERVER_INITIALLY_SPAWN.send(MAYONAKA_TEXT)
     if (now.hour == 3 or now.hour == 15) and now.minute == 34 and now.second == 0:
-        await sandbox_server.send('334')
-        await test_server.send('334')
-    #if strtime == '07:00:00':
+        await SANDBOX_SERVER_GENERAL.send('334')
+        await TEST_SERVER_GENERAL.send('334')
+    # if strtime == '07:00:00':
     if now.hour == 7 and now.minute == 0 and now.second == 0:
-        await sandbox_server.send('おはよう')
-        await test_server.send('<:hoayou:823065916271099954>')
+        await SANDBOX_SERVER_GENERAL.send('おはよう')
+        await TEST_SERVER_GENERAL.send('<:hoayou:823065916271099954>')
 
 loop.start()
 # Botの起動とDiscordサーバーへの接続
