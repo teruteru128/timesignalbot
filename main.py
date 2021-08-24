@@ -45,7 +45,7 @@ async def neko(ctx):
 
 
 # 起動時に動作する処理
-@bot.event()
+@bot.event
 async def on_ready():
     # 起動したらターミナルにログイン通知が表示される
     unser_development = discord.CustomActivity(
@@ -57,7 +57,7 @@ async def on_ready():
 
 
 # メッセージ受信時に動作する処理
-@bot.event()
+@bot.event
 async def on_message(message):
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
@@ -87,7 +87,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-@bot.event()
+@bot.event
 async def on_member_join(member):
     if member.bot:
         return
@@ -95,12 +95,12 @@ async def on_member_join(member):
     print('来たぜ。')
 
 
-@bot.event()
+@bot.event
 async def on_member_update(befoer, after):
     print('memberが更新したぜ。')
 
 
-@bot.event()
+@bot.event
 async def on_member_remove(member):
     if member.bot:
         return
@@ -108,7 +108,7 @@ async def on_member_remove(member):
     print('去ったぜ。')
 
 
-@bot.event()
+@bot.event
 async def on_user_update(before, after):
     print('userがやったぜ。')
 
