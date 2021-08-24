@@ -134,9 +134,10 @@ async def loop():
     if (now.hour == 3 or now.hour == 15) and now.minute == 34 and now.second == 0:
         await sandbox_server.send('334')
         await test_server.send('334')
-    if now == '07:00:00':
+    #if strtime == '07:00:00':
+    if now.hour == 7 and now.minute == 0 and now.second == 0:
         await sandbox_server.send('おはよう')
-        await test_server.send(':hoayou:')
+        await test_server.send('<:hoayou:823065916271099954>')
 
 loop.start()
 # Botの起動とDiscordサーバーへの接続
