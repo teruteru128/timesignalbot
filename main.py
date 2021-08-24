@@ -1,6 +1,6 @@
 import discord
 from discord.ext import tasks
-from datetime import datetime
+import datetime
 import random
 import re as regex
 import os
@@ -11,6 +11,8 @@ TOKEN = os.environ['DiscordToken']
 # 接続に必要なオブジェクトを生成
 client = discord.Client()
 client.guild_subscriptions = True
+
+jst = datetime.timezone(datetime.timedelta(hours=9), name='JAPAN')
 
 
 # 起動時に動作する処理
@@ -33,7 +35,7 @@ async def on_message(message):
         return
     if message.content == 'やったぜ。':
         youbi = ['月', '火', '水', '木', '金', '土', '日']
-        now = datetime.now()
+        now = datetime.datetime.now(jst)
         await message.channel.send("投稿者：{} （{}月{}日（{}）{}時{}分{}秒）".format(
             message.author.display_name,
             now.month, now.day, youbi[now.weekday()],
@@ -107,8 +109,7 @@ async def loop():
     sandbox_server = client.get_channel(838388401592991747)
     test_server = client.get_channel(879315010218774531)
     farn_server = client.get_channel(572151278428225537)
-    jst = datetime.timezone(datetime.timedelta(hours=9), name='JAPAN')
-    now = datetime.now(jst)
+    now = datetime.datetime.now(jst)
     strtime = now.strftime('%H:%M:%S')
     if now.hour == 0 and now.minute == 0 and now.second == 0:
         await sandbox_server.send('真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ')
