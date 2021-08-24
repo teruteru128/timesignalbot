@@ -107,7 +107,8 @@ async def loop():
     sandbox_server = client.get_channel(838388401592991747)
     test_server = client.get_channel(879315010218774531)
     farn_server = client.get_channel(572151278428225537)
-    now = datetime.now()
+    jst = datetime.timezone(datetime.timedelta(hours=9), name='JAPAN')
+    now = datetime.now(jst)
     strtime = now.strftime('%H:%M:%S')
     if now.hour == 0 and now.minute == 0 and now.second == 0:
         await sandbox_server.send('真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ')
