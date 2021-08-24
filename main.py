@@ -2,7 +2,7 @@
 import discord
 from discord.ext import tasks, commands
 from datetime import datetime, timezone, timedelta
-import random
+from random import random
 import re as regex
 import os
 
@@ -14,28 +14,27 @@ bot = commands.Bot(command_prefix='/')
 bot.guild_subscriptions = True
 
 jst = timezone(timedelta(hours=9), name='JAPAN')
+#FARM_SERVER_GUILD = bot.get_guild(572150608283566090)
+#SABAKAN_ROLE = FARM_SERVER_GUILD.get_role(572157809399955456)
 
 
-@bot.command
+@bot.command()
 async def nullpo(ctx):
     await ctx.message.channel.send("ｶﾞｯ")
-    FARM_SERVER_GUILD = bot.get_guild(572150608283566090)
-    SABAKAN_ROLE = FARM_SERVER_GUILD.get_role(572157809399955456)
-    print(SABAKAN_ROLE)
 
 
-@bot.command
+@bot.command()
 async def kokorozashi(ctx):
-    await ctx.message.channel.send("NG")
+    await ctx.send("NG")
 
 
-@bot.command
+@bot.command()
 async def neko(ctx):
-    rand = random.random()
+    rand = random()
     if 0 <= rand and rand < 0.001:
         next = 'ねこですよろしくおねがいします'
     elif(0.001 <= rand and rand < 0.05):
-        if random.random() <= 0.5:
+        if random() <= 0.5:
             next = 'ヨシ！'
         else:
             next = 'どうして……'
@@ -46,7 +45,7 @@ async def neko(ctx):
 
 
 # 起動時に動作する処理
-@bot.event
+@bot.event()
 async def on_ready():
     # 起動したらターミナルにログイン通知が表示される
     unser_development = discord.CustomActivity(
@@ -58,7 +57,7 @@ async def on_ready():
 
 
 # メッセージ受信時に動作する処理
-@bot.event
+@bot.event()
 async def on_message(message):
     # メッセージ送信者がBotだった場合は無視する
     if message.author.bot:
@@ -88,7 +87,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-@bot.event
+@bot.event()
 async def on_member_join(member):
     if member.bot:
         return
@@ -96,12 +95,12 @@ async def on_member_join(member):
     print('来たぜ。')
 
 
-@bot.event
+@bot.event()
 async def on_member_update(befoer, after):
     print('memberが更新したぜ。')
 
 
-@bot.event
+@bot.event()
 async def on_member_remove(member):
     if member.bot:
         return
@@ -109,7 +108,7 @@ async def on_member_remove(member):
     print('去ったぜ。')
 
 
-@bot.event
+@bot.event()
 async def on_user_update(before, after):
     print('userがやったぜ。')
 
