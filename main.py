@@ -18,7 +18,7 @@ jst = timezone(timedelta(hours=9), name='JAPAN')
 
 @bot.command
 async def nullpo(ctx):
-    ctx.message.channel.send("ｶﾞｯ")
+    await ctx.message.channel.send("ｶﾞｯ")
     FARM_SERVER_GUILD = bot.get_guild(572150608283566090)
     SABAKAN_ROLE = FARM_SERVER_GUILD.get_role(572157809399955456)
     print(SABAKAN_ROLE)
@@ -26,7 +26,7 @@ async def nullpo(ctx):
 
 @bot.command
 async def kokorozashi(ctx):
-    ctx.message.channel.send("NG")
+    await ctx.message.channel.send("NG")
 
 
 @bot.command
@@ -42,6 +42,7 @@ async def neko(ctx):
     else:
         next = 'にゃーん'
     #next = 'ねこですよろしくおねがいします' if random.random() <= 0.05 else 'にゃーん'
+    await ctx.channel.send(next)
 
 
 # 起動時に動作する処理
