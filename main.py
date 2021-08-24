@@ -103,8 +103,9 @@ async def on_member_join(member: discord.Member):
 
 
 @bot.event
-async def on_member_update(befoer: discord.Member, after: discord.Member):
-    print('memberが更新したぜ。')
+async def on_member_update(before: discord.Member, after: discord.Member):
+    print(
+        f'memberが更新したぜ。: {before.display_name}, {before.roles}, {before.pending}→{after.display_name}, {after.roles}, {after.pending}')
 
 
 @bot.event
@@ -116,7 +117,7 @@ async def on_member_remove(member: discord.Member):
 
 @bot.event
 async def on_user_update(before: discord.User, after: discord.User):
-    print('userがやったぜ。')
+    print(f'userがやったぜ。{before.avatar}, {before.username}, {before.discriminator}→{after.avatar}, {after.username}, {after.discriminator}')
 
 
 @tasks.loop(seconds=1)
