@@ -1,7 +1,7 @@
 
 import re as regex
 from datetime import datetime, timedelta, timezone
-from random import random
+from random import choice, random
 
 from discord import Embed, Game, Intents, Member, Message, Status, User
 from discord.ext import commands
@@ -38,15 +38,14 @@ class TimeSignalCog(commands.Cog):
     async def neko(self, ctx: commands.Context):
         """見て！ねこがいるよ　かわいいね
 
-        ノーマル1種 シークレット3種"""
+        ノーマル1種 シークレット12種"""
         rand = random()
         if 0 <= rand and rand < 0.001:  # 0.1%の確率で SCP-040-JP
             next = 'ねこですよろしくおねがいします'
         elif(0.001 <= rand and rand < 0.05):  # 5%の確率で現場猫
-            if random() <= 0.5:
-                next = 'ヨシ！'
-            else:
-                next = 'どうして……'
+            next = choice(['ヨシ！', 'どうして……', "どうして\n夜中に\n起きてるん\nですか？", "ああああ！\nああああ！\nあああああ！あー！",
+                          "オレじゃない\nアイツがやった\nシらない\nスんだこと", "なんだか\n知らんが\nとにかく\nヨシ！", "100万回死んだねこ",
+                          "え！！半分の人員で倍の仕事を！？", "弊社なら年内施工も可能です！", "どうして自分が指定した時間にいないんですか:anger:", "よくわからんが、まぁ動いてるからヨシ！", "正月もGWもお盆も普通に働いていた奴らだ。面構えが違う。"])
         else:  # 残りは'にゃーん'
             next = 'にゃーん'
         await ctx.channel.send(next)
