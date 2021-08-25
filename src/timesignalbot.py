@@ -1,20 +1,27 @@
 
-from discord import Embed, Game, Intents, Member, Message, Status, User
-from datetime import datetime, timedelta, timezone
-from discord.ext import commands
 import re as regex
+from datetime import datetime, timedelta, timezone
 from random import random
+
+from discord import Embed, Game, Intents, Member, Message, Status, User
+from discord.ext import commands
 
 
 class TimeSignalBot(commands.Bot):
     """時報bot"""
+    FARM_SERVER_GUILD_ID = 572150608283566090
+    # SABAKAN_ROLE = FARM_SERVER_GUILD.get_role(572157809399955456)
+    FARN_SERVER_INITIALLY_SPAWN_ID = 572151278428225537
+    SANDBOX_SERVER_GENERAL_ID = 838388401592991747
+    TEST_SERVER_GUILD_ID = 879315010218774528
+    TEST_SERVER_GENERAL_ID = 879315010218774531
     pass
 
 
 class TimeSignalCog(commands.Cog):
     """時報bot Cog"""
 
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: TimeSignalBot):
         self.bot = bot
 
     @commands.command()
@@ -22,12 +29,10 @@ class TimeSignalCog(commands.Cog):
         """誰かが「ぬるぽ」と書いたら、「ｶﾞｯ」と突っ込みを入れます。"""
         await ctx.message.channel.send("ｶﾞｯ")
 
-
     @commands.command()
     async def kokorozashi(self, ctx: commands.Context):
         """志はNGです。"""
         await ctx.send("NG")
-
 
     @commands.command()
     async def neko(self, ctx: commands.Context):
@@ -52,7 +57,6 @@ class TimeSignalCog(commands.Cog):
 
     youbi = ['月', '火', '水', '木', '金', '土', '日']
 
-
     @commands.Cog.listener()
     async def on_ready(self):
         """起動時に動作する処理"""
@@ -61,11 +65,6 @@ class TimeSignalCog(commands.Cog):
         print('ログインしました')
 
     jst = timezone(timedelta(hours=9), name='JAPAN')
-    FARM_SERVER_GUILD_ID = 572150608283566090
-    # SABAKAN_ROLE = FARM_SERVER_GUILD.get_role(572157809399955456)
-    SANDBOX_SERVER_GENERAL_ID = 838388401592991747
-    TEST_SERVER_GENERAL_ID = 879315010218774531
-    FARN_SERVER_INITIALLY_SPAWN_ID = 572151278428225537
     LARGE_KUSA_EMBED = Embed(
         title='https://www.nicovideo.jp/watch/sm33789162')
     LARGE_KUSA_EMBED.set_author(name='test', url='https://www.nicovideo.jp/watch/sm33789162',
@@ -76,12 +75,11 @@ class TimeSignalCog(commands.Cog):
     SMALL_KUSA_EMBED = Embed(
         title='https://www.nicovideo.jp/watch/sm33789162')
 
-
     @commands.Cog.listener()
     async def on_message(self, message: Message):
         """メッセージ受信時に動作する処理"""
         # メッセージ送信者がBotだった場合は無視する
-        FARM_SERVER_GUILD = self.bot.get_guild(self.FARM_SERVER_GUILD_ID)
+        FARM_SERVER_GUILD = self.bot.get_guild(self.bot.FARM_SERVER_GUILD_ID)
         if message.author.bot:
             return
         if message.content == 'やったぜ。':
@@ -95,21 +93,27 @@ class TimeSignalCog(commands.Cog):
             await message.channel.send(embed=self.SMALL_KUSA_EMBED)
         # await self.bot.process_commands(message)
 
+    pass
+
+
+class MemberEventListenerCog(commands.Cog):
+    """イベントリスナーCog"""
+
+    def __init__(self, bot: TimeSignalBot):
+        self.bot = bot
 
     @commands.Cog.listener()
     async def on_member_join(self, member: Member):
         if member.bot:
             return
-        FARM_SERVER_GUILD = self.bot.get_guild(self.FARM_SERVER_GUILD_ID)
-        if member.guild != FARM_SERVER_GUILD:
-            print(f'{member.display_name}が来たぜ。')
+        print(f'{member.display_name}が来たぜ。')
+        if member.guild.id == self.bot.TEST_SERVER_GUILD_ID:
             # メッセージ出力先のチャンネルを指定
-            channel = bot.get_channel(TEST_SERVER_GENERAL_ID)
+            channel = bot.get_channel(self.bot.TEST_SERVER_GENERAL_ID)
             # カカポ
             m = 'https://cultofthepartyparrot.com/parrots/hd/reverseparrot.gif'
             # カカポをチャンネルに出力
             await channel.send(m)
-
 
     @commands.Cog.listener()
     async def on_member_update(self, before: Member, after: Member):
@@ -118,13 +122,11 @@ class TimeSignalCog(commands.Cog):
         # print(f'memberが更新したぜ。: {before.display_name}, {before.status}, {before.activity}, {before.nick}, {before.roles}, {before.roles}, {before.pending}→{after.display_name}, {after.status}, {after.activity}, {after.nick}, {after.roles}, {after.roles}, {after.pending}')
         pass
 
-
     @commands.Cog.listener()
     async def on_member_remove(self, member: Member):
         if member.bot:
             return
         print(f'{member.display_name}が去ったぜ。')
-
 
     @commands.Cog.listener()
     async def on_user_update(self, before: User, after: User):
