@@ -17,9 +17,6 @@ TOKEN = os.environ['DiscordToken']
 bot = TimeSignalBot(command_prefix='/', intents=Intents.all())
 
 jst = timezone(timedelta(hours=9), name='JAPAN')
-FARM_SERVER_GUILD_ID = 572150608283566090
-FARM_SERVER_GUILD = bot.get_guild(FARM_SERVER_GUILD_ID)
-#SABAKAN_ROLE = FARM_SERVER_GUILD.get_role(572157809399955456)
 
 SANDBOX_SERVER_GENERAL_ID = 838388401592991747
 TEST_SERVER_GENERAL_ID = 879315010218774531
