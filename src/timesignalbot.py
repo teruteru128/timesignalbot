@@ -90,7 +90,7 @@ class TimeSignalCog(commands.Cog):
             return
         print(f"{message.content}")
         if message.content == 'やったぜ。':
-            now = datetime.now(jst)
+            now = datetime.now(self.jst)
             await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{youbi[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
         if 'SEックス' in message.content and message.guild != FARM_SERVER_GUILD:
             await message.channel.send('やめないか！')
