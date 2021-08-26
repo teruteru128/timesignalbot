@@ -104,12 +104,15 @@ class TimeSignalCog(commands.Cog):
 
     @commands.command()
     async def nyanpass(self, ctx: commands.Context):
-        r = requests.get('http://nyanpass.com/api/get_count')
+        """にゃんぱすーボタンのカウント数を表示するのん
+        
+        https://nyanpass.com/"""
+        r = requests.get('https://nyanpass.com/api/get_count')
         if r.status_code != 200:
             print("nyanpass error: status code = {}", r.status_code, file=sys.stderr)
             return
         j = json.loads(r.text)
-        await ctx.channel.send("{}: {}".format(j['time'], j['count']))
+        await ctx.channel.send("現在{}にゃんぱすーなのん".format(j['count']))
 
     pass
 
