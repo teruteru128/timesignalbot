@@ -18,6 +18,8 @@ TOKEN = os.environ['DiscordToken']
 
 # 接続に必要なオブジェクトを生成
 bot = TimeSignalBot(command_prefix='/', intents=Intents.all())
+bot.user.name = "時報bot"
+bot.user.display_name = "時報bot"
 
 jst = timezone(timedelta(hours=9), name='JAPAN')
 
@@ -40,7 +42,8 @@ async def loop():
         await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send('334')
     if now.hour == 7 and now.minute == 0 and now.second == 0:
         await bot.get_channel(bot.SANDBOX_SERVER_GENERAL_ID).send('おはよう')
-        await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send('<:hoayou:823065916271099954>')
+        # await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send('<:hoayou:823065916271099954>')
+        await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send('ほぁよぅごぁいまーしゅ！')
 
 loop.start()
 bot.add_cog(TimeSignalCog(bot))
