@@ -19,6 +19,74 @@ class TimeSignalBot(commands.Bot):
     SANDBOX_SERVER_GENERAL_ID = 838388401592991747
     TEST_SERVER_GUILD_ID = 879315010218774528
     TEST_SERVER_GENERAL_ID = 879315010218774531
+
+    #unser_development = discord.CustomActivity("開発中なのだ", emoji='🚀', state='開発中なのだ', type=discord.ActivityType.custom)
+    #unser_development2 = discord.Activity(name="開発中なのだ")
+    game = Game(name='開発中なのだ')
+
+    youbi = ['月', '火', '水', '木', '金', '土', '日']
+
+    async def on_ready(self):
+        """起動時に動作する処理"""
+        # 起動したらターミナルにログイン通知が表示される
+        await self.change_presence(activity=self.game, status=Status.online)
+        print('ログインしました')
+
+    jst = timezone(timedelta(hours=9), name='JAPAN')
+    LARGE_KUSA_EMBED = Embed(
+        title='https://www.nicovideo.jp/watch/sm33789162')
+    LARGE_KUSA_EMBED.set_author(name='ベルサイユの草', url='https://www.nicovideo.jp/watch/sm33789162',
+                                icon_url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
+    LARGE_KUSA_EMBED.set_image(
+        url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
+
+    SMALL_KUSA_EMBED = Embed(
+        title='https://www.nicovideo.jp/watch/sm33789162')
+
+    async def on_message(self, message: Message):
+        """メッセージ受信時に動作する処理"""
+        # メッセージ送信者がBotだった場合は無視する
+        FARM_SERVER_GUILD = self.get_guild(self.FARM_SERVER_GUILD_ID)
+        if message.author.bot:
+            return
+        if message.content == 'やったぜ。':
+            now = datetime.now(self.jst)
+            await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{self.youbi[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
+        if 'SEックス' in message.content and message.guild != FARM_SERVER_GUILD:
+            await message.channel.send('やめないか！')
+        if '草' in message.content and message.guild != FARM_SERVER_GUILD:  # ファーム鯖以外では"草"で反応
+            await message.channel.send(embed=self.LARGE_KUSA_EMBED)
+        if '草草の草' in message.content and message.guild == FARM_SERVER_GUILD:  # ファーム鯖のみ"草草の草"で反応
+            await message.channel.send(embed=self.SMALL_KUSA_EMBED)
+        await self.process_commands(message)
+
+    async def on_member_join(self, member: Member):
+        if member.bot:
+            return
+        print(f'{member.display_name}が来たぜ。')
+        if member.guild.id == self.TEST_SERVER_GUILD_ID:
+            # メッセージ出力先のチャンネルを指定
+            channel = self.get_channel(self.TEST_SERVER_GENERAL_ID)
+            # カカポ
+            m = 'https://cultofthepartyparrot.com/parrots/hd/reverseparrot.gif'
+            # カカポをチャンネルに出力
+            await channel.send(m)
+
+    async def on_member_update(self, before: Member, after: Member):
+        """Member がプロフィールを編集したとき呼び出されます。"""
+        # うるさいのでコメントアウト
+        # print(f'memberが更新したぜ。: {before.display_name}, {before.status}, {before.activity}, {before.nick}, {before.roles}, {before.roles}, {before.pending}→{after.display_name}, {after.status}, {after.activity}, {after.nick}, {after.roles}, {after.roles}, {after.pending}')
+        pass
+
+    async def on_member_remove(self, member: Member):
+        if member.bot:
+            return
+        print(f'{member.display_name}が去ったぜ。')
+
+    async def on_user_update(self, before: User, after: User):
+        print(
+            f'userがやったぜ。{before.avatar}, {before.username}, {before.discriminator}→{after.avatar}, {after.username}, {after.discriminator}')
+
     pass
 
 
@@ -58,58 +126,15 @@ class TimeSignalCog(commands.Cog):
             next = 'にゃーん'
         await ctx.channel.send(next)
 
-    #unser_development = discord.CustomActivity("開発中なのだ", emoji='🚀', state='開発中なのだ', type=discord.ActivityType.custom)
-    #unser_development2 = discord.Activity(name="開発中なのだ")
-    game = Game(name='開発中なのだ')
-
-    youbi = ['月', '火', '水', '木', '金', '土', '日']
-
-    @commands.Cog.listener()
-    async def on_ready(self):
-        """起動時に動作する処理"""
-        # 起動したらターミナルにログイン通知が表示される
-        self.bot.user.name = "時報bot"
-        #self.bot.user.display_name = "時報bot"
-        await self.bot.change_presence(activity=self.game, status=Status.online)
-        print('ログインしました')
-
-    jst = timezone(timedelta(hours=9), name='JAPAN')
-    LARGE_KUSA_EMBED = Embed(
-        title='https://www.nicovideo.jp/watch/sm33789162')
-    LARGE_KUSA_EMBED.set_author(name='test', url='https://www.nicovideo.jp/watch/sm33789162',
-                                icon_url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
-    LARGE_KUSA_EMBED.set_image(
-        url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
-
-    SMALL_KUSA_EMBED = Embed(
-        title='https://www.nicovideo.jp/watch/sm33789162')
-
-    @commands.Cog.listener()
-    async def on_message(self, message: Message):
-        """メッセージ受信時に動作する処理"""
-        # メッセージ送信者がBotだった場合は無視する
-        FARM_SERVER_GUILD = self.bot.get_guild(self.bot.FARM_SERVER_GUILD_ID)
-        if message.author.bot:
-            return
-        if message.content == 'やったぜ。':
-            now = datetime.now(self.jst)
-            await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{self.youbi[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
-        if 'SEックス' in message.content and message.guild != FARM_SERVER_GUILD:
-            await message.channel.send('やめないか！')
-        if '草' in message.content and message.guild != FARM_SERVER_GUILD:  # ファーム鯖以外では"草"で反応
-            await message.channel.send(embed=self.LARGE_KUSA_EMBED)
-        if '草草の草' in message.content and message.guild == FARM_SERVER_GUILD:  # ファーム鯖のみ"草草の草"で反応
-            await message.channel.send(embed=self.SMALL_KUSA_EMBED)
-        # await self.bot.process_commands(message)
-
     @commands.command()
     async def nyanpass(self, ctx: commands.Context):
         """にゃんぱすーボタンのカウント数を表示するのん
-        
+
         https://nyanpass.com/"""
         r = requests.get('https://nyanpass.com/api/get_count')
         if r.status_code != 200:
-            print("nyanpass error: status code = {}", r.status_code, file=sys.stderr)
+            print("nyanpass error: status code = {}",
+                  r.status_code, file=sys.stderr)
             return
         j = json.loads(r.text)
         await ctx.channel.send("現在{}にゃんぱすーなのん".format(j['count']))
@@ -118,40 +143,12 @@ class TimeSignalCog(commands.Cog):
 
 
 class MemberEventListenerCog(commands.Cog):
-    """イベントリスナーCog"""
+    """イベントリスナーCog
+
+    イベントはBotに、コマンドはCogに
+    """
 
     def __init__(self, bot: TimeSignalBot):
         self.bot = bot
-
-    @commands.Cog.listener()
-    async def on_member_join(self, member: Member):
-        if member.bot:
-            return
-        print(f'{member.display_name}が来たぜ。')
-        if member.guild.id == self.bot.TEST_SERVER_GUILD_ID:
-            # メッセージ出力先のチャンネルを指定
-            channel = bot.get_channel(self.bot.TEST_SERVER_GENERAL_ID)
-            # カカポ
-            m = 'https://cultofthepartyparrot.com/parrots/hd/reverseparrot.gif'
-            # カカポをチャンネルに出力
-            await channel.send(m)
-
-    @commands.Cog.listener()
-    async def on_member_update(self, before: Member, after: Member):
-        """Member がプロフィールを編集したとき呼び出されます。"""
-        # うるさいのでコメントアウト
-        # print(f'memberが更新したぜ。: {before.display_name}, {before.status}, {before.activity}, {before.nick}, {before.roles}, {before.roles}, {before.pending}→{after.display_name}, {after.status}, {after.activity}, {after.nick}, {after.roles}, {after.roles}, {after.pending}')
-        pass
-
-    @commands.Cog.listener()
-    async def on_member_remove(self, member: Member):
-        if member.bot:
-            return
-        print(f'{member.display_name}が去ったぜ。')
-
-    @commands.Cog.listener()
-    async def on_user_update(self, before: User, after: User):
-        print(
-            f'userがやったぜ。{before.avatar}, {before.username}, {before.discriminator}→{after.avatar}, {after.username}, {after.discriminator}')
 
     pass
