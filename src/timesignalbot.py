@@ -42,7 +42,8 @@ class TimeSignalCog(commands.Cog):
         ノーマル1種 シークレット13種"""
         rand = random()
         if 0 <= rand and rand < 0.000001:  # 0.0001%の確率で ██████████
-            next = b64decode(b'44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb').decode()
+            next = b64decode(
+                b'44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb').decode()
         elif 0.000001 <= rand and rand < 0.001:  # 0.1%の確率で SCP-040-JP
             next = 'ねこですよろしくおねがいします'
         elif 0.001 <= rand and rand < 0.05:  # 5%の確率で現場猫
@@ -64,6 +65,8 @@ class TimeSignalCog(commands.Cog):
     async def on_ready(self):
         """起動時に動作する処理"""
         # 起動したらターミナルにログイン通知が表示される
+        bot.user.name = "時報bot"
+        bot.user.display_name = "時報bot"
         await self.bot.change_presence(activity=self.game, status=Status.online)
         print('ログインしました')
 

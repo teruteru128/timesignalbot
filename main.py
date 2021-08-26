@@ -18,8 +18,6 @@ TOKEN = os.environ['DiscordToken']
 
 # 接続に必要なオブジェクトを生成
 bot = TimeSignalBot(command_prefix='/', intents=Intents.all())
-bot.user.name = "時報bot"
-bot.user.display_name = "時報bot"
 
 jst = timezone(timedelta(hours=9), name='JAPAN')
 
