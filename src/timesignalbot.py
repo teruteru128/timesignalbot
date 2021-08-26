@@ -5,6 +5,7 @@ from random import choice, random
 
 from discord import Embed, Game, Intents, Member, Message, Status, User
 from discord.ext import commands
+from base64 import b64decode
 
 
 class TimeSignalBot(commands.Bot):
@@ -40,9 +41,11 @@ class TimeSignalCog(commands.Cog):
 
         ノーマル1種 シークレット13種"""
         rand = random()
-        if 0 <= rand and rand < 0.001:  # 0.1%の確率で SCP-040-JP
+        if 0 <= rand and rand < 0.000001:  # 0.0001%の確率で ██████████
+            next = b64decode(b'44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb').decode()
+        elif 0.000001 <= rand and rand < 0.001:  # 0.1%の確率で SCP-040-JP
             next = 'ねこですよろしくおねがいします'
-        elif(0.001 <= rand and rand < 0.05):  # 5%の確率で現場猫
+        elif 0.001 <= rand and rand < 0.05:  # 5%の確率で現場猫
             next = choice(['ヨシ！', 'どうして……', "どうして\n夜中に\n起きてるん\nですか？", "ああああ！\nああああ！\nあああああ！あー！",
                            "オレじゃない\nアイツがやった\nシらない\nスんだこと", "なんだか\n知らんが\nとにかく\nヨシ！", "100万回死んだねこ",
                            "え！！半分の人員で倍の仕事を！？", "弊社なら年内施工も可能です！", "どうして自分が指定した時間にいないんですか:anger:",
