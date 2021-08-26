@@ -1,11 +1,14 @@
 
+import json
 import re as regex
+import sys
+from base64 import b64decode
 from datetime import datetime, timedelta, timezone
 from random import choice, random
 
+import requests
 from discord import Embed, Game, Intents, Member, Message, Status, User
 from discord.ext import commands
-from base64 import b64decode
 
 
 class TimeSignalBot(commands.Bot):
@@ -98,6 +101,15 @@ class TimeSignalCog(commands.Cog):
         if '草草の草' in message.content and message.guild == FARM_SERVER_GUILD:  # ファーム鯖のみ"草草の草"で反応
             await message.channel.send(embed=self.SMALL_KUSA_EMBED)
         # await self.bot.process_commands(message)
+
+    @commands.command()
+    async def nyanpass(self, ctx: commands.Context):
+        r = requests.get('http://nyanpass.com/api/get_count')
+        if r.status_code != 200:
+            print("nyanpass error: status code = {}", r.status_code, file=sys.stderr)
+            return
+        j = json.loads(r.text)
+        ctx.channel.send("{}: {}".format(j['time'], j['count']))
 
     pass
 
