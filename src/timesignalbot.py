@@ -109,7 +109,7 @@ class TimeSignalCog(commands.Cog):
             print("nyanpass error: status code = {}", r.status_code, file=sys.stderr)
             return
         j = json.loads(r.text)
-        ctx.channel.send("{}: {}".format(j['time'], j['count']))
+        await ctx.channel.send("{}: {}".format(j['time'], j['count']))
 
     pass
 
