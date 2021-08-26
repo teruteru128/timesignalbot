@@ -66,7 +66,7 @@ class TimeSignalCog(commands.Cog):
         """起動時に動作する処理"""
         # 起動したらターミナルにログイン通知が表示される
         self.bot.user.name = "時報bot"
-        self.bot.user.display_name = "時報bot"
+        #self.bot.user.display_name = "時報bot"
         await self.bot.change_presence(activity=self.game, status=Status.online)
         print('ログインしました')
 
