@@ -52,7 +52,7 @@ class TimeSignalBot(commands.Bot):
         if message.author.bot:
             return
         if 'ぬるぽ' in message.content:
-            message.reply('ｶﾞｯ')
+            await message.reply('ｶﾞｯ')
         if message.content == 'やったぜ。':
             now = datetime.now(self.jst)
             await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{self.youbi[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
