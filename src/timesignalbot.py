@@ -26,6 +26,8 @@ class TimeSignalBot(commands.Bot):
 
     youbi = ['月', '火', '水', '木', '金', '土', '日']
 
+    # discord.Clientのサブクラスにイベントリスナーを仕込む場合はデコレータが不要なんですって
+    # https://discordpy.readthedocs.io/ja/latest/api.html?highlight=on_message#event-reference
     async def on_ready(self):
         """起動時に動作する処理"""
         # 起動したらターミナルにログイン通知が表示される
@@ -49,6 +51,8 @@ class TimeSignalBot(commands.Bot):
         FARM_SERVER_GUILD = self.get_guild(self.FARM_SERVER_GUILD_ID)
         if message.author.bot:
             return
+        if 'ぬるぽ' in message.content:
+            message.reply('ｶﾞｯ')
         if message.content == 'やったぜ。':
             now = datetime.now(self.jst)
             await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{self.youbi[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
