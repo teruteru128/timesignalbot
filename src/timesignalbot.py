@@ -88,8 +88,7 @@ class TimeSignalBot(commands.Bot):
         print(f'{member.display_name}が去ったぜ。')
 
     async def on_user_update(self, before: User, after: User):
-        print(
-            f'userがやったぜ。{before.avatar}, {before.display_name}, {before.discriminator}→{after.avatar}, {after.display_name}, {after.discriminator}')
+        print(f'userがやったぜ。{before.avatar}, {before.display_name}({before.name}), {before.discriminator}→{after.avatar}, {after.display_name}({after.name}), {after.discriminator}')
 
     pass
 
