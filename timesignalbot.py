@@ -26,6 +26,10 @@ class TimeSignalBot(commands.Bot):
 
     youbi = ['月', '火', '水', '木', '金', '土', '日']
 
+    async def on_connect(self):
+        print('接続しました')
+        pass
+
     # discord.Clientのサブクラスにイベントリスナーを仕込む場合はデコレータが不要なんですって
     # https://discordpy.readthedocs.io/ja/latest/api.html?highlight=on_message#event-reference
     async def on_ready(self):
