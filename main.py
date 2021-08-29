@@ -7,7 +7,7 @@ from random import random, randrange
 from discord import Intents
 from discord.ext import tasks
 
-from src.timesignalbot import (MemberEventListenerCog, TimeSignalBot,
+from timesignalbot import (MemberEventListenerCog, TimeSignalBot,
                                TimeSignalCog)
 
 command_prefix = '/'
