@@ -22,15 +22,17 @@ bot = TimeSignalBot(command_prefix='/', intents=Intents.all())
 jst = timezone(timedelta(hours=9), name='JAPAN')
 
 MAYONAKA_HEADER = '真夜中だよハルト'
+GETSUYOU_HEADER = '月曜日だよハルト'
 
 
 @tasks.loop(seconds=1)
 async def loop():
     """ああ！"""
     now = datetime.now(jst)
+    now.weekday()
     if now.hour == 0 and now.minute == 0 and now.second == 0:
         # オリジナルは'オ'69文字
-        msg = MAYONAKA_HEADER + 'オ' * randrange(40, 100)
+        msg = (GETSUYOU_HEADER if now.weekday() == 0 else MAYONAKA_HEADER) + 'オ' * randrange(40, 100)
         await bot.get_channel(bot.SANDBOX_SERVER_GENERAL_ID).send(msg)
         await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send(msg)
         await bot.get_channel(bot.FARN_SERVER_INITIALLY_SPAWN_ID).send(msg)
