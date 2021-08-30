@@ -4,7 +4,7 @@ import re as regex
 import sys
 from base64 import b64decode
 from datetime import datetime, timedelta, timezone
-from random import choice, random
+from random import choice, random, randint
 
 import requests
 from discord import Embed, Game, Intents, Member, Message, Status, User
@@ -146,12 +146,31 @@ class KusoCommands(commands.Cog):
         j = json.loads(r.text)
         await ctx.channel.send("現在{}にゃんぱすーなのん".format(j['count']))
 
-    @commands.command()
-    async def dice(self, ctx: commands.Context, x, y):
-        await ctx.channel.send(f"{x}, {y}")
-        pass
+    DICE_PATTERN = regex.compile("d", flags=regex.IGNORECASE)
+    PLUS_PATTERN = regex.compile("\\+")
 
-    pass
+    @commands.command()
+    async def dice(self, ctx: commands.Context, *args, **kwargs):
+        """ダイスロールを行います。
+
+        構文:
+            ${command_prefix}dice ndm
+            ${command_prefix}dice ndm+a
+            ${command_prefix}dice ndm+a
+            ${command_prefix}dice nDm+ldo+a
+
+        サンプル
+            ${command_prefix}dice 1d100
+            ${command_prefix}dice 1d100+28d5
+            ${command_prefix}dice 2d6+3
+            ${command_prefix}dice 3D6+ 3d6 +4
+            ${command_prefix}dice 3D6 + 3d6 + 4
+        """
+        length = len(args)
+        if length == 0:
+            await ctx.send_help(self.dice)
+        else:
+            pass
 
 
 class MemberEventListenerCog(commands.Cog):
