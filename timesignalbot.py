@@ -146,6 +146,11 @@ class TimeSignalCog(commands.Cog):
         j = json.loads(r.text)
         await ctx.channel.send("現在{}にゃんぱすーなのん".format(j['count']))
 
+    @commands.command()
+    async def dice(self, ctx: commands.Context, x, y):
+        await ctx.channel.send(f"{x}, {y}")
+        pass
+
     pass
 
 
