@@ -8,7 +8,7 @@ from discord import Intents
 from discord.ext import tasks
 
 from timesignalbot import (MemberEventListenerCog, TimeSignalBot,
-                               TimeSignalCog)
+                               KusoCommands)
 
 command_prefix = '/'
 
@@ -47,7 +47,7 @@ async def loop():
         await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send('ほぁよぅごぁいまーしゅ！')
 
 loop.start()
-bot.add_cog(TimeSignalCog(bot))
+bot.add_cog(KusoCommands(bot))
 bot.add_cog(MemberEventListenerCog(bot))
 # Botの起動とDiscordサーバーへの接続
 bot.run(TOKEN)

@@ -97,8 +97,8 @@ class TimeSignalBot(commands.Bot):
     pass
 
 
-class TimeSignalCog(commands.Cog):
-    """時報bot Cog"""
+class KusoCommands(commands.Cog):
+    """コマンド詰め合わせ"""
 
     def __init__(self, bot: TimeSignalBot):
         self.bot = bot
