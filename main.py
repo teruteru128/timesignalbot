@@ -32,8 +32,14 @@ async def loop():
     now = datetime.now(jst)
     now.weekday()
     if now.hour == 0 and now.minute == 0 and now.second == 0:
+        if now.day == 1:
+            msg = f"{now.month}月"
+        elif now.weekday() == 0:
+            msg = "月曜日"
+        else:
+            msg = "真夜中"
         # オリジナルは'オ'69文字
-        msg = (GETSUYOU_HEADER if now.weekday() == 0 else MAYONAKA_HEADER) + 'オ' * randrange(40, 100)
+        msg += 'だよハルト' + 'オ' * randrange(40, 100)
         await bot.get_channel(bot.SANDBOX_SERVER_GENERAL_ID).send(msg)
         await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send(msg)
         await bot.get_channel(bot.FARN_SERVER_INITIALLY_SPAWN_ID).send(msg)
