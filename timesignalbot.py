@@ -71,7 +71,7 @@ class TimeSignalBot(commands.Bot):
     async def on_member_join(self, member: Member):
         if member.bot:
             return
-        print(f'{member.display_name}が来たぜ。')
+        print(f'{member.display_name}が{member.guild.name}に来たぜ。')
         if member.guild.id == self.TEST_SERVER_GUILD_ID:
             # メッセージ出力先のチャンネルを指定
             channel = self.get_channel(self.TEST_SERVER_GENERAL_ID)
