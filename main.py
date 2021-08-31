@@ -9,6 +9,7 @@ from discord.ext import tasks
 
 from timesignalbot import (MemberEventListenerCog, TimeSignalBot,
                                KusoCommands)
+from wordhant import WordHuntingCog
 
 command_prefix = '/'
 
@@ -49,5 +50,6 @@ async def loop():
 loop.start()
 bot.add_cog(KusoCommands(bot))
 bot.add_cog(MemberEventListenerCog(bot))
+bot.add_cog(WordHuntingCog(bot))
 # Botの起動とDiscordサーバーへの接続
 bot.run(TOKEN)
