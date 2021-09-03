@@ -4,10 +4,10 @@ import re as regex
 import sys
 from base64 import b64decode
 from datetime import datetime, timedelta, timezone
-from random import choice, random, randint
+from random import choice, random
 
 import requests
-from discord import Embed, Game, Intents, Member, Message, Status, User
+from discord import ChannelType, Embed, Game, Member, Message, Status, User
 from discord.ext import commands
 
 
@@ -56,6 +56,7 @@ class TimeSignalBot(commands.Bot):
         if message.author.bot:
             return
         if 'ぬるぽ' in message.content:
+            print(f'{message.channel}')
             await message.reply('ｶﾞｯ')
         if message.content == 'やったぜ。':
             now = datetime.now(self.jst)
@@ -107,6 +108,16 @@ class KusoCommands(commands.Cog):
     async def nullpo(self, ctx: commands.Context):
         """誰かが「ぬるぽ」と書いたら、「ｶﾞｯ」と突っ込みを入れます。"""
         await ctx.message.channel.send("ｶﾞｯ")
+
+    @commands.command(aliases=['RBZ'])
+    async def rbz(self, ctx: commands.Context):
+        if ctx.channel.type == ChannelType.private:
+            await ctx.send(f'RBZ')
+
+    @commands.command(aliases=['RZB'])
+    async def rzb(self, ctx: commands.Context):
+        if ctx.channel.type == ChannelType.private:
+            await ctx.send(f'RZB')
 
     @commands.command()
     async def kokorozashi(self, ctx: commands.Context):
@@ -172,6 +183,10 @@ class KusoCommands(commands.Cog):
         else:
             pass
 
+    @commands.command(name=':')
+    async def nothing(self, ctx: commands.Context):
+        pass
+
 
 class MemberEventListenerCog(commands.Cog):
     """イベントリスナーCog
@@ -182,30 +197,9 @@ class MemberEventListenerCog(commands.Cog):
     def __init__(self, bot: TimeSignalBot):
         self.bot = bot
 
-    pass
-
-
-class WordHuntingCog(commands.Cog):
-    """言葉狩り
-
-    サーバーごとに設定したり
-    完全一致か含むかを選択
-    キーワード
-
-    server_id, keyword, matchmode(equals, contains, (regex)), enable
-    正規表現を入力させるのはやりたくないねんな……
-    https://yamory.io/blog/about-redos-attack/
-    https://qiita.com/prograti/items/9b54cf82a08302a5d2c7
-    https://en.wikipedia.org/wiki/ReDoS
-    """
-
-    @commands.command()
-    async def whcofing(self):
-        """コンフィグ"""
-        pass
-
     @commands.Cog.listener()
-    async def on_message(self, message: Message):
+    async def on_member_join(self, member):
+        print('b')
         pass
 
     pass
