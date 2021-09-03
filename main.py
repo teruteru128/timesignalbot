@@ -2,13 +2,13 @@
 import os
 import re as regex
 from datetime import datetime, timedelta, timezone
-from random import random, randrange
+from random import randrange
 
 from discord import Intents
 from discord.ext import tasks
 
 from timesignalbot import (MemberEventListenerCog, TimeSignalBot,
-                               KusoCommands)
+                           KusoCommands)
 from wordhant import WordHuntingCog
 
 command_prefix = '/'
