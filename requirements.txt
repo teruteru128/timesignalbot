@@ -1,0 +1,6 @@
+###### Requirements without Version Specifiers ######
+
+###### Requirements with Version Specifiers ######
+discord.py==1.7.3
+psycopg2==2.9.1
+requests==2.26.0
