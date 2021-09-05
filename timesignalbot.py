@@ -81,7 +81,7 @@ class TimeSignalBot(commands.Bot):
             #m = 'https://cultofthepartyparrot.com/parrots/hd/reverseparrot.gif'
             # カカポをチャンネルに出力
             #await channel.send(m)
-            role = self.TEST_SERVER_GUILD.get_role(879320884014354503)
+            role = self.TEST_SERVER_GUILD.get_role(879699130681790464)
             print(role)
             if not member in role.members:
                 await member.add_roles(role)
