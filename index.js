@@ -1,3 +1,4 @@
+
 const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
@@ -16,8 +17,16 @@ client.on('interactionCreate', async interaction => {
 
 client.on('message', async msg => {
   if (msg.content === '!ping') {
-    msg.channel.send('Pong!')
+    msg.channel.send('Pong!');
   }
-})
+});
 
-client.login(process.env.DiscordToken)
+client.on('guildMemberAdd', c => {
+  console.log(c);
+});
+
+client.on('guildMemberAvailable', c => {
+  console.log(c);
+});
+
+client.login(process.env.DiscordTokenV2)
