@@ -22,9 +22,9 @@ class TimeSignalBot(commands.Bot):
 
     #unser_development = discord.CustomActivity("開発中なのだ", emoji='🚀', state='開発中なのだ', type=discord.ActivityType.custom)
     #unser_development2 = discord.Activity(name="開発中なのだ")
-    game = Game(name='開発中なのだ')
+    GAME = Game(name='開発中なのだ')
 
-    youbi = ['月', '火', '水', '木', '金', '土', '日']
+    YOUBI = ['月', '火', '水', '木', '金', '土', '日']
 
     async def on_connect(self):
         print('接続しました')
@@ -35,10 +35,11 @@ class TimeSignalBot(commands.Bot):
     async def on_ready(self):
         """起動時に動作する処理"""
         # 起動したらターミナルにログイン通知が表示される
-        await self.change_presence(activity=self.game, status=Status.online)
+        await self.change_presence(activity=TimeSignalBot.GAME, status=Status.online)
         print('ログインしました')
+        self.TEST_SERVER_GUILD = self.get_guild(TimeSignalBot.TEST_SERVER_GUILD_ID)
 
-    jst = timezone(timedelta(hours=9), name='JAPAN')
+    JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
     LARGE_KUSA_EMBED = Embed(
         title='https://www.nicovideo.jp/watch/sm33789162')
     LARGE_KUSA_EMBED.set_author(name='ベルサイユの草', url='https://www.nicovideo.jp/watch/sm33789162',
@@ -52,34 +53,39 @@ class TimeSignalBot(commands.Bot):
     async def on_message(self, message: Message):
         """メッセージ受信時に動作する処理"""
         # メッセージ送信者がBotだった場合は無視する
-        FARM_SERVER_GUILD = self.get_guild(self.FARM_SERVER_GUILD_ID)
+        FARM_SERVER_GUILD = self.get_guild(TimeSignalBot.FARM_SERVER_GUILD_ID)
         if message.author.bot:
             return
         if 'ぬるぽ' in message.content:
             print(f'{message.channel}')
             await message.reply('ｶﾞｯ')
         if message.content == 'やったぜ。':
-            now = datetime.now(self.jst)
-            await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{self.youbi[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
+            now = datetime.now(TimeSignalBot.JST_TIMEZONE)
+            await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{TimeSignalBot.YOUBI[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
         if 'SEックス' in message.content and message.guild != FARM_SERVER_GUILD:
             await message.channel.send('やめないか！')
         if '草' in message.content and message.guild != FARM_SERVER_GUILD:  # ファーム鯖以外では"草"で反応
-            await message.channel.send(embed=self.LARGE_KUSA_EMBED)
+            await message.channel.send(embed=TimeSignalBot.LARGE_KUSA_EMBED)
         if '草草の草' in message.content and message.guild == FARM_SERVER_GUILD:  # ファーム鯖のみ"草草の草"で反応
-            await message.channel.send(embed=self.SMALL_KUSA_EMBED)
+            await message.channel.send(embed=TimeSignalBot.SMALL_KUSA_EMBED)
         await self.process_commands(message)
 
     async def on_member_join(self, member: Member):
         if member.bot:
             return
         print(f'{member.display_name}が{member.guild.name}に来たぜ。')
-        if member.guild.id == self.TEST_SERVER_GUILD_ID:
+        if member.guild == self.TEST_SERVER_GUILD:
             # メッセージ出力先のチャンネルを指定
-            channel = self.get_channel(self.TEST_SERVER_GENERAL_ID)
+            #channel = self.get_channel(TimeSignalBot.TEST_SERVER_GENERAL_ID)
             # カカポ
-            m = 'https://cultofthepartyparrot.com/parrots/hd/reverseparrot.gif'
+            #m = 'https://cultofthepartyparrot.com/parrots/hd/reverseparrot.gif'
             # カカポをチャンネルに出力
-            await channel.send(m)
+            #await channel.send(m)
+            role = self.TEST_SERVER_GUILD.get_role(879320884014354503)
+            print(role)
+            if not member in role.members:
+                await member.add_roles(role)
+                print('c')
 
     async def on_member_update(self, before: Member, after: Member):
         """Member がプロフィールを編集したとき呼び出されます。"""
@@ -199,7 +205,6 @@ class MemberEventListenerCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        print('b')
         pass
 
     pass
