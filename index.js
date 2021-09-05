@@ -29,4 +29,4 @@ client.on('guildMemberAvailable', c => {
   console.log(c);
 });
 
-client.login(process.env.DiscordTokenV2)
+client.login(process.env.DISCORD_TOKEN_V2)
