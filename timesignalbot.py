@@ -13,6 +13,8 @@ from discord.ext import commands
 
 class TimeSignalBot(commands.Bot):
     """時報bot"""
+
+    # 各種定数
     FARM_SERVER_GUILD_ID = 572150608283566090
     # SABAKAN_ROLE = FARM_SERVER_GUILD.get_role(572157809399955456)
     FARN_SERVER_INITIALLY_SPAWN_ID = 572151278428225537
@@ -20,13 +22,16 @@ class TimeSignalBot(commands.Bot):
     TEST_SERVER_GUILD_ID = 879315010218774528
     TEST_SERVER_GENERAL_ID = 879315010218774531
 
+    # アクティビティ
     #unser_development = discord.CustomActivity("開発中なのだ", emoji='🚀', state='開発中なのだ', type=discord.ActivityType.custom)
     #unser_development2 = discord.Activity(name="開発中なのだ")
     GAME = Game(name='開発中なのだ')
 
+    # 曜日テキスト
     YOUBI = ['月', '火', '水', '木', '金', '土', '日']
 
     async def on_connect(self):
+        # 接続時に呼ばれる関数
         print('接続しました')
         pass
 
@@ -56,8 +61,9 @@ class TimeSignalBot(commands.Bot):
         FARM_SERVER_GUILD = self.get_guild(TimeSignalBot.FARM_SERVER_GUILD_ID)
         if message.author.bot:
             return
+        # ぬるぽしたら
         if 'ぬるぽ' in message.content:
-            print(f'{message.channel}')
+            # ｶﾞｯします
             await message.reply('ｶﾞｯ')
         if message.content == 'やったぜ。':
             now = datetime.now(TimeSignalBot.JST_TIMEZONE)
@@ -71,6 +77,7 @@ class TimeSignalBot(commands.Bot):
         await self.process_commands(message)
 
     async def on_member_join(self, member: Member):
+        """ギルドにメンバーが参加したときの処理"""
         if member.bot:
             return
         print(f'{member.display_name}が{member.guild.name}に来たぜ。')
@@ -81,11 +88,9 @@ class TimeSignalBot(commands.Bot):
             #m = 'https://cultofthepartyparrot.com/parrots/hd/reverseparrot.gif'
             # カカポをチャンネルに出力
             #await channel.send(m)
-            role = self.TEST_SERVER_GUILD.get_role(879699130681790464)
-            print(role)
+            role = self.TEST_SERVER_GUILD.get_role(879320884014354503)
             if not member in role.members:
                 await member.add_roles(role)
-                print('c')
 
     async def on_member_update(self, before: Member, after: Member):
         """Member がプロフィールを編集したとき呼び出されます。"""
@@ -94,6 +99,7 @@ class TimeSignalBot(commands.Bot):
         pass
 
     async def on_member_remove(self, member: Member):
+        """ギルドからメンバーが退出したときの処理"""
         if member.bot:
             return
         print(f'{member.display_name}が去ったぜ。')
@@ -161,7 +167,7 @@ class KusoCommands(commands.Cog):
                   r.status_code, file=sys.stderr)
             return
         j = json.loads(r.text)
-        await ctx.channel.send("現在{}にゃんぱすーなのん".format(j['count']))
+        await ctx.channel.send(f"現在{j['count']}にゃんぱすーなのん")
 
     DICE_PATTERN = regex.compile("d", flags=regex.IGNORECASE)
     PLUS_PATTERN = regex.compile("\\+")
