@@ -16,7 +16,7 @@ command_prefix = '/'
 
 
 # 自分のBotのアクセストークンに置き換えてください
-TOKEN = os.environ['DiscordToken']
+TOKEN = os.environ['DISCORD_TOKEN']
 
 # 接続に必要なオブジェクトを生成
 bot = TimeSignalBot(command_prefix='/', intents=Intents.all())
