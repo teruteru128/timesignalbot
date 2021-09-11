@@ -158,9 +158,7 @@ class KusoCommands(commands.Cog):
 
     @commands.command()
     async def nyanpass(self, ctx: commands.Context):
-        """にゃんぱすーボタンのカウント数を表示するのん
-
-        https://nyanpass.com/"""
+        """にゃんぱすーボタン( https://nyanpass.com/ )のカウント数を表示するのん"""
         r = requests.get('https://nyanpass.com/api/get_count')
         if r.status_code != 200:
             print("nyanpass error: status code = {}",
