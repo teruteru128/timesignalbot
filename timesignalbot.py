@@ -27,8 +27,8 @@ class TimeSignalBot(commands.Bot):
     #unser_development2 = discord.Activity(name="開発中なのだ")
     GAME = Game(name='開発中なのだ')
 
-    def __init__(self, command_prefix, help_command, description, **options):
-        super().__init__(command_prefix, help_command=help_command, description=description, **options)
+    def __init__(self, **options):
+        super().__init__(**options)
         self.DEVELOPER_USER = None
         self.TEST_SERVER_GUILD = None
 
