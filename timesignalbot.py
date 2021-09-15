@@ -163,7 +163,7 @@ class KusoCommands(commands.Cog):
 
     @commands.command()
     async def dice(self, ctx: commands.Context, *args, **kwargs):
-        """ダイスロールを行います。
+        """ダイスロールを行います。(未実装)
 
         構文:
             ${command_prefix}dice ndm
