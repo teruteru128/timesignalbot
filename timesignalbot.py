@@ -127,20 +127,23 @@ class KusoCommands(commands.Cog):
         """見て！ねこがいるよ　かわいいね
 
         ノーマル1種 シークレット13種"""
-        rand = random()
-        if 0 <= rand and rand < 0.000001:  # 0.0001%の確率で ██████████
-            next = b64decode(
-                b'44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb').decode()
-        elif 0.000001 <= rand and rand < 0.001:  # 0.1%の確率で SCP-040-JP
-            next = 'ねこですよろしくおねがいします'
-        elif 0.001 <= rand and rand < 0.05:  # 5%の確率で現場猫
-            next = choice(['ヨシ！', 'どうして……', "どうして\n夜中に\n起きてるん\nですか？", "ああああ！\nああああ！\nあああああ！あー！",
-                           "オレじゃない\nアイツがやった\nシらない\nスんだこと", "なんだか\n知らんが\nとにかく\nヨシ！", "100万回死んだねこ",
-                           "え！！半分の人員で倍の仕事を！？", "弊社なら年内施工も可能です！", "どうして自分が指定した時間にいないんですか:anger:",
-                           "よくわからんが、まぁ動いてるからヨシ！", "正月もGWもお盆も普通に働いていた奴らだ。面構えが違う。"])
-        else:  # 残りは'にゃーん'
-            next = 'にゃーん'
-        await ctx.channel.send(next)
+        list = ['にゃーん']
+        if random() < 0.000001:
+            # 0.0001%の確率で ██████████
+            list.append(b64decode(
+                b'44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb').decode())
+        if random() < 0.001:
+            # 0.1%の確率で SCP-040-JP
+            list.append('ねこですよろしくおねがいします')
+        if random() < 0.05:
+            # 5%の確率で現場猫
+            list.extend(['ヨシ！', 'どうして……', "どうして\n夜中に\n起きてるん\nですか？", "ああああ！\nああああ！\nあああああ！あー！",
+                         "オレじゃない\nアイツがやった\nシらない\nスんだこと", "なんだか\n知らんが\nとにかく\nヨシ！", "100万回死んだねこ",
+                         "え！！半分の人員で倍の仕事を！？", "弊社なら年内施工も可能です！", "どうして自分が指定した時間にいないんですか:anger:",
+                         "よくわからんが、まぁ動いてるからヨシ！", "正月もGWもお盆も普通に働いていた奴らだ。面構えが違う。"])
+        #list.append('にゃーん')
+        c = choice(list)
+        await ctx.channel.send(c)
 
     @commands.command()
     async def nyanpass(self, ctx: commands.Context):
