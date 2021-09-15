@@ -27,6 +27,11 @@ class TimeSignalBot(commands.Bot):
     #unser_development2 = discord.Activity(name="開発中なのだ")
     GAME = Game(name='開発中なのだ')
 
+    def __init__(self, command_prefix, help_command, description, **options):
+        super().__init__(command_prefix, help_command=help_command, description=description, **options)
+        self.DEVELOPER_USER = None
+        self.TEST_SERVER_GUILD = None
+
     # 曜日テキスト
     YOUBI = ['月', '火', '水', '木', '金', '土', '日']
 
@@ -40,9 +45,6 @@ class TimeSignalBot(commands.Bot):
     async def on_ready(self):
         """起動時に動作する処理"""
         # 起動したらターミナルにログイン通知が表示される
-        await self.change_presence(activity=TimeSignalBot.GAME, status=Status.online)
-        print('ログインしました')
-        self.TEST_SERVER_GUILD = self.get_guild(TimeSignalBot.TEST_SERVER_GUILD_ID)
 
     JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
     LARGE_KUSA_EMBED = Embed(
@@ -81,33 +83,17 @@ class TimeSignalBot(commands.Bot):
         if member.bot:
             return
         print(f'{member.display_name}が{member.guild.name}に来たぜ。')
-        if member.guild == self.TEST_SERVER_GUILD:
+        #if member.guild == self.TEST_SERVER_GUILD:
             # メッセージ出力先のチャンネルを指定
             #channel = self.get_channel(TimeSignalBot.TEST_SERVER_GENERAL_ID)
             # カカポ
             #m = 'https://cultofthepartyparrot.com/parrots/hd/reverseparrot.gif'
             # カカポをチャンネルに出力
             #await channel.send(m)
-            role = self.TEST_SERVER_GUILD.get_role(879320884014354503)
-            if not member in role.members:
-                await member.add_roles(role)
-
-    async def on_member_update(self, before: Member, after: Member):
-        """Member がプロフィールを編集したとき呼び出されます。"""
-        # うるさいのでコメントアウト
-        # print(f'memberが更新したぜ。: {before.display_name}, {before.status}, {before.activity}, {before.nick}, {before.roles}, {before.roles}, {before.pending}→{after.display_name}, {after.status}, {after.activity}, {after.nick}, {after.roles}, {after.roles}, {after.pending}')
-        pass
-
-    async def on_member_remove(self, member: Member):
-        """ギルドからメンバーが退出したときの処理"""
-        if member.bot:
-            return
-        print(f'{member.display_name}が去ったぜ。')
-
-    async def on_user_update(self, before: User, after: User):
-        print(f'userがやったぜ。{before.avatar}, {before.display_name}({before.name}), {before.discriminator}→{after.avatar}, {after.display_name}({after.name}), {after.discriminator}')
-
-    pass
+            #role = self.TEST_SERVER_GUILD.get_role(879320884014354503)
+            #if not member in role.members:
+            #    await member.add_roles(role)
+            #pass
 
 
 class KusoCommands(commands.Cog):
@@ -161,8 +147,10 @@ class KusoCommands(commands.Cog):
         """にゃんぱすーボタン( https://nyanpass.com/ )のカウント数を表示するのん"""
         r = requests.get('https://nyanpass.com/api/get_count')
         if r.status_code != 200:
-            print("nyanpass error: status code = {}",
-                  r.status_code, file=sys.stderr)
+            errmsg = f"カウントの取得に失敗したのん\nnyanpass error: status code = {r.status_code}"
+            await self.get_user(310413442760572929).send(errmsg)
+            print(errmsg, file=sys.stderr)
+            await ctx.send('カウントの取得に失敗したのん')
             return
         j = json.loads(r.text)
         await ctx.channel.send(f"現在{j['count']}にゃんぱすーなのん")

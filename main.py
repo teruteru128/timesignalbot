@@ -26,7 +26,7 @@ JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
 
 MAYONAKA_HEADER = '真夜中'
 GETSUYOU_HEADER = '月曜日'
-HARUTO='だよハルト'
+HARUTO = 'だよハルト'
 
 # 毎秒実行する処理
 @tasks.loop(seconds=1)
@@ -49,18 +49,19 @@ async def loop():
     elif (now.hour == 3 or now.hour == 15) and now.minute == 34 and now.second == 0:
         """毎秒ループして (result.tm_hour == 3 &&
         result.tm_min == 34 && result.tm_sec == 0) だったら334する"""
-        await bot.get_channel(bot.SANDBOX_SERVER_GENERAL_ID).send('334')
         await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send('334')
     elif now.hour == 7 and now.minute == 0 and now.second == 0:
         await bot.get_channel(bot.SANDBOX_SERVER_GENERAL_ID).send('おはよう')
         # await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send('<:hoayou:823065916271099954>')
         await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send('ほぁよぅごぁいまーしゅ！')
 
-#ループ処理実行
+# ループ処理実行
 loop.start()
 # コグ登録
 bot.add_cog(KusoCommands(bot))
 bot.add_cog(MemberEventListenerCog(bot))
 bot.add_cog(WordHuntingCog(bot))
 # Botの起動とDiscordサーバーへの接続
-bot.run(TOKEN)
+#bot.run(TOKEN)
+bot.connect(reconnect=True)
+bot.login(token=TOKEN)
