@@ -107,13 +107,21 @@ class KusoCommands(commands.Cog):
         """誰かが「ぬるぽ」と書いたら、「ｶﾞｯ」と突っ込みを入れます。"""
         await ctx.message.channel.send("ｶﾞｯ")
 
+    @commands.command(aliases=['NPS'])
+    async def nps(self, ctx: commands.Context):
+        """ダイレクトメッセージのみで反応するのん"""
+        if ctx.channel.type == ChannelType.private:
+            await ctx.send(f'NPS')
+
     @commands.command(aliases=['RBZ'])
     async def rbz(self, ctx: commands.Context):
+        """ダイレクトメッセージのみで反応します"""
         if ctx.channel.type == ChannelType.private:
             await ctx.send(f'RBZ')
 
     @commands.command(aliases=['RZB'])
     async def rzb(self, ctx: commands.Context):
+        """ダイレクトメッセージのみで反応します"""
         if ctx.channel.type == ChannelType.private:
             await ctx.send(f'RZB')
 
