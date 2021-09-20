@@ -38,7 +38,7 @@ async def loop():
         if now.day == 1:
             msg = f"{now.month}月"
         elif now.weekday() == 0:
-            msg = MAYONAKA_HEADER
+            msg = GETSUYOU_HEADER
         else:
             msg = MAYONAKA_HEADER
         # オリジナルは'オ'69文字
