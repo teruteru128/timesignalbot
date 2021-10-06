@@ -83,17 +83,17 @@ class TimeSignalBot(commands.Bot):
         if member.bot:
             return
         print(f'{member.display_name}が{member.guild.name}に来たぜ。')
-        #if member.guild == self.TEST_SERVER_GUILD:
-            # メッセージ出力先のチャンネルを指定
-            #channel = self.get_channel(TimeSignalBot.TEST_SERVER_GENERAL_ID)
-            # カカポ
-            #m = 'https://cultofthepartyparrot.com/parrots/hd/reverseparrot.gif'
-            # カカポをチャンネルに出力
-            #await channel.send(m)
-            #role = self.TEST_SERVER_GUILD.get_role(879320884014354503)
-            #if not member in role.members:
-            #    await member.add_roles(role)
-            #pass
+        # if member.guild == self.TEST_SERVER_GUILD:
+        # メッセージ出力先のチャンネルを指定
+        #channel = self.get_channel(TimeSignalBot.TEST_SERVER_GENERAL_ID)
+        # カカポ
+        #m = 'https://cultofthepartyparrot.com/parrots/hd/reverseparrot.gif'
+        # カカポをチャンネルに出力
+        # await channel.send(m)
+        #role = self.TEST_SERVER_GUILD.get_role(879320884014354503)
+        # if not member in role.members:
+        #    await member.add_roles(role)
+        # pass
 
 
 class KusoCommands(commands.Cog):
@@ -101,11 +101,6 @@ class KusoCommands(commands.Cog):
 
     def __init__(self, bot: TimeSignalBot):
         self.bot = bot
-
-    @commands.command()
-    async def nullpo(self, ctx: commands.Context):
-        """誰かが「ぬるぽ」と書いたら、「ｶﾞｯ」と突っ込みを入れます。"""
-        await ctx.message.channel.send("ｶﾞｯ")
 
     @commands.command(aliases=['NPS'])
     async def nps(self, ctx: commands.Context):
@@ -150,7 +145,7 @@ class KusoCommands(commands.Cog):
                          "オレじゃない\nアイツがやった\nシらない\nスんだこと", "なんだか\n知らんが\nとにかく\nヨシ！", "100万回死んだねこ",
                          "え！！半分の人員で倍の仕事を！？", "弊社なら年内施工も可能です！", "どうして自分が指定した時間にいないんですか:anger:",
                          "よくわからんが、まぁ動いてるからヨシ！", "正月もGWもお盆も普通に働いていた奴らだ。面構えが違う。"])
-        #list.append('にゃーん')
+        # list.append('にゃーん')
         c = choice(list)
         await ctx.channel.send(c)
 
@@ -171,7 +166,7 @@ class KusoCommands(commands.Cog):
     PLUS_PATTERN = regex.compile("\\+")
 
     @commands.command()
-    async def dice(self, ctx: commands.Context, *args, **kwargs):
+    async def dice(self, ctx: commands.Context):
         """ダイスロールを行います。(未実装)
 
         構文:
@@ -187,28 +182,22 @@ class KusoCommands(commands.Cog):
             ${command_prefix}dice 3D6+ 3d6 +4
             ${command_prefix}dice 3D6 + 3d6 + 4
         """
-        length = len(args)
+        # +記号で分割してリストに追加、後からndmをパース？
+        length = len(ctx.args)
         if length == 0:
             await ctx.send_help(self.dice)
-        else:
-            pass
+            return
+
+        dices = []
+
+        for arg in ctx.args:
+            for sp in arg.split('+'):
+                if sp:
+                    dices.append(sp)
+
+        for dice in dices:
+            print(f"dice:{dice}")
 
     @commands.command(name=':')
     async def nothing(self, ctx: commands.Context):
         pass
-
-
-class MemberEventListenerCog(commands.Cog):
-    """イベントリスナーCog
-
-    イベントはBotに、コマンドはCogに
-    """
-
-    def __init__(self, bot: TimeSignalBot):
-        self.bot = bot
-
-    @commands.Cog.listener()
-    async def on_member_join(self, member):
-        pass
-
-    pass
