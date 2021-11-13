@@ -27,20 +27,25 @@ MAYONAKA_HEADER = '真夜中'
 GETSUYOU_HEADER = '月曜日'
 HARUTO = 'だよハルト'
 
+
 @tasks.loop(seconds=1)
 async def loop():
     """ああ！
-    
+
     毎秒実行する処理"""
     # タイムゾーンを指定して現在時刻を指定
     now = datetime.now(JST_TIMEZONE)
     if now.hour == 0 and now.minute == 0 and now.second == 0:
+        # TODO: テキストを生成するロジックを整理する
         if now.day == 1:
             msg = f"{now.month}月"
+        if now.day == 20 and now.month == 11:
+            msg = '20, november'
         elif now.weekday() == 0:
             msg = GETSUYOU_HEADER
         else:
             msg = MAYONAKA_HEADER
+        # 真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ
         # オリジナルは'オ'69文字
         msg += HARUTO + 'オ' * randrange(40, 100)
         await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send(msg)
