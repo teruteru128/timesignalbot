@@ -48,7 +48,7 @@ async def loop():
         # 真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ
         # オリジナルは'オ'69文字
         msg += HARUTO + 'オ' * randrange(40, 100)
-        await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send(msg)
+        #await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send(msg)
         await bot.get_channel(bot.FARN_SERVER_INITIALLY_SPAWN_ID).send(msg)
 
 # ループ処理実行
