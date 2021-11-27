@@ -38,12 +38,16 @@ async def loop():
     if now.hour == 0 and now.minute == 0 and now.second == 0:
         # TODO: テキストを生成するロジックを整理する
         if now.day == 1:
+            # 毎月1日
             msg = f"{now.month}月"
         if now.day == 20 and now.month == 11:
+            # 11月20日
             msg = '20, november'
         elif now.weekday() == 0:
+            # 毎週月曜日
             msg = GETSUYOU_HEADER
         else:
+            # その他
             msg = MAYONAKA_HEADER
         # 真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ
         # オリジナルは'オ'69文字
