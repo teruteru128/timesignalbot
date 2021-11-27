@@ -14,6 +14,7 @@ from discord.ext import commands
 class TimeSignalBot(commands.Bot):
     """時報bot"""
 
+    # TODO: #1 ID関係をDBとかに移してハードコードしない
     # 各種定数
     FARM_SERVER_GUILD_ID = 572150608283566090
     # SABAKAN_ROLE = FARM_SERVER_GUILD.get_role(572157809399955456)
