@@ -81,7 +81,8 @@ class TimeSignalBot(commands.Bot):
             await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{TimeSignalBot.YOUBI[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
         if 'SEックス' in message.content and message.guild != FARM_SERVER_GUILD:
             await message.channel.send('やめないか！')
-        if '草' in message.content and message.guild != FARM_SERVER_GUILD:  # ファーム鯖以外では"草"で反応
+        if '草' in message.content and (message.guild.id != TimeSignalBot.FARM_SERVER_GUILD_ID
+            and message.guild.id != TimeSignalBot.TAMOKUTEKI_TOIRE_SERVER_ID):  # ファーム鯖以外では"草"で反応
             await message.channel.send(embed=TimeSignalBot.LARGE_KUSA_EMBED)
         # ファーム鯖のみ"草草の草"で反応
         if '草草の草' in message.content and (message.guild.id == TimeSignalBot.FARM_SERVER_GUILD_ID
