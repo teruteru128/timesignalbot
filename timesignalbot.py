@@ -1,5 +1,6 @@
 
 import json
+import os
 import re as regex
 import sys
 from base64 import b64decode
@@ -32,12 +33,14 @@ class TimeSignalBot(commands.Bot):
         super().__init__(**options)
         self.DEVELOPER_USER = None
         self.TEST_SERVER_GUILD = None
+        # 地雷
+        self.MINES = os.environ['MINES'].split(',')
 
     # 曜日テキスト
     YOUBI = ['月', '火', '水', '木', '金', '土', '日']
 
     async def on_connect(self):
-        # 接続時に呼ばれる関数
+        """接続時に呼ばれる関数"""
         print('接続しました')
         pass
 
@@ -68,6 +71,10 @@ class TimeSignalBot(commands.Bot):
         if 'ぬるぽ' in message.content:
             # ｶﾞｯします
             await message.reply('ｶﾞｯ')
+        # 地雷
+        for mine in self.MINES:
+            if mine in message.content:
+                await message.channel.send("https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178")
         if message.content == 'やったぜ。':
             now = datetime.now(TimeSignalBot.JST_TIMEZONE)
             await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{TimeSignalBot.YOUBI[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
