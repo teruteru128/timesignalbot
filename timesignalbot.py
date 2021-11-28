@@ -116,19 +116,26 @@ class KusoCommands(commands.Cog):
 
     @commands.command(aliases=['NPS'])
     async def nps(self, ctx: commands.Context):
-        """ダイレクトメッセージのみで反応するのん"""
+        """ダイレクトメッセージのみで反応するのん
+        
+        DMでだけ反応するコマンドのテストなのん
+        """
         if ctx.channel.type == ChannelType.private:
             await ctx.send(f'NPS')
 
     @commands.command(aliases=['RBZ'])
     async def rbz(self, ctx: commands.Context):
-        """ダイレクトメッセージのみで反応します"""
+        """ダイレクトメッセージのみで反応します
+        
+        DMでだけ反応するコマンドのテスト"""
         if ctx.channel.type == ChannelType.private:
             await ctx.send(f'RBZ')
 
     @commands.command(aliases=['RZB'])
     async def rzb(self, ctx: commands.Context):
-        """ダイレクトメッセージのみで反応します"""
+        """ダイレクトメッセージのみで反応します
+        
+        DMでだけ反応するコマンドのテスト"""
         if ctx.channel.type == ChannelType.private:
             await ctx.send(f'RZB')
 
@@ -209,7 +216,12 @@ class KusoCommands(commands.Cog):
 
         for dice in dices:
             print(f"dice:{dice}")
+        DICE=['one', 'two', 'three', 'four', 'five', 'six']
+        d = choice(DICE)
+        ctx.reple(f":{d}:")
 
     @commands.command(name=':')
     async def nothing(self, ctx: commands.Context):
+        if random() < 0.01:
+            ctx.reply("何かすると思ったら大間違いだゾ")
         pass
