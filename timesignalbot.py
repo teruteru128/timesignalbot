@@ -23,6 +23,8 @@ class TimeSignalBot(commands.Bot):
     SANDBOX_SERVER_GENERAL_ID = 838388401592991747
     TEST_SERVER_GUILD_ID = 879315010218774528
     TEST_SERVER_GENERAL_ID = 879315010218774531
+    TAMOKUTEKI_TOIRE_TAMOKUTEKI_TOIRE_ID = 796357249743585290
+    TAMOKUTEKI_TOIRE_SERVER_ID = 795353457996595200
 
     # アクティビティ
     #unser_development = discord.CustomActivity("開発中なのだ", emoji='🚀', state='開発中なのだ', type=discord.ActivityType.custom)
@@ -55,8 +57,7 @@ class TimeSignalBot(commands.Bot):
         title='https://www.nicovideo.jp/watch/sm33789162')
     LARGE_KUSA_EMBED.set_author(name='ベルサイユの草', url='https://www.nicovideo.jp/watch/sm33789162',
                                 icon_url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
-    LARGE_KUSA_EMBED.set_image(
-        url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
+    # LARGE_KUSA_EMBED.set_image(url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
 
     SMALL_KUSA_EMBED = Embed(
         title='https://www.nicovideo.jp/watch/sm33789162')
@@ -82,7 +83,9 @@ class TimeSignalBot(commands.Bot):
             await message.channel.send('やめないか！')
         if '草' in message.content and message.guild != FARM_SERVER_GUILD:  # ファーム鯖以外では"草"で反応
             await message.channel.send(embed=TimeSignalBot.LARGE_KUSA_EMBED)
-        if '草草の草' in message.content and message.guild == FARM_SERVER_GUILD:  # ファーム鯖のみ"草草の草"で反応
+        # ファーム鯖のみ"草草の草"で反応
+        if '草草の草' in message.content and (message.guild.id == TimeSignalBot.FARM_SERVER_GUILD_ID
+            or message.guild.id == TimeSignalBot.TAMOKUTEKI_TOIRE_SERVER_ID):
             await message.channel.send(embed=TimeSignalBot.SMALL_KUSA_EMBED)
         await self.process_commands(message)
 

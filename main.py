@@ -54,6 +54,7 @@ async def loop():
         msg += HARUTO + 'オ' * randrange(40, 100)
         #await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send(msg)
         await bot.get_channel(bot.FARN_SERVER_INITIALLY_SPAWN_ID).send(msg)
+        await bot.get_channel(bot.TAMOKUTEKI_TOIRE_TAMOKUTEKI_TOIRE_ID).send(msg)
 
 # ループ処理実行
 loop.start()
