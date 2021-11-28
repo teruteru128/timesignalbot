@@ -219,7 +219,7 @@ class KusoCommands(commands.Cog):
             print(f"dice:{dice}")
         DICE=['one', 'two', 'three', 'four', 'five', 'six']
         d = choice(DICE)
-        ctx.reply(f":{d}:")
+        await ctx.reply(f":{d}:")
 
     @commands.command(name=':')
     async def nothing(self, ctx: commands.Context):
