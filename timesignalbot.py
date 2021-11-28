@@ -210,7 +210,7 @@ class KusoCommands(commands.Cog):
         dices = []
 
         for arg in ctx.args:
-            for sp in arg.split('+'):
+            for sp in arg.split('\\+'):
                 if sp:
                     dices.append(sp)
 
