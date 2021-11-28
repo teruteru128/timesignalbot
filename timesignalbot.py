@@ -76,7 +76,7 @@ class TimeSignalBot(commands.Bot):
         for mine in self.MINES:
             if mine in message.content:
                 await message.channel.send("https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178")
-        if message.content == 'やったぜ。':
+        if message.content == 'やったぜ。' or message.content == "やりましたわ。":
             now = datetime.now(TimeSignalBot.JST_TIMEZONE)
             await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{TimeSignalBot.YOUBI[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
         if 'SEックス' in message.content and message.guild != FARM_SERVER_GUILD:
