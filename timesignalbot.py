@@ -37,6 +37,7 @@ class TimeSignalBot(commands.Bot):
         self.TEST_SERVER_GUILD = None
         # 地雷
         self.MINES = os.environ['MINES'].split(',')
+        print(f'敷設された地雷：{len(self.MINES)}個')
 
     # 曜日テキスト
     YOUBI = ['月', '火', '水', '木', '金', '土', '日']
