@@ -87,7 +87,6 @@ class TimeSignalBot(commands.Bot):
         if message.content == 'やったぜ。' or message.content == "やりましたわ。" or message.content == "やったわ。":
             now = datetime.now(TimeSignalBot.JST_TIMEZONE)
             await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{TimeSignalBot.YOUBI[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
-            print(f"やったぜ。:{message.author.display_name}")
         if 'SEックス' in message.content and message.guild != FARM_SERVER_GUILD:
             await message.channel.send('やめないか！')
         if '草' in message.content and (message.guild.id != TimeSignalBot.FARM_SERVER_GUILD_ID
