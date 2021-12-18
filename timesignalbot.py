@@ -36,6 +36,10 @@ class TimeSignalBot(commands.Bot):
         self.DEVELOPER_USER = None
         self.TEST_SERVER_GUILD = None
         # 地雷
+        """ minelist = []
+        for mineset in os.environ['MINES'].split(','):
+            minelist.append(mineset.split('$'))
+        self.MINES = dict(minelist) """
         self.MINES = os.environ['MINES'].split(',')
         print(f'敷設された地雷：{len(self.MINES)}個')
 
@@ -77,9 +81,13 @@ class TimeSignalBot(commands.Bot):
         for mine in self.MINES:
             if mine in message.content:
                 await message.channel.send("https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178")
+        """ for mine, url in self.MINES.items():
+            if mine in message.content:
+                await message.channel.send(url) """
         if message.content == 'やったぜ。' or message.content == "やりましたわ。" or message.content == "やったわ。":
             now = datetime.now(TimeSignalBot.JST_TIMEZONE)
             await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{TimeSignalBot.YOUBI[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
+            print(f"やったぜ。:{message.author.display_name}")
         if 'SEックス' in message.content and message.guild != FARM_SERVER_GUILD:
             await message.channel.send('やめないか！')
         if '草' in message.content and (message.guild.id != TimeSignalBot.FARM_SERVER_GUILD_ID
