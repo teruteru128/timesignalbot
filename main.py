@@ -40,7 +40,7 @@ async def loop():
         if now.day == 1:
             # 毎月1日
             msg = f"{now.month}月"
-        if now.day == 20 and now.month == 11:
+        elif now.day == 20 and now.month == 11:
             # 11月20日
             msg = '20, november'
         elif now.weekday() == 0:
