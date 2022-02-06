@@ -29,7 +29,7 @@ client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
 
   if (msg.content === '#ping') {
-    msg.channel.send('Pong!');
+    msg.channel.send('Pong?');
   }
 });
 
