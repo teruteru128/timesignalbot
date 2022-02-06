@@ -8,9 +8,8 @@ const data = [{
 }];
 
 client.on('ready', async c => {
-  console.log(`${client.user.tag} でログインしています。`);
   await c.application.commands.set(data, '879315010218774528');
-  console.log("Ready!");
+  console.log(`${c.user.tag} でログインしています。`);
 });
 
 client.on('interactionCreate', async interaction => {
