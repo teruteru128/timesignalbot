@@ -22,6 +22,9 @@ client.on('interactionCreate', async interaction => {
 
   if (interaction.commandName === 'ping') {
     await interaction.reply('Pong!');
+    const payload = interaction.options.getString('payload', false);
+    if(payload !== null)
+      await interaction.followUp(payload);
   }
 });
 
