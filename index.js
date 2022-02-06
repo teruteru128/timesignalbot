@@ -2,8 +2,15 @@
 const { Client, Intents } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
-client.on('ready', () => {
+const data = [{
+  name : "ping",
+  description: "Replies with Pong!",
+}];
+
+client.on('ready', c => {
   console.log(`${client.user.tag} でログインしています。`);
+  await c.application.commands.set(data, '879315010218774528');
+  console.log("Ready!");
 });
 
 client.on('interactionCreate', async interaction => {
@@ -15,6 +22,8 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.on('message', async msg => {
+  if(msg.author.bot) return; //BOTのメッセージには反応しない
+
   if (msg.content === '!ping') {
     msg.channel.send('Pong!');
   }
