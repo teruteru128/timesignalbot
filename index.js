@@ -9,7 +9,7 @@ const data1 = new SlashCommandBuilder().setName().setDescription()
 const data = [{
   name: "ping",
   description: "Replies with Pong!",
-  options: []
+  options: [{ name: 'payload', description: 'The message returned with the pong.', type: 'STRING', /* required: true */ }]
 }];
 
 client.on('ready', async c => {
