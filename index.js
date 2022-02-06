@@ -2,10 +2,10 @@
 const { Client, Intents } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
-
+/* 
 const data1 = new SlashCommandBuilder().setName().setDescription()
   .addStringOption(opt => opt.setName('').setDescription().setRequired(true));
-
+ */
 const data = [{
   name: "ping",
   description: "Replies with Pong!",
