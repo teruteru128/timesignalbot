@@ -21,10 +21,10 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-client.on('message', async msg => {
+client.on('messageCreate', async msg => {
   if(msg.author.bot) return; //BOTのメッセージには反応しない
 
-  if (msg.content === '!ping') {
+  if (msg.content === '#ping') {
     msg.channel.send('Pong!');
   }
 });
