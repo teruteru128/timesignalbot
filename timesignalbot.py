@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from random import choice, random
 
 import requests
-from discord import ChannelType, Embed, Game, Member, Message, Status, User
+from discord import ChannelType, Embed, Game, Member, Message, Status, User, CustomActivity, PartialEmoji
 from discord.ext import commands
 
 
@@ -41,7 +41,9 @@ class TimeSignalBot(commands.Bot):
             minelist.append(mineset.split('$'))
         self.MINES = dict(minelist) """
         self.MINES = os.environ['MINES'].split(',')
-        print(f'敷設された地雷：{len(self.MINES)}個')
+        length = len(self.MINES)
+        print(f'敷設された地雷：{length}個')
+        self.change_presence(status=Status.online, activity=CustomActivity(f'現在地雷は {length}個埋まっています', emoji='poop'))
 
     # 曜日テキスト
     YOUBI = ['月', '火', '水', '木', '金', '土', '日']
