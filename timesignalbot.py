@@ -41,9 +41,7 @@ class TimeSignalBot(commands.Bot):
             minelist.append(mineset.split('$'))
         self.MINES = dict(minelist) """
         self.MINES = os.environ['MINES'].split(',')
-        length = len(self.MINES)
-        print(f'敷設された地雷：{length}個')
-        self.change_presence(status=Status.online, activity=CustomActivity(f'現在地雷は {length}個埋まっています', emoji='poop'))
+        print(f'敷設された地雷：{len(self.MINES)}個')
 
     # 曜日テキスト
     YOUBI = ['月', '火', '水', '木', '金', '土', '日']
@@ -51,6 +49,7 @@ class TimeSignalBot(commands.Bot):
     async def on_connect(self):
         """接続時に呼ばれる関数"""
         print('接続しました')
+        await self.change_presence(status=Status.online, activity=CustomActivity(f'現在地雷は {len(self.MINES)}個埋まっています', emoji='poop'))
         pass
 
     # discord.Clientのサブクラスにイベントリスナーを仕込む場合はデコレータが不要なんですって
