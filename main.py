@@ -7,7 +7,8 @@ from random import randrange
 from discord import Intents
 from discord.ext import tasks
 
-from timesignalbot import (TimeSignalBot, KusoCommands)
+from timesignalbot import TimeSignalBot
+from kusocommands import KusoCommands
 from wordhant import WordHuntingCog
 from locale import setlocale, LC_ALL
 
