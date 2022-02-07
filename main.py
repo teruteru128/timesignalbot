@@ -11,7 +11,7 @@ from timesignalbot import (TimeSignalBot, KusoCommands)
 from wordhant import WordHuntingCog
 from locale import setlocale, LC_ALL
 
-setlocale(LC_ALL, 'ja_JP.UTF-8')
+setlocale(LC_ALL, '')
 
 # コマンドプレフィックス
 command_prefix = '/'
