@@ -73,7 +73,6 @@ class TimeSignalBot(commands.Bot):
         # メッセージ送信者がBotだった場合は無視する
         if message.author.bot:
             return
-        print(f'test:{message.author.display_name}({message.author.name}) {message.content}')
         # 地雷
         for mine in self.MINES:
             if mine in message.content:
