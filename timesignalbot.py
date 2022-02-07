@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from random import choice, random
 
 import requests
-from discord import ChannelType, Embed, Game, Member, Message, Status, User, CustomActivity, PartialEmoji
+from discord import ChannelType, Embed, Game, Member, Message, Status, User, CustomActivity, PartialEmoji, Activity
 from discord.ext import commands
 
 
