@@ -26,8 +26,7 @@
   },
   "homepage": "https://github.com/teruteru128/timesignalbot#readme",
   "dependencies": {
-    "discord.js": "^13.6.0",
-    "got": "^12.0.1"
+    "discord.js": "^13.6.0"
   },
   "devDependencies": {
     "jshint": "^2.13.4"

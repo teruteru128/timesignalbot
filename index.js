@@ -1,7 +1,6 @@
 
 const { Client, Intents } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const got = require('got/dist/source/index.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 /* 
 const data1 = new SlashCommandBuilder().setName().setDescription()
@@ -32,13 +31,7 @@ client.on('interactionCreate', async interaction => {
       await interaction.followUp(payload);
   }
   if (interaction.commandName === 'nyanpass') {
-    try {
-      const {time, count} = await got('https://nyanpass.com/api/get_count').json();
-      await interaction.reply('${time}現在${time}にゃんぱすーなのん');
-    } catch (error) {
-      await interaction.reply('読み込みに失敗したのん……');
-      console.log(error);
-    }
+    await interaction.reply('まだ実装してないのん……');
   }
 });
 
