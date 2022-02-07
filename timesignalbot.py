@@ -73,10 +73,12 @@ class TimeSignalBot(commands.Bot):
         # メッセージ送信者がBotだった場合は無視する
         if message.author.bot:
             return
+        print(f'test:{message.author.display_name}({message.author.name}) {message.content}')
         # 地雷
         for mine in self.MINES:
             if mine in message.content:
                 await message.channel.send("https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178")
+                print(f'{message.author.display_name}({message.author.name})くんが地雷を踏みました！:{mine}')
         """ for mine, url in self.MINES.items():
             if mine in message.content:
                 await message.channel.send(url) """
