@@ -1,7 +1,7 @@
 
 const { Client, Intents } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-import got from 'got';
+const got = require('got/dist/source');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 /* 
 const data1 = new SlashCommandBuilder().setName().setDescription()
