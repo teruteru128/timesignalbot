@@ -1,6 +1,7 @@
 
 const { Client, Intents } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const got = require('got/dist/source');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 /* 
 const data1 = new SlashCommandBuilder().setName().setDescription()
@@ -10,6 +11,10 @@ const data = [{
   name: "ping",
   description: "Replies with Pong!",
   options: [{ name: 'payload', description: 'The message returned with the pong.', type: 'STRING', /* required: true */ }]
+}, {
+  name: 'nyanpass',
+  description: 'get nyanpass count from nyanpass.com',
+  optins: []
 }];
 
 client.on('ready', async c => {
@@ -23,8 +28,17 @@ client.on('interactionCreate', async interaction => {
   if (interaction.commandName === 'ping') {
     await interaction.reply('Pong!');
     const payload = interaction.options.getString('payload', false);
-    if(payload !== null)
+    if (payload !== null)
       await interaction.followUp(payload);
+  }
+  if (interaction.commandName === 'nyanpass') {
+    try {
+      const {time, count} = await got('https://nyanpass.com/api/get_count').json();
+      await interaction.reply('${time}現在${time}にゃんぱすーなのん');
+    } catch (error) {
+      await interaction.reply('読み込みに失敗したのん……');
+      console.log(error);
+    }
   }
 });
 
