@@ -49,7 +49,7 @@ class TimeSignalBot(commands.Bot):
     async def on_connect(self):
         """接続時に呼ばれる関数"""
         print('接続しました')
-        await self.change_presence(status=Status.online, activity=Activity(name=f'現在地雷は {len(self.MINES)}個埋まっています', type=5))
+        await self.change_presence(status=Status.online, activity=Activity(name=f'{len(self.MINES)}個の地雷除去', type=5))
         pass
 
     # discord.Clientのサブクラスにイベントリスナーを仕込む場合はデコレータが不要なんですって
