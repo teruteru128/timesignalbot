@@ -47,8 +47,8 @@ client.on('messageCreate', async msg => {
     msg.channel.send('やめないか！');
   }
   if (msg.content === 'やったぜ。' || msg.content === 'やりましたわ。' || msg.content === 'やったわ。') {
-    var now = new Date();
-    msg.channel.send(`投稿者：${msg.author.username} （${now.getMonth}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
+    var now = new Date(new Date().toLocaleString({ timeZone: 'Asia/Tokyo' })).getTime();
+    msg.channel.send(`投稿者：${msg.author.username} （${now.getMonth()}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
   }
 });
 
