@@ -60,4 +60,6 @@ client.on('guildMemberAvailable', c => {
   console.log(c);
 });
 
-client.login(process.env.DISCORD_TOKEN_V2);
+// process.env.DISCORD_TOKEN が設定されている場合、client.tokenはclientをインスタンス化したときにデフォルトで設定される。
+// https://discord.js.org/#/docs/discord.js/stable/class/Client?scrollTo=login
+client.login();
