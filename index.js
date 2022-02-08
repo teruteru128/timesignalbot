@@ -35,7 +35,7 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
-var YOUBI = ['月', '火', '水', '木', '金', '土', '日'];
+const YOUBI = ['月', '火', '水', '木', '金', '土', '日'];
 
 client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
