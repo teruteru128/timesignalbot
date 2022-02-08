@@ -35,11 +35,20 @@ client.on('interactionCreate', async interaction => {
   }
 });
 
+var YOUBI = ['月', '火', '水', '木', '金', '土', '日'];
+
 client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
 
   if (msg.content === '#ping') {
     msg.channel.send('Pong?');
+  }
+  if (msg.content.includes('SEックス')) {
+    msg.channel.send('やめないか！');
+  }
+  if (msg.content === 'やったぜ。' || msg.content === 'やりましたわ。' || msg.content === 'やったわ。') {
+    var now = new Date();
+    msg.channel.send(`投稿者：${msg.author.username} （${now.getMonth}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
   }
 });
 
