@@ -40,7 +40,22 @@ class TimeSignalBot(commands.Bot):
         for mineset in os.environ['MINES'].split(','):
             minelist.append(mineset.split('$'))
         self.MINES = dict(minelist) """
-        self.MINES = os.environ['MINES'].split(',')
+        minesstr = os.environ.get('MINES', '')
+        if len(minesstr) == 0:
+            self.MINES = []
+            """
+            TODO: CSV形式からJSON形式に変更する
+            [
+            {"keyword": "","url": ""},
+            {"keyword": "","url": "", "type": "equal"},
+            {"keyword": "","url": "", "type": "contains"},
+            {"keyword": "","url": "", "type": "forward"},
+            {"keyword": "","url": "", "type": "backward"},
+            {"keyword": "","url": "", "type": "regex"}
+            ]
+            """
+        else:
+            self.MINES = minesstr.split(',')
         print(f'敷設された地雷：{len(self.MINES)}個')
 
     # 曜日テキスト
