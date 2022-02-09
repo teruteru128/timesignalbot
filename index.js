@@ -25,10 +25,8 @@ client.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
 
   if (interaction.commandName === 'ping') {
-    await interaction.reply('Pong!');
     const payload = interaction.options.getString('payload', false);
-    if (payload !== null)
-      await interaction.followUp(payload);
+    await interaction.reply(payload === null ? 'Pong!' : `Pong! ${payload}`);
   }
   if (interaction.commandName === 'nyanpass') {
     await interaction.reply('まだ実装してないのん……');
