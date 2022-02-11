@@ -28,13 +28,14 @@ client.on('ready', async client => {
 client.on('interactionCreate', async interaction => {
   console.debug(`isApplicationCommand : ${interaction.isApplicationCommand()}, isAutocomplete : ${interaction.isAutocomplete()}, isButton : ${interaction.isButton()}, isCommand: ${interaction.isCommand()}, isContextMenu: ${interaction.isContextMenu()}, isMessageComponent(): ${interaction.isMessageComponent()}, isMessageContextMenu(): ${interaction.isMessageContextMenu()}, isSelectMenu(): ${interaction.isSelectMenu()}, isUserContextMenu(): ${interaction.isUserContextMenu()}`);
   if (!interaction.isCommand()) {
+    // コマンドでない
     return;
   }
   // インタラクション(スラッシュコマンド)受信
 
   if (interaction.commandName === 'ping') {
     const payload = interaction.options.getString('payload', false);
-    await interaction.reply(payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}`);
+    await interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}`, fetchReply: true });
     // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
     // interaction.followUp
     // interaction.channel.send();
