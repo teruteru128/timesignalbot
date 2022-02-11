@@ -1,11 +1,14 @@
 
 const { Client, Intents } = require('discord.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+// const { SlashCommandBuilder } = require('@discordjs/builders');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+
 /* 
 const data1 = new SlashCommandBuilder().setName().setDescription()
   .addStringOption(opt => opt.setName('').setDescription().setRequired(true));
  */
+
+// スラッシュコマンド登録用データ
 const data = [{
   name: "ping",
   description: "Replies with Pong!",
@@ -17,6 +20,7 @@ const data = [{
 }];
 
 client.on('ready', async client => {
+  // スラッシュコマンドをギルドに登録
   await client.application.commands.set(data, '879315010218774528');
   console.log(`${client.user.tag} でログインしています。`);
 });
@@ -26,6 +30,7 @@ client.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) {
     return;
   }
+  // インタラクション(スラッシュコマンド)受信
 
   if (interaction.commandName === 'ping') {
     const payload = interaction.options.getString('payload', false);
