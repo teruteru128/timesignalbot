@@ -35,7 +35,8 @@ client.on('interactionCreate', async interaction => {
 
   if (interaction.commandName === 'ping') {
     const payload = interaction.options.getString('payload', false);
-    await interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}`, fetchReply: false }).then(msg => console.log(msg)).catch(console.error);
+    // fetchReply プロパティはthenに返信メッセージを渡すフラグ
+    await interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}`});
     // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
     // interaction.followUp
     // interaction.channel.send();
