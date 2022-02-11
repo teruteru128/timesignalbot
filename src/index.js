@@ -40,7 +40,8 @@ client.on('interactionCreate', async interaction => {
 });
 
 const YOUBI = ['月', '火', '水', '木', '金', '土', '日'];
-const SEX_PATTERN = /SEックス/i;
+const SEX_PATTERN = /SEックス/gi;
+const YATTAZE_PATTERN = /^や(ったぜ|(りまし|っ)たわ)。$/g;
 
 client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
@@ -76,9 +77,11 @@ client.on('messageCreate', async msg => {
   if (SEX_PATTERN.test(msg.content)) {
     await msg.channel.send('やめないか！');
   }
-  // /や(った(ぜ|わ)|りましたわ)。/
-  // /や(っ|りまし)たわ。/
-  if (msg.content === 'やったぜ。' || msg.content === 'やりましたわ。' || msg.content === 'やったわ。') {
+  // やったぜ。 : o
+  // やったわ。 : o
+  // やりましたわ。 : o
+  // やりましたぜ。 : x
+  if (YATTAZE_PATTERN.test(msg.content)) {
     // https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97#JST%20%E3%81%8C%E9%81%B8%E6%8A%9E%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E5%A0%B4%E5%90%88
     // https://web.archive.org/web/20211114034218/https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97
     var now = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
