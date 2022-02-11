@@ -50,11 +50,11 @@ client.on('messageCreate', async msg => {
   if (msg.content.includes(':regional_indicator_z:')) {
     msg.reply('z includes! 1');
   }
-  if (msg.content.includes(':regional_indicator_z:')) {
-    msg.reply('z includes! 1');
-  }
   if (msg.content.includes('regional_indicator_z')) {
     msg.reply('z includes! 2');
+  }
+  if (msg.content.includes('🇿')) {
+    msg.reply('z includes! 3');
   }
   if (msg.content.includes('SEックス')) {
     msg.channel.send('やめないか！');
