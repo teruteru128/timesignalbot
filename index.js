@@ -40,6 +40,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 const YOUBI = ['月', '火', '水', '木', '金', '土', '日'];
+const SEX_PATTERN = /SEックス/i;
 
 client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
@@ -72,7 +73,7 @@ client.on('messageCreate', async msg => {
   if (msg.content.includes('\u{1f1ff}')) {
     await msg.reply('\u{1f1ff} includes! 4');
   }
-  if (msg.content.includes('SEックス')) {
+  if (SEX_PATTERN.test(msg.content)) {
     await msg.channel.send('やめないか！');
   }
   if (msg.content === 'やったぜ。' || msg.content === 'やりましたわ。' || msg.content === 'やったわ。') {
