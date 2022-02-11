@@ -47,6 +47,9 @@ client.on('messageCreate', async msg => {
   if (msg.content.startsWith('!test')) {
     console.info(msg.content);
   }
+  if (msg.content.startsWith('!pumpkin')) {
+    msg.reply('<:hansei:940458171309383710>');
+  }
   if (msg.content.includes(':regional_indicator_z:')) {
     await msg.reply('z includes! 1');
   }
