@@ -16,9 +16,9 @@ const data = [{
   optins: []
 }];
 
-client.on('ready', async c => {
-  await c.application.commands.set(data, '879315010218774528');
-  console.log(`${c.user.tag} でログインしています。`);
+client.on('ready', async client => {
+  await client.application.commands.set(data, '879315010218774528');
+  console.log(`${client.user.tag} でログインしています。`);
 });
 
 client.on('interactionCreate', async interaction => {
