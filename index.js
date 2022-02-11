@@ -57,7 +57,7 @@ client.on('messageCreate', async msg => {
     await msg.reply('🇿 includes! 3');
   }
   if (msg.content.includes('\u{1f1ff}')) {
-    await msg.reply('🇿 includes! 4');
+    await msg.reply('\u{1f1ff} includes! 4');
   }
   if (msg.content.includes('SEックス')) {
     await msg.channel.send('やめないか！');
