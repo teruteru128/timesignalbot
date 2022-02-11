@@ -56,9 +56,11 @@ client.on('messageCreate', async msg => {
   if (msg.content.includes('regional_indicator_z')) {
     await msg.reply('z includes! 2');
   }
+  // 絵文字のZ
   if (msg.content.includes('🇿')) {
     await msg.reply('🇿 includes! 3');
   }
+  // エスケープシーケンス
   if (msg.content.includes('\u{1f1ff}')) {
     await msg.reply('\u{1f1ff} includes! 4');
   }
