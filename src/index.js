@@ -135,11 +135,11 @@ client.on('messageCreate', async msg => {
   }
   if (msg.guildId === '879315010218774528' && msg.content.startsWith('!pumpkin')) {
     // 反省を促す
-    msg.reply('<:hansei:940458171309383710>');
+    await msg.reply('<:hansei:940458171309383710>');
   }
   if (msg.guildId === '879315010218774528' && msg.content.includes('<:hansei:940458171309383710>')) {
     // 反省を促す
-    msg.reply('||https://www.nicovideo.jp/watch/sm38736861||');
+    await msg.reply('||https://www.nicovideo.jp/watch/sm38736861||');
   }
   if (msg.content.includes(':regional_indicator_z:')) {
     await msg.reply('z includes! 1');
