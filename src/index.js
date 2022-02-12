@@ -10,8 +10,8 @@ const data1 = new SlashCommandBuilder().setName().setDescription()
 
 // スラッシュコマンド登録用データ
 const data = [{
-  name: "ping",
-  description: "Replies with Pong!",
+  name: 'ping',
+  description: 'Replies with Pong!',
   options: [{ name: 'payload', description: 'The message returned with the pong.', type: 'STRING', /* required: true */ }]
 }, {
   name: 'nyanpass',
