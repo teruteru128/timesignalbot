@@ -161,11 +161,11 @@ client.on('messageCreate', async msg => {
 });
 
 client.on('guildMemberAdd', c => {
-  console.log(c);
+  console.log(`guildMemberAdd : ${c}`);
 });
 
 client.on('guildMemberAvailable', c => {
-  console.log(c);
+  console.log(`guildMemberAvailable : ${c}`);
 });
 
 // process.env.DISCORD_TOKEN が設定されている場合、client.tokenはclientをインスタンス化したときにデフォルトで設定される。
