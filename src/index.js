@@ -112,7 +112,7 @@ client.on('interactionCreate', async interaction => {
 });
 
 const YOUBI = ['月', '火', '水', '木', '金', '土', '日'];
-const SEX_PATTERN = /SEックス/gi;
+const SEX_PATTERN = /SEックス/i;
 
 client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
