@@ -3,5 +3,5 @@
 ###### Requirements with Version Specifiers ######
 discord.py==1.7.3
 psycopg2==2.9.3
-requests==2.26.0
+requests==2.27.1
 numpy==1.22.2
