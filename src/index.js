@@ -117,6 +117,7 @@ client.on('interactionCreate', async interaction => {
   }
   if (interaction.commandName === 'nyanpass') {
     await interaction.reply('まだ実装してないのん……');
+    await interaction.client.users.cache.get('310413442760572929').send('にゃんぱすー');
   }
 });
 
