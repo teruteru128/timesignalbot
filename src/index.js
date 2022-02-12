@@ -146,7 +146,7 @@ client.on('messageCreate', async msg => {
     await msg.reply('\u{1f1ff} includes! 4');
   }
   if (SEX_PATTERN.test(msg.content)) {
-    await msg.channel.send('やめないか！');
+    await msg.reply('やめないか！');
   }
   // やったぜ。 : o
   // やったわ。 : o
