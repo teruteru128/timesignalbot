@@ -92,8 +92,9 @@ class TimeSignalBot(commands.Bot):
         for mine in self.MINES:
             if mine in message.content:
                 await message.channel.send("https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178")
-                print(
-                    f'{message.author.display_name}({message.author.name})くんが地雷を踏みました！:{mine}')
+                if message.guild is not None and message.guild.id == 795353457996595200:
+                    message.author.add_roles(message.guild.get_role(844886159984558121))
+                print(f'{message.author.display_name}({message.author.name})くんが地雷を踏みました！:{mine}')
         """ for mine, url in self.MINES.items():
             if mine in message.content:
                 await message.channel.send(url) """
