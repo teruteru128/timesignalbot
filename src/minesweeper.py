@@ -73,13 +73,13 @@ class MinesweepingCog(commands.Cog):
     async def whconfig(self, ctx: commands.Context):
         """コンフィグ"""
         if ctx.invoked_subcommand is None:
-            print("subcommand not found")
+            ctx.reply("subcommand not found")
 
     @whconfig.command()
     async def add(self, ctx: commands.Context):
         pass
 
-    @whconfig.command(name='del')
+    @whconfig.command(aliases=['del'])
     async def delete(self, ctx: commands.Context):
         pass
 
