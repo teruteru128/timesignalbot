@@ -131,5 +131,4 @@ class KusoCommands(commands.Cog, name="クソコマンド"):
     @commands.command(name=':')
     async def nothing(self, ctx: commands.Context):
         if random() < 0.01:
-            ctx.reply("何かすると思ったら大間違いだゾ")
-        pass
+            await ctx.reply("何かすると思ったら大間違いだゾ")
