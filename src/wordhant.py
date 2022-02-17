@@ -23,7 +23,6 @@ class WordHuntingCog(commands.Cog):
     """
 
     def __init__(self, **options):
-        super().__init__(options)
         self.DEVELOPER_USER = None
         self.TEST_SERVER_GUILD = None
         # 地雷
