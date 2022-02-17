@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from random import choice, random
 
 import requests
-from discord import ChannelType, Embed, Game, Member, Message, Status, Activity
+from discord import ChannelType, Embed, Game, Member, Message, Status
 from discord.ext import commands
 
 
@@ -46,12 +46,12 @@ class TimeSignalBot(commands.Bot):
             """
             TODO: CSV形式からJSON形式に変更する
             [
-            {"keyword": "","url": ""},
-            {"keyword": "","url": "", "type": "equal"},
-            {"keyword": "","url": "", "type": "contains"},
-            {"keyword": "","url": "", "type": "forward"},
-            {"keyword": "","url": "", "type": "backward"},
-            {"keyword": "","url": "", "type": "regex"}
+                {"keyword": "","url": ""},
+                {"keyword": "","url": "", "type": "equal"},
+                {"keyword": "","url": "", "type": "contains"},
+                {"keyword": "","url": "", "type": "forward"},
+                {"keyword": "","url": "", "type": "backward"},
+                {"keyword": "","url": "", "type": "regex"}
             ]
             """
         else:
@@ -64,8 +64,6 @@ class TimeSignalBot(commands.Bot):
     async def on_connect(self):
         """接続時に呼ばれる関数"""
         print('接続しました')
-        await self.change_presence(status=Status.online, activity=Activity(name=f'{len(self.MINES)}個の地雷除去', type=5))
-        pass
 
     # discord.Clientのサブクラスにイベントリスナーを仕込む場合はデコレータが不要なんですって
     # https://discordpy.readthedocs.io/ja/latest/api.html?highlight=on_message#event-reference
@@ -83,6 +81,8 @@ class TimeSignalBot(commands.Bot):
     SMALL_KUSA_EMBED = Embed(
         title='https://www.nicovideo.jp/watch/sm33789162')
 
+    MINES_EXPLODE_GIF_URL = "https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178"
+
     async def on_message(self, message: Message):
         """メッセージ受信時に動作する処理"""
         # メッセージ送信者がBotだった場合は無視する
@@ -91,17 +91,19 @@ class TimeSignalBot(commands.Bot):
         # 地雷
         for mine in self.MINES:
             if mine in message.content:
-                await message.channel.send("https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178")
+                await message.channel.send(TimeSignalBot.MINES_EXPLODE_GIF_URL)
                 if message.guild is not None and message.guild.id == 795353457996595200:
-                    message.author.add_roles(message.guild.get_role(844886159984558121))
-                print(f'{message.author.display_name}({message.author.name})くんが地雷を踏みました！:{mine}')
+                    message.author.add_roles(
+                        message.guild.get_role(844886159984558121))
+                print(
+                    f'{message.author.display_name}({message.author.name})くんが地雷を踏みました！:{mine}')
         """ for mine, url in self.MINES.items():
             if mine in message.content:
                 await message.channel.send(url) """
         if message.content == 'やったぜ。' or message.content == "やりましたわ。" or message.content == "やったわ。":
             now = datetime.now(TimeSignalBot.JST_TIMEZONE)
             await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{TimeSignalBot.YOUBI[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
-        if 'SEックス' in message.content and message.guild.id != self.FARM_SERVER_GUILD_ID:
+        if 'SEックス' in message.content and message.guild.id != TimeSignalBot.FARM_SERVER_GUILD_ID:
             await message.channel.send('やめないか！')
         if '草' in message.content and (message.guild.id != TimeSignalBot.FARM_SERVER_GUILD_ID
                                        and message.guild.id != TimeSignalBot.TAMOKUTEKI_TOIRE_SERVER_ID):  # ファーム鯖以外では"草"で反応
