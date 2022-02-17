@@ -53,7 +53,7 @@ class MinesweepingCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_connect(self):
-        await self.change_presence(status=Status.online, activity=Activity(name=f'{len(self.MINES)}個の地雷除去', type=ActivityType.competing))
+        await self.BOT.change_presence(status=Status.online, activity=Activity(name=f'{len(self.MINES)}個の地雷除去', type=ActivityType.competing))
         print('wordhant: 接続しました')
         pass
 
