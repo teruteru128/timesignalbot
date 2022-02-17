@@ -68,9 +68,6 @@ class MinesweepingCog(commands.Cog):
     SMALL_KUSA_EMBED = Embed(
         title='https://www.nicovideo.jp/watch/sm33789162')
 
-    async def on_message(self, message: Message):
-        print('wordhant')
-
     @commands.group()
     async def whconfig(self, ctx: commands.Context):
         """コンフィグ"""
@@ -91,4 +88,5 @@ class MinesweepingCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: Message):
+        print('wordhant')
         pass
