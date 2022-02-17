@@ -63,8 +63,8 @@ async def loop():
 # ループ処理実行
 loop.start()
 # コグ登録
-bot.add_cog(KusoCommands(bot))
-bot.add_cog(WordHuntingCog(bot))
+bot.add_cog(KusoCommands(bot=bot))
+bot.add_cog(WordHuntingCog(bot=bot))
 # Botの起動とDiscordサーバーへの接続
 bot.run(TOKEN)
 # bot.connect(reconnect=True)
