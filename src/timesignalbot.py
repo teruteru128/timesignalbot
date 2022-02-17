@@ -13,7 +13,9 @@ from discord.ext import commands
 
 
 class TimeSignalBot(commands.Bot):
-    """時報bot"""
+    """時報bot
+    
+    毎秒チェックさせる処理をこのクラスでできないだろうか、グローバルのloop関数を使うのではなく"""
 
     # TODO: #1 ID関係をDBとかに移してハードコードしない
     # 各種定数
@@ -63,13 +65,14 @@ class TimeSignalBot(commands.Bot):
 
     async def on_connect(self):
         """接続時に呼ばれる関数"""
-        print('接続しました')
+        print('timesignalbot: 接続しました')
 
     # discord.Clientのサブクラスにイベントリスナーを仕込む場合はデコレータが不要なんですって
     # https://discordpy.readthedocs.io/ja/latest/api.html?highlight=on_message#event-reference
     async def on_ready(self):
         """起動時に動作する処理"""
         # 起動したらターミナルにログイン通知が表示される
+        print('timesignalbot: 準備が完了しました')
 
     JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
     LARGE_KUSA_EMBED = Embed(

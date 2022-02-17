@@ -6,8 +6,9 @@ from discord import Activity, ActivityType, Embed, Message, Status
 from discord.ext import commands
 
 
-class WordHuntingCog(commands.Cog):
+class MinesweepingCog(commands.Cog):
     """言葉狩り
+    マインスイーパーでもいいような気がしてきた
 
     サーバーごとに設定したり
     完全一致か含むかを選択
@@ -48,9 +49,14 @@ class WordHuntingCog(commands.Cog):
             self.MINES = minesstr.split(',')
         print(f'敷設された地雷(wordhant)：{len(self.MINES)}個')
 
-    async def on_ready(self):
+    async def on_connect(self):
         await self.change_presence(status=Status.online, activity=Activity(name=f'{len(self.MINES)}個の地雷除去', type=ActivityType.competing))
+        print('wordhant: 接続しました')
+        pass
 
+    async def on_ready(self):
+        print('wordhant: 準備が完了しました')
+        pass
 
     JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
     LARGE_KUSA_EMBED = Embed(

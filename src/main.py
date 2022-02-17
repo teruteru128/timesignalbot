@@ -9,7 +9,7 @@ from discord.ext import tasks
 
 from timesignalbot import TimeSignalBot
 from kusocommands import KusoCommands
-from wordhant import WordHuntingCog
+from minesweeper import MinesweepingCog
 from locale import setlocale, LC_ALL
 
 setlocale(LC_ALL, '')
@@ -64,7 +64,7 @@ async def loop():
 loop.start()
 # コグ登録
 bot.add_cog(KusoCommands(bot=bot))
-bot.add_cog(WordHuntingCog(bot=bot))
+bot.add_cog(MinesweepingCog(bot=bot))
 # Botの起動とDiscordサーバーへの接続
 bot.run(TOKEN)
 # bot.connect(reconnect=True)
