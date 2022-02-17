@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from random import choice, random
 
 import requests
-from discord import ChannelType, Embed, Game, Member, Message, Status
+from discord import Activity, ActivityType, ChannelType, Embed, Game, Member, Message, Status
 from discord.ext import commands
 
 
@@ -73,6 +73,8 @@ class TimeSignalBot(commands.Bot):
         """起動時に動作する処理"""
         # 起動したらターミナルにログイン通知が表示される
         print('timesignalbot: 準備が完了しました')
+        minesweeper = self.get_cog('MinesweepingCog')
+        await self.change_presence(status=Status.online, activity=Activity(name=f'{len(minesweeper.MINES)}個の地雷除去', type=ActivityType.competing))
 
     JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
     LARGE_KUSA_EMBED = Embed(

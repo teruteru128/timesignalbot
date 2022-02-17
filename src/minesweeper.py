@@ -53,14 +53,11 @@ class MinesweepingCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_connect(self):
-        await self.BOT.change_presence(status=Status.online, activity=Activity(name=f'{len(self.MINES)}個の地雷除去', type=ActivityType.competing))
         print('wordhant: 接続しました')
-        pass
 
     @commands.Cog.listener()
     async def on_ready(self):
         print('wordhant: 準備が完了しました')
-        pass
 
     JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
     LARGE_KUSA_EMBED = Embed(
