@@ -8,7 +8,7 @@ from discord.ext import commands
 from timesignalbot import TimeSignalBot
 
 
-class MinesweepingCog(commands.Cog):
+class MinesweepingCog(commands.Cog, name="Minesweeping"):
     """言葉狩り
     マインスイーパーでもいいような気がしてきた
 
