@@ -169,6 +169,10 @@ client.on('messageCreate', async msg => {
   if (msg.content.includes('\u{1f1ff}')) {
     await msg.reply('\u{1f1ff} includes! 4');
   }
+  // ご希望どおり自爆させてやろうじゃないか
+  if (msg.content.includes('ここで自爆です')) {
+    await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
+  }
   if (SEX_PATTERN.test(msg.content)) {
     await msg.reply('やめないか！');
   }
