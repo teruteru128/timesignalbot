@@ -70,20 +70,20 @@ class MinesweepingCog(commands.Cog):
         title='https://www.nicovideo.jp/watch/sm33789162')
 
     @commands.group()
-    async def whconfig(self, ctx: commands.Context):
-        """コンフィグ"""
+    async def mine(self, ctx: commands.Context):
+        """地雷"""
         if ctx.invoked_subcommand is None:
             await ctx.reply("subcommand not found")
 
-    @whconfig.command()
+    @mine.command()
     async def add(self, ctx: commands.Context):
         pass
 
-    @whconfig.command(aliases=['del'])
+    @mine.command(aliases=['del'])
     async def delete(self, ctx: commands.Context):
         pass
 
-    @whconfig.command(name='list')
+    @mine.command(name='list')
     async def listtaboo(self, ctx: commands.Context):
         pass
 
