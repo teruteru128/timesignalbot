@@ -7,6 +7,7 @@ from discord import Intents
 from .kusocommands import KusoCommands
 from .minesweeper import MinesweepingCog
 from .timesignalbot import TimeSignalBot
+from .timesignalcog import TimeSignalCog
 from . import const
 
 setlocale(LC_ALL, '')
@@ -30,6 +31,7 @@ def main():
     # コグ登録
     bot.add_cog(KusoCommands(bot))
     bot.add_cog(MinesweepingCog(bot))
+    bot.add_cog(TimeSignalCog(bot))
     # Botの起動とDiscordサーバーへの接続
     bot.run(TOKEN)
     # bot.connect(reconnect=True)
