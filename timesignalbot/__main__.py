@@ -21,9 +21,13 @@ if len(TOKEN) == 0:
     print('DISCORD_TOKEN is EMPTY!')
     exit(1)
 
+COMMAND_PREFIX = '/'
+"""コマンドプレフィックス"""
+
+
 def main():
     # 接続に必要なオブジェクトを生成
-    bot = TimeSignalBot(command_prefix=const.COMMAND_PREFIX,
+    bot = TimeSignalBot(command_prefix=COMMAND_PREFIX,
                         intents=Intents.all(), case_insensitive=True)
 
     # ループ処理実行
@@ -35,6 +39,7 @@ def main():
     bot.run(TOKEN)
     # bot.connect(reconnect=True)
     # bot.login(token=TOKEN)
+
 
 MAYONAKA_HEADER = '真夜中'
 GETSUYOU_HEADER = '月曜日'

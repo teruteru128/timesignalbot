@@ -3,17 +3,10 @@ from datetime import timedelta, timezone
 
 from discord import Embed
 
-COMMAND_PREFIX = '/'
-"""コマンドプレフィックス"""
-
 JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
 """タイムゾーンオブジェクト(現在時刻取得用)
 
 日本時間タイムゾーン情報"""
-
-MAYONAKA_HEADER = '真夜中'
-GETSUYOU_HEADER = '月曜日'
-HARUTO = 'だよハルト'
 
 # TODO: #1 ID関係をDBとかに移してハードコードしない
 # 各種定数
