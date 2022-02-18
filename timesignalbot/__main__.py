@@ -1,15 +1,15 @@
 
 import os
 from datetime import datetime, timedelta, timezone
+from locale import LC_ALL, setlocale
 from random import randrange
 
 from discord import Intents
 from discord.ext import tasks
 
-from timesignalbot import TimeSignalBot
-from kusocommands import KusoCommands
-from minesweeper import MinesweepingCog
-from locale import setlocale, LC_ALL
+from .kusocommands import KusoCommands
+from .minesweeper import MinesweepingCog
+from .timesignalbot import TimeSignalBot
 
 setlocale(LC_ALL, '')
 

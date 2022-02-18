@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 from discord import Activity, ActivityType, Embed, Message, Status
 from discord.ext import commands
 
-from timesignalbot import TimeSignalBot
+from .timesignalbot import TimeSignalBot
 
 
 class MinesweepingCog(commands.Cog, name="Minesweeping"):

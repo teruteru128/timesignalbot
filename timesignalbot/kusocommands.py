@@ -12,7 +12,7 @@ import requests
 from discord import ChannelType, Embed, Game, Member, Message, Status, Activity
 from discord.ext import commands
 
-from timesignalbot import TimeSignalBot
+from .timesignalbot import TimeSignalBot
 
 
 class KusoCommands(commands.Cog, name="クソコマンド"):
