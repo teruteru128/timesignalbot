@@ -7,6 +7,10 @@ from discord.ext import tasks, commands
 from . import const
 
 class TimeSignalCog(commands.Cog):
+    """時報ロジックの本体
+    
+    https://discordpy.readthedocs.io/ja/latest/ext/tasks/index.html
+    """
     def __init__(self, bot : commands.Bot, **options):
         super().__init__(**options)
         self.bot = bot
