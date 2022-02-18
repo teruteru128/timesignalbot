@@ -12,15 +12,20 @@ from . import const
 
 setlocale(LC_ALL, '')
 
-# 自分のBotのアクセストークンに置き換えてください
-TOKEN = os.environ.get('DISCORD_TOKEN', '')
+DISCORD_TOKEN = os.environ.get('DISCORD_TOKEN', '')
+"""Discord token
 
-if len(TOKEN) == 0:
+自分のBotのアクセストークンを環境変数の`DISCORD_TOKEN`にセットしてください"""
+
+if len(DISCORD_TOKEN) == 0:
     print('DISCORD_TOKEN is EMPTY!')
     exit(1)
 
-COMMAND_PREFIX = '/'
-"""コマンドプレフィックス"""
+COMMAND_PREFIX = os.environ.get('COMMAND_PREFIX', '/')
+"""コマンドプレフィックス
+
+XXX: COMMAND_PREFIXも環境変数で設定できるようにするか？
+"""
 
 
 def main():
@@ -33,7 +38,7 @@ def main():
     bot.add_cog(MinesweepingCog(bot))
     bot.add_cog(TimeSignalCog(bot))
     # Botの起動とDiscordサーバーへの接続
-    bot.run(TOKEN)
+    bot.run(DISCORD_TOKEN)
     # bot.connect(reconnect=True)
     # bot.login(token=TOKEN)
 
