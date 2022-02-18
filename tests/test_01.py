@@ -1,1 +1,3 @@
-print('python-izm')
+
+def test_python_izm():
+    print('python-izm')
