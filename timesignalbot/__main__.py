@@ -1,6 +1,5 @@
 
 import os
-import re as regex
 from datetime import datetime, timedelta, timezone
 from random import randrange
 
@@ -14,15 +13,27 @@ from locale import setlocale, LC_ALL
 
 setlocale(LC_ALL, '')
 
-# コマンドプレフィックス
-command_prefix = '/'
-
-
 # 自分のBotのアクセストークンに置き換えてください
 TOKEN = os.environ['DISCORD_TOKEN']
 
-# 接続に必要なオブジェクトを生成
-bot = TimeSignalBot(command_prefix='/', intents=Intents.all())
+# コマンドプレフィックス
+COMMAND_PREFIX = '/'
+
+
+def main():
+    # 接続に必要なオブジェクトを生成
+    bot = TimeSignalBot(command_prefix='/', intents=Intents.all())
+
+    # ループ処理実行
+    loop.start(bot)
+    # コグ登録
+    bot.add_cog(KusoCommands(bot=bot))
+    bot.add_cog(MinesweepingCog(bot=bot))
+    # Botの起動とDiscordサーバーへの接続
+    bot.run(TOKEN)
+    # bot.connect(reconnect=True)
+    # bot.login(token=TOKEN)
+
 
 # タイムゾーンオブジェクト(現在時刻取得用)
 JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
@@ -33,7 +44,7 @@ HARUTO = 'だよハルト'
 
 
 @tasks.loop(seconds=1)
-async def loop():
+async def loop(bot):
     """ああ！
 
     毎秒実行する処理"""
@@ -56,16 +67,9 @@ async def loop():
         # 真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ
         # オリジナルは'オ'69文字
         msg += HARUTO + 'オ' * randrange(40, 100)
-        #await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send(msg)
+        # await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send(msg)
         await bot.get_channel(bot.FARN_SERVER_INITIALLY_SPAWN_ID).send(msg)
         await bot.get_channel(bot.TAMOKUTEKI_TOIRE_TAMOKUTEKI_TOIRE_ID).send(msg)
 
-# ループ処理実行
-loop.start()
-# コグ登録
-bot.add_cog(KusoCommands(bot=bot))
-bot.add_cog(MinesweepingCog(bot=bot))
-# Botの起動とDiscordサーバーへの接続
-bot.run(TOKEN)
-# bot.connect(reconnect=True)
-# bot.login(token=TOKEN)
+if __name__ == '__main__':
+    main()

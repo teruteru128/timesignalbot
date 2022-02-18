@@ -1,15 +1,10 @@
 
-import json
 import os
-import re as regex
-import sys
-from base64 import b64decode
-from datetime import datetime, timedelta, timezone
-from random import choice, random
+from datetime import timedelta, timezone
 
-import requests
-from discord import Activity, ActivityType, ChannelType, Embed, Game, Member, Message, Status
+from discord import Activity, ActivityType, Embed, Game, Member, Status
 from discord.ext import commands
+
 
 class TimeSignalBot(commands.Bot):
     """時報bot

@@ -9,8 +9,7 @@ from timesignalbot import TimeSignalBot
 
 
 class MinesweepingCog(commands.Cog, name="Minesweeping"):
-    """言葉狩り
-    マインスイーパーでもいいような気がしてきた
+    """地雷マネジメント
 
     サーバーごとに設定したり
     完全一致か含むかを選択

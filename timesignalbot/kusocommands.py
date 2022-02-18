@@ -16,7 +16,7 @@ from timesignalbot import TimeSignalBot
 
 
 class KusoCommands(commands.Cog, name="クソコマンド"):
-    """コマンド詰め合わせ"""
+    """クソのようなコマンド詰め合わせ"""
 
     def __init__(self, bot: TimeSignalBot):
         self.bot = bot
