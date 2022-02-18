@@ -13,7 +13,7 @@ from discord.ext import commands
 
 class TimeSignalBot(commands.Bot):
     """時報bot
-    
+
     毎秒チェックさせる処理をこのクラスでできないだろうか、グローバルのloop関数を使うのではなく"""
 
     # TODO: #1 ID関係をDBとかに移してハードコードしない
