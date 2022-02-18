@@ -8,7 +8,6 @@ from .kusocommands import KusoCommands
 from .minesweeper import MinesweepingCog
 from .timesignalbot import TimeSignalBot
 from .timesignalcog import TimeSignalCog
-from . import const
 
 setlocale(LC_ALL, '')
 
