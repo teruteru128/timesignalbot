@@ -5,7 +5,7 @@ from locale import LC_ALL, setlocale
 from random import randrange
 
 from discord import Intents
-from discord.ext import commands, tasks
+from discord.ext import tasks
 
 from .kusocommands import KusoCommands
 from .minesweeper import MinesweepingCog

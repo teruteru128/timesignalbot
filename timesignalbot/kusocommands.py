@@ -1,15 +1,12 @@
 
-import imp
 import json
-import os
 import re as regex
 import sys
 from base64 import b64decode
-from datetime import datetime, timedelta, timezone
 from random import choice, random
 
 import requests
-from discord import ChannelType, Embed, Game, Member, Message, Status, Activity
+from discord import ChannelType
 from discord.ext import commands
 
 from .timesignalbot import TimeSignalBot

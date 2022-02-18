@@ -2,7 +2,7 @@
 import os
 from datetime import datetime, timedelta, timezone
 
-from discord import Activity, ActivityType, Embed, Message, Status
+from discord import Embed, Message
 from discord.ext import commands
 
 from .timesignalbot import TimeSignalBot
