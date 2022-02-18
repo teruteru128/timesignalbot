@@ -12,6 +12,14 @@ class TimeSignalCog(commands.Cog):
         self.bot = bot
         self.loop.start()
 
+    @commands.Cog.listener()
+    async def on_connect(self):
+        print('wordhant: 接続しました')
+
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print('wordhant: 準備が完了しました')
+
     def cog_unload(self):
         self.loop.cancel()
 
@@ -41,5 +49,6 @@ class TimeSignalCog(commands.Cog):
             await self.bot.get_channel(const.FARN_SERVER_INITIALLY_SPAWN_ID).send(msg)
             await self.bot.get_channel(const.TAMOKUTEKI_TOIRE_TAMOKUTEKI_TOIRE_ID).send(msg)
 
+    @loop.before_loop
     async def before_loop(self):
         await self.bot.wait_until_ready()
