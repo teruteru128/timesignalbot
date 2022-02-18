@@ -131,6 +131,5 @@ class KusoCommands(commands.Cog, name="クソコマンド"):
     @commands.command(name=':')
     async def nothing(self, ctx: commands.Context):
         probability = random()
-        print('probability : {}'.format(probability))
         if probability < 0.01:
             await ctx.reply("何かすると思ったら大間違いだゾ")
