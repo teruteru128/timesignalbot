@@ -1,4 +1,8 @@
 
+/*
+  やりたいこと逆引き集
+  https://scrapbox.io/discordjs-japan/%E3%82%84%E3%82%8A%E3%81%9F%E3%81%84%E3%81%93%E3%81%A8%E9%80%86%E5%BC%95%E3%81%8D%E9%9B%86
+*/
 const { Client, Intents } = require('discord.js');
 // const { SlashCommandBuilder } = require('@discordjs/builders');
 const client = new Client({
@@ -53,6 +57,8 @@ client.on('guildBanAdd', async ban => { });
 client.on('guildBanRemove', async ban => { });
 client.on('guildCreate', async guild => { });
 client.on('guildDelete', async guild => { });
+client.on('guildMemberAdd', c => { console.log(`guildMemberAdd : ${c}`); });
+client.on('guildMemberAvailable', c => { console.log(`guildMemberAvailable : ${c}`); });
 client.on('guildIntegrationsUpdate', async guild => { });
 client.on('guildMemberRemove', async member => { });
 client.on('guildMembersChunk', async (members, guild, chunk) => { });
@@ -187,14 +193,6 @@ client.on('messageCreate', async msg => {
     await msg.channel.send(`投稿者：${msg.member.nickname} （${now.getMonth() + 1}月${now.getDate()}日（${YOUBI[now.getDay()]}）` +
       `${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
   }
-});
-
-client.on('guildMemberAdd', c => {
-  console.log(`guildMemberAdd : ${c}`);
-});
-
-client.on('guildMemberAvailable', c => {
-  console.log(`guildMemberAvailable : ${c}`);
 });
 
 // process.env.DISCORD_TOKEN が設定されている場合、client.tokenはclientをインスタンス化したときにデフォルトで設定される。
