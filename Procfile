@@ -1,1 +1,1 @@
-bot: python src/main/main.py
+bot: python -m timesignalbot
