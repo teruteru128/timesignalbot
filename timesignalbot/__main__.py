@@ -49,7 +49,7 @@ async def loop(bot):
     # タイムゾーンを指定して現在時刻を指定
     now = datetime.now(const.JST_TIMEZONE)
     if now.hour == 0 and now.minute == 0 and now.second == 0:
-        # TODO: テキストを生成するロジックを整理する
+        # TODO: #7 テキストを生成するロジックを整理する
         if now.day == 1:
             # 毎月1日
             msg = f"{now.month}月"
