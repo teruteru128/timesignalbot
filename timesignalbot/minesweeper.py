@@ -56,8 +56,8 @@ class MinesweepingCog(commands.Cog, name="Minesweeping"):
 
     MINES_EXPLODE_GIF_URL = "https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178"
 
-    def __init__(self, *args, **options):
-        super().__init__(*args, **options)
+    def __init__(self, **options):
+        super().__init__(**options)
         self.DEVELOPER_USER = None
         self.TEST_SERVER_GUILD = None
         # 地雷
