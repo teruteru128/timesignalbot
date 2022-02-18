@@ -8,7 +8,8 @@ class TimeSignalBot(commands.Bot):
 
     毎秒チェックさせる処理をこのクラスでできないだろうか、グローバルのloop関数を使うのではなく"""
 
-    def __init__(self, **options):
+    def __init__(self, *args, **options):
+        super().__init__(**options)
         pass
 
     async def on_connect(self):
