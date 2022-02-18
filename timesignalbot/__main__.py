@@ -14,7 +14,11 @@ from .timesignalbot import TimeSignalBot
 setlocale(LC_ALL, '')
 
 # 自分のBotのアクセストークンに置き換えてください
-TOKEN = os.environ['DISCORD_TOKEN']
+TOKEN = os.environ.get('DISCORD_TOKEN', '')
+
+if len(TOKEN) == 0:
+    print('DISCORD_TOKEN is EMPTY!')
+    exit(1)
 
 # コマンドプレフィックス
 COMMAND_PREFIX = '/'
@@ -22,7 +26,7 @@ COMMAND_PREFIX = '/'
 
 def main():
     # 接続に必要なオブジェクトを生成
-    bot = TimeSignalBot(command_prefix='/', intents=Intents.all())
+    bot = TimeSignalBot(command_prefix=COMMAND_PREFIX, intents=Intents.all())
 
     # ループ処理実行
     loop.start(bot)
