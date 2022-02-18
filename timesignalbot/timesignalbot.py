@@ -1,8 +1,6 @@
 
 from discord import Activity, ActivityType, Member, Status
-from discord.ext import commands, tasks
-
-from . import const
+from discord.ext import commands
 
 
 class TimeSignalBot(commands.Bot):

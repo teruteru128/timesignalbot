@@ -1,8 +1,8 @@
 
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 
-from discord import Embed, Message
+from discord import Message
 from discord.ext import commands
 
 from .timesignalbot import TimeSignalBot
