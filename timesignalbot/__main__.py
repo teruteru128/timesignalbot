@@ -1,11 +1,8 @@
 
 import os
-from datetime import datetime, timedelta, timezone
 from locale import LC_ALL, setlocale
-from random import randrange
 
 from discord import Intents
-from discord.ext import tasks
 
 from .kusocommands import KusoCommands
 from .minesweeper import MinesweepingCog
@@ -30,8 +27,6 @@ def main():
     bot = TimeSignalBot(command_prefix=COMMAND_PREFIX,
                         intents=Intents.all(), case_insensitive=True)
 
-    # ループ処理実行
-    loop.start(bot)
     # コグ登録
     bot.add_cog(KusoCommands(bot))
     bot.add_cog(MinesweepingCog(bot))
@@ -40,39 +35,6 @@ def main():
     # bot.connect(reconnect=True)
     # bot.login(token=TOKEN)
 
-
-MAYONAKA_HEADER = '真夜中'
-GETSUYOU_HEADER = '月曜日'
-HARUTO = 'だよハルト'
-
-
-@tasks.loop(seconds=1)
-async def loop(bot):
-    """ああ！
-
-    毎秒実行する処理"""
-    # タイムゾーンを指定して現在時刻を指定
-    now = datetime.now(const.JST_TIMEZONE)
-    if now.hour == 0 and now.minute == 0 and now.second == 0:
-        # TODO: #7 テキストを生成するロジックを整理する
-        if now.day == 1:
-            # 毎月1日
-            msg = f"{now.month}月"
-        elif now.day == 20 and now.month == 11:
-            # 11月20日
-            msg = '20, november'
-        elif now.weekday() == 0:
-            # 毎週月曜日
-            msg = GETSUYOU_HEADER
-        else:
-            # その他
-            msg = MAYONAKA_HEADER
-        # 真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ
-        # オリジナルは'オ'69文字
-        msg += HARUTO + 'オ' * randrange(40, 100)
-        # await bot.get_channel(const.TEST_SERVER_GENERAL_ID).send(msg)
-        await bot.get_channel(const.FARN_SERVER_INITIALLY_SPAWN_ID).send(msg)
-        await bot.get_channel(const.TAMOKUTEKI_TOIRE_TAMOKUTEKI_TOIRE_ID).send(msg)
 
 if __name__ == '__main__':
     main()

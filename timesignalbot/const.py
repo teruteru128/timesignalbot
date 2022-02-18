@@ -8,6 +8,10 @@ JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
 
 日本時間タイムゾーン情報"""
 
+MAYONAKA_HEADER = '真夜中'
+GETSUYOU_HEADER = '月曜日'
+HARUTO = 'だよハルト'
+
 # TODO: #1 ID関係をDBとかに移してハードコードしない
 # 各種定数
 FARM_SERVER_GUILD_ID = 572150608283566090
