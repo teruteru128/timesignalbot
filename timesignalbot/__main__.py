@@ -5,7 +5,7 @@ from locale import LC_ALL, setlocale
 from random import randrange
 
 from discord import Intents
-from discord.ext import tasks
+from discord.ext import commands, tasks
 
 from .kusocommands import KusoCommands
 from .minesweeper import MinesweepingCog
@@ -33,7 +33,7 @@ def main():
 
     # ループ処理実行
     loop.start(bot)
-    print(bot.all_commands)
+    print("timesignalbot is bot instance : {}".format(isinstance(bot, commands.Bot)))
     # コグ登録
     bot.add_cog(KusoCommands(bot))
     bot.add_cog(MinesweepingCog(bot))
