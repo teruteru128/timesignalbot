@@ -10,6 +10,7 @@ from discord.ext import tasks
 from .kusocommands import KusoCommands
 from .minesweeper import MinesweepingCog
 from .timesignalbot import TimeSignalBot
+from . import const
 
 setlocale(LC_ALL, '')
 
@@ -20,13 +21,9 @@ if len(TOKEN) == 0:
     print('DISCORD_TOKEN is EMPTY!')
     exit(1)
 
-# コマンドプレフィックス
-COMMAND_PREFIX = '/'
-
-
 def main():
     # 接続に必要なオブジェクトを生成
-    bot = TimeSignalBot(command_prefix=COMMAND_PREFIX,
+    bot = TimeSignalBot(command_prefix=const.COMMAND_PREFIX,
                         intents=Intents.all(), case_insensitive=True)
 
     # ループ処理実行
@@ -39,10 +36,6 @@ def main():
     # bot.connect(reconnect=True)
     # bot.login(token=TOKEN)
 
-
-# タイムゾーンオブジェクト(現在時刻取得用)
-JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
-
 MAYONAKA_HEADER = '真夜中'
 GETSUYOU_HEADER = '月曜日'
 HARUTO = 'だよハルト'
@@ -54,7 +47,7 @@ async def loop(bot):
 
     毎秒実行する処理"""
     # タイムゾーンを指定して現在時刻を指定
-    now = datetime.now(JST_TIMEZONE)
+    now = datetime.now(const.JST_TIMEZONE)
     if now.hour == 0 and now.minute == 0 and now.second == 0:
         # TODO: テキストを生成するロジックを整理する
         if now.day == 1:
@@ -72,9 +65,9 @@ async def loop(bot):
         # 真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ
         # オリジナルは'オ'69文字
         msg += HARUTO + 'オ' * randrange(40, 100)
-        # await bot.get_channel(bot.TEST_SERVER_GENERAL_ID).send(msg)
-        await bot.get_channel(bot.FARN_SERVER_INITIALLY_SPAWN_ID).send(msg)
-        await bot.get_channel(bot.TAMOKUTEKI_TOIRE_TAMOKUTEKI_TOIRE_ID).send(msg)
+        # await bot.get_channel(const.TEST_SERVER_GENERAL_ID).send(msg)
+        await bot.get_channel(const.FARN_SERVER_INITIALLY_SPAWN_ID).send(msg)
+        await bot.get_channel(const.TAMOKUTEKI_TOIRE_TAMOKUTEKI_TOIRE_ID).send(msg)
 
 if __name__ == '__main__':
     main()

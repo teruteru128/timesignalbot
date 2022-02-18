@@ -6,6 +6,7 @@ from discord import Embed, Message
 from discord.ext import commands
 
 from .timesignalbot import TimeSignalBot
+from . import const
 
 
 class MinesweepingCog(commands.Cog, name="Minesweeping"):
@@ -23,38 +24,6 @@ class MinesweepingCog(commands.Cog, name="Minesweeping"):
 
     開発者が実装しないと名前とか日時を入れ込むの無理じゃね？
     """
-
-    # TODO: #1 ID関係をDBとかに移してハードコードしない
-    # 各種定数
-    FARM_SERVER_GUILD_ID = 572150608283566090
-    # SABAKAN_ROLE = FARM_SERVER_GUILD.get_role(572157809399955456)
-    FARN_SERVER_INITIALLY_SPAWN_ID = 572151278428225537
-    SANDBOX_SERVER_GENERAL_ID = 838388401592991747
-    TEST_SERVER_GUILD_ID = 879315010218774528
-    TEST_SERVER_GENERAL_ID = 879315010218774531
-    TAMOKUTEKI_TOIRE_TAMOKUTEKI_TOIRE_ID = 796357249743585290
-    TAMOKUTEKI_TOIRE_SERVER_ID = 795353457996595200
-
-    # アクティビティ
-    #unser_development = discord.CustomActivity("開発中なのだ", emoji='🚀', state='開発中なのだ', type=discord.ActivityType.custom)
-    #unser_development2 = discord.Activity(name="開発中なのだ")
-    #GAME = Game(name='開発中なのだ')
-
-    YOUBI = ['月', '火', '水', '木', '金', '土', '日']
-    """ 曜日テキスト """
-
-    JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
-    """ 日本時間タイムゾーン情報 """
-
-    LARGE_KUSA_EMBED = Embed(title='https://www.nicovideo.jp/watch/sm33789162')
-    LARGE_KUSA_EMBED.set_author(name='ベルサイユの草', url='https://www.nicovideo.jp/watch/sm33789162',
-                                icon_url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
-    # LARGE_KUSA_EMBED.set_image(url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
-
-    SMALL_KUSA_EMBED = Embed(
-        title='https://www.nicovideo.jp/watch/sm33789162')
-
-    MINES_EXPLODE_GIF_URL = "https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178"
 
     def __init__(self, bot: TimeSignalBot, **options):
         super().__init__(**options)
@@ -92,16 +61,6 @@ class MinesweepingCog(commands.Cog, name="Minesweeping"):
     async def on_ready(self):
         print('wordhant: 準備が完了しました')
 
-    JST_TIMEZONE = timezone(timedelta(hours=9), name='JAPAN')
-    LARGE_KUSA_EMBED = Embed(
-        title='https://www.nicovideo.jp/watch/sm33789162')
-    LARGE_KUSA_EMBED.set_author(name='ベルサイユの草', url='https://www.nicovideo.jp/watch/sm33789162',
-                                icon_url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
-    # LARGE_KUSA_EMBED.set_image(url='https://yukawanet.com/wp-content/uploads/imgs/b/b/bb3fb670.jpg')
-
-    SMALL_KUSA_EMBED = Embed(
-        title='https://www.nicovideo.jp/watch/sm33789162')
-
     @commands.group()
     async def mine(self, ctx: commands.Context):
         """地雷"""
@@ -129,7 +88,7 @@ class MinesweepingCog(commands.Cog, name="Minesweeping"):
         # 地雷
         for mine in self.MINES:
             if mine in message.content:
-                await message.channel.send(MinesweepingCog.MINES_EXPLODE_GIF_URL)
+                await message.channel.send(const.MINES_EXPLODE_GIF_URL)
                 if message.guild is not None and message.guild.id == 795353457996595200:
                     message.author.add_roles(
                         message.guild.get_role(844886159984558121))
@@ -139,14 +98,14 @@ class MinesweepingCog(commands.Cog, name="Minesweeping"):
             if mine in message.content:
                 await message.channel.send(url) """
         if message.content == 'やったぜ。' or message.content == "やりましたわ。" or message.content == "やったわ。":
-            now = datetime.now(MinesweepingCog.JST_TIMEZONE)
-            await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{MinesweepingCog.YOUBI[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
-        if 'SEックス' in message.content and message.guild.id != MinesweepingCog.FARM_SERVER_GUILD_ID:
+            now = datetime.now(const.JST_TIMEZONE)
+            await message.channel.send(f"投稿者：{message.author.display_name} （{now.month}月{now.day}日（{const.YOUBI[now.weekday()]}）{now.hour:02}時{now.minute:02}分{now.second:02}秒）")
+        if 'SEックス' in message.content and message.guild.id != const.FARM_SERVER_GUILD_ID:
             await message.channel.send('やめないか！')
-        if '草' in message.content and (message.guild.id != MinesweepingCog.FARM_SERVER_GUILD_ID
-                                       and message.guild.id != MinesweepingCog.TAMOKUTEKI_TOIRE_SERVER_ID):  # ファーム鯖以外では"草"で反応
-            await message.channel.send(embed=MinesweepingCog.LARGE_KUSA_EMBED)
+        if '草' in message.content and (message.guild.id != const.FARM_SERVER_GUILD_ID
+                                       and message.guild.id != const.TAMOKUTEKI_TOIRE_SERVER_ID):  # ファーム鯖以外では"草"で反応
+            await message.channel.send(embed=const.LARGE_KUSA_EMBED)
         # ファーム鯖のみ"草草の草"で反応
-        if '草草の草' in message.content and (message.guild.id == MinesweepingCog.FARM_SERVER_GUILD_ID
-                                          or message.guild.id == MinesweepingCog.TAMOKUTEKI_TOIRE_SERVER_ID):
-            await message.channel.send(embed=MinesweepingCog.SMALL_KUSA_EMBED)
+        if '草草の草' in message.content and (message.guild.id == const.FARM_SERVER_GUILD_ID
+                                          or message.guild.id == const.TAMOKUTEKI_TOIRE_SERVER_ID):
+            await message.channel.send(embed=const.SMALL_KUSA_EMBED)
