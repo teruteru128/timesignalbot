@@ -14,11 +14,11 @@ class TimeSignalCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_connect(self):
-        print('wordhant: 接続しました')
+        print('timesignalcog: 接続しました')
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('wordhant: 準備が完了しました')
+        print('timesignalcog: 準備が完了しました')
 
     def cog_unload(self):
         self.loop.cancel()
