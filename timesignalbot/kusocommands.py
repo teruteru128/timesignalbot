@@ -22,7 +22,7 @@ class KusoCommands(commands.Cog, name="クソコマンド"):
         super().__init__(**options)
         self.bot = bot
 
-    @commands.command(aliases=['NPS'])
+    @commands.command()
     async def nps(self, ctx: commands.Context):
         """ダイレクトメッセージのみで反応するのん
 
@@ -31,7 +31,7 @@ class KusoCommands(commands.Cog, name="クソコマンド"):
         if ctx.channel.type == ChannelType.private:
             await ctx.send(f'NPS')
 
-    @commands.command(aliases=['RBZ'])
+    @commands.command()
     async def rbz(self, ctx: commands.Context):
         """ダイレクトメッセージのみで反応します
 
@@ -39,7 +39,7 @@ class KusoCommands(commands.Cog, name="クソコマンド"):
         if ctx.channel.type == ChannelType.private:
             await ctx.send(f'RBZ')
 
-    @commands.command(aliases=['RZB'])
+    @commands.command()
     async def rzb(self, ctx: commands.Context):
         """ダイレクトメッセージのみで反応します
 

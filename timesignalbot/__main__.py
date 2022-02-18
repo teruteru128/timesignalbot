@@ -24,16 +24,13 @@ if len(TOKEN) == 0:
 COMMAND_PREFIX = '/'
 
 
-bot = TimeSignalBot(command_prefix=COMMAND_PREFIX,
-                    intents=Intents.all(), case_insensitive=True)
-
-
 def main():
     # 接続に必要なオブジェクトを生成
+    bot = TimeSignalBot(command_prefix=COMMAND_PREFIX,
+                        intents=Intents.all(), case_insensitive=True)
 
     # ループ処理実行
     loop.start(bot)
-    print("timesignalbot is bot instance : {}".format(isinstance(bot, commands.Bot)))
     print("case_insensitive : {}".format(bot.owner_id))
     # コグ登録
     bot.add_cog(KusoCommands(bot))
