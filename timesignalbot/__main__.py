@@ -34,6 +34,7 @@ def main():
     # ループ処理実行
     loop.start(bot)
     print("timesignalbot is bot instance : {}".format(isinstance(bot, commands.Bot)))
+    print("case_insensitive : {}".format(bot.case_insensitive))
     # コグ登録
     bot.add_cog(KusoCommands(bot))
     bot.add_cog(MinesweepingCog(bot))
