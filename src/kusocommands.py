@@ -14,6 +14,7 @@ from discord.ext import commands
 
 from timesignalbot import TimeSignalBot
 
+
 class KusoCommands(commands.Cog, name="クソコマンド"):
     """コマンド詰め合わせ"""
 
