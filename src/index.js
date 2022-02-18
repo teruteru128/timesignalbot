@@ -113,6 +113,7 @@ client.on('ready', async client => {
   // スラッシュコマンドをギルドに登録
   await client.application.commands.set(data, '879315010218774528');
   console.log(`${client.user.tag} でログインしています。`);
+  client.user.setActivity('1個の地雷除去', { type: 'COMPETING' });
 });
 
 client.on('interactionCreate', async interaction => {
