@@ -4,6 +4,7 @@
   https://scrapbox.io/discordjs-japan/%E3%82%84%E3%82%8A%E3%81%9F%E3%81%84%E3%81%93%E3%81%A8%E9%80%86%E5%BC%95%E3%81%8D%E9%9B%86
 */
 const { Client, Intents } = require('discord.js');
+const cron = require('node-cron');
 // const { SlashCommandBuilder } = require('@discordjs/builders');
 const client = new Client({
   intents: [
@@ -114,6 +115,12 @@ client.on('ready', async client => {
   await client.application.commands.set(data, '879315010218774528');
   console.log(`${client.user.tag} でログインしています。`);
   client.user.setActivity('1個の地雷除去', { type: 'COMPETING' });
+  cron.schedule('0 0 0 * * *', () => {
+    new Promise((resolve, reject) => {
+      resolve(client.channels.cache.get('879315010218774531'));
+    }).then(async channel => { channel.send('真夜中'); })
+      .catch(() => { console.error('真夜中:だめです'); });
+  });
 });
 
 client.on('interactionCreate', async interaction => {
