@@ -116,11 +116,13 @@ client.on('ready', async client => {
   await client.application.commands.set(data, '879315010218774528');
   console.log(`${client.user.tag} でログインしています。`);
   client.user.setActivity('1個の地雷除去', { type: 'COMPETING' });
-  cron.schedule('0 0 0 * * *', () => {
+  const test_server_general = client.channels.cache.get('879315010218774531');
+  cron.schedule('0 0 0 * * *', now => {
     new Promise((resolve, reject) => {
-      resolve(client.channels.cache.get('879315010218774531'));
-    }).then(async channel => { channel.send('真夜中'); })
-      .catch(() => { console.error('真夜中:だめです'); });
+      test_server_general.send('真夜中');
+      resolve();
+    }).then(async () => { })
+      .catch(reason => { console.error('真夜中:だめです: %s', reason); });
   }, {
     timezone: 'Asia/Tokyo'
   });
