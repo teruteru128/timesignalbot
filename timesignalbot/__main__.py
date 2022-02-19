@@ -21,10 +21,7 @@ if len(DISCORD_TOKEN) == 0:
     exit(1)
 
 COMMAND_PREFIX = os.environ.get('COMMAND_PREFIX', '/')
-"""コマンドプレフィックス
-
-XXX: COMMAND_PREFIXも環境変数で設定できるようにするか？
-"""
+"""コマンドプレフィックス"""
 
 
 def main():
