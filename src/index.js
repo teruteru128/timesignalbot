@@ -16,7 +16,11 @@ const pool = new Pool({
 new Promise(async (resolve, reject) => {
   // https://node-postgres.com/
   const client = await pool.connect();
-  const result = await client.query('SELECT $1::text', ['Hello world!']);
+  /* const result = await client.query('SELECT $1::text as message', ['Hello world!']);
+  console.log(result.rows[0].message); // Hello world! */
+  /* const result = await client.query('SELECT $1::text', ['Hello world!']);
+  console.log(result.rows[0]); // Hello world! */
+  const result = await client.query('SELECT $1', ['Hello world!']);
   console.log(result.rows[0]); // Hello world!
   client.release();
 }).catch(err => console.error("pg error : %s", err));
