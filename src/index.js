@@ -14,10 +14,10 @@ const pool = new Pool({
   }
 });
 new Promise(async (resolve, reject) => {
+  // https://node-postgres.com/
   const client = await pool.connect();
   const result = await client.query('SELECT $1::text as message', ['Hello world!']);
-  const results = { 'results': (result) ? result.rows : null };
-  console.log(results);
+  console.log(result.rows[0].message); // Hello world!
   client.release();
 }).catch(err => console.error("pg error : %s", err));
 // const { SlashCommandBuilder } = require('@discordjs/builders');
