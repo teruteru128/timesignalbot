@@ -15,7 +15,7 @@ const pool = new Pool({
 });
 new Promise(async (resolve, reject) => {
   const client = await pool.connect();
-  const result = client.query('SELECT $1::text as message', ['Hello world!']);
+  const result = await client.query('SELECT $1::text as message', ['Hello world!']);
   const results = { 'results': (result) ? result.rows : null };
   console.log(results);
   client.release();
