@@ -5,6 +5,7 @@
 */
 const { Client, Intents } = require('discord.js');
 const cron = require('node-cron');
+const CronJob = cron.CronJob;
 // const { SlashCommandBuilder } = require('@discordjs/builders');
 const client = new Client({
   intents: [
@@ -120,6 +121,8 @@ client.on('ready', async client => {
       resolve(client.channels.cache.get('879315010218774531'));
     }).then(async channel => { channel.send('真夜中'); })
       .catch(() => { console.error('真夜中:だめです'); });
+  }, {
+    timezone: 'Asia/Tokyo'
   });
 });
 
