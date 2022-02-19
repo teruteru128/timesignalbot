@@ -13,11 +13,13 @@ const pool = new Pool({
     rejectUnauthorized: false
   }
 });
-new Promise(async (resolve, reject) => pool.connect())
-  .then(async client => client.query('SELECT $1::text as message', ['Hello world!']))
-  .then(result => result ? result.rows : null)
-  .then(results => console.log(results))
-  .catch(err => console.error(err));
+new Promise(async (resolve, reject) => {
+  const client = await pool.connect();
+  const result = client.query('SELECT $1::text as message', ['Hello world!']);
+  const results = { 'results': (result) ? result.rows : null };
+  console.log(results);
+  client.release();
+}).catch(err => console.error("pg error : %s", err));
 // const { SlashCommandBuilder } = require('@discordjs/builders');
 const client = new Client({
   intents: [
