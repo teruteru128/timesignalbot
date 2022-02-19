@@ -5,7 +5,6 @@
 */
 const { Client, Intents } = require('discord.js');
 const cron = require('node-cron');
-const CronJob = cron.CronJob;
 // const { SlashCommandBuilder } = require('@discordjs/builders');
 const client = new Client({
   intents: [
