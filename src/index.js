@@ -118,7 +118,7 @@ client.on('ready', async client => {
   const test_server_general = client.channels.cache.get('879315010218774531');
   cron.schedule('0 0 0 * * *', now => {
     new Promise((resolve, reject) => {
-      test_server_general.send('真夜中');
+      test_server_general.send('真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ');
       resolve();
     }).then(async () => { })
       .catch(reason => { console.error('真夜中:だめです: %s', reason); });
