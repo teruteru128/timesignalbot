@@ -134,9 +134,7 @@ client.on('ready', async client => {
   cron.schedule('0 0 0 * * *', now => {
     new Promise((resolve, reject) => {
       test_server_general.send('真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ');
-      resolve();
-    }).then(async () => { })
-      .catch(reason => { console.error('真夜中:だめです: %s', reason); });
+    }).catch(reason => { console.error('真夜中:だめです: %s', reason); });
   }, {
     timezone: 'Asia/Tokyo'
   });
