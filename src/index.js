@@ -173,10 +173,6 @@ client.on('messageCreate', async msg => {
     // 反省を促す
     await msg.reply('||https://www.nicovideo.jp/watch/sm38736861||');
   }
-  if (msg.guildId === '879315010218774528' && msg.content.includes('940458171309383710')) {
-    // 反省を促す
-    await msg.reply('反　省');
-  }
   if (msg.content.includes(':regional_indicator_z:')) {
     await msg.reply('z includes! 1');
   }
