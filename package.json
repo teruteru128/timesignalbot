@@ -7,7 +7,7 @@
   "description": "Time signal bot for Discord",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node src/index.js",
     "start:debug": "node src/index.js"
   },
@@ -32,6 +32,7 @@
     "pg": "^8.7.3"
   },
   "devDependencies": {
-    "jshint": "^2.13.4"
+    "jshint": "^2.13.4",
+    "mocha": "^9.2.1"
   }
 }
