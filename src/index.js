@@ -5,12 +5,19 @@
 */
 const { Client, Intents } = require('discord.js');
 const cron = require('node-cron');
-const pg = require('pg');
-const pgClient = new pg.Client();
-new Promise(async (resolve, reject) => { await pgClient.connect(); return pgClient; })
-  .then(async (pgClient) => { return pgClient.query('SELECT $1::text as message', ['Hello world!']); })
-  .then((res) => { console.log(res.rows[0].message); })
-  .catch((error) => { console.log(error); });
+// https://devcenter.heroku.com/ja/articles/getting-started-with-nodejs?singlepage=true#-13
+const { Pool } = require('pg');
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+new Promise(async (resolve, reject) => pool.connect())
+  .then(async client => client.query('SELECT $1::text as message', ['Hello world!']))
+  .then(result => result ? result.rows : null)
+  .then(results => console.log(results))
+  .catch(err => console.error(err));
 // const { SlashCommandBuilder } = require('@discordjs/builders');
 const client = new Client({
   intents: [
