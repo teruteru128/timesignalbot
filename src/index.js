@@ -6,7 +6,7 @@
 const { Client, Intents } = require('discord.js');
 const cron = require('node-cron');
 const builders = require('@discordjs/builders');
-const { SlashCommandBuilder } = builders; 
+const { SlashCommandBuilder } = builders;
 const client = new Client({
   intents: [
     Intents.FLAGS.DIRECT_MESSAGES,
@@ -137,19 +137,20 @@ const data = [{
   optins: []
 }];
 
+const test_server_general_id = '879315010218774531';
+const signal = now => {
+  const test_server_general = client.channels.cache.get(test_server_general_id);
+  new Promise((resolve, reject) =>
+    test_server_general.send('真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ')
+  ).catch(reason => { console.error('真夜中:だめです: %s', reason); });
+};
+
 client.on('ready', async client => {
   // スラッシュコマンドをギルドに登録
   await client.application.commands.set(data, '879315010218774528');
   console.log(`${client.user.tag} でログインしています。`);
   client.user.setActivity('1個の地雷除去', { type: 'COMPETING' });
-  const test_server_general = client.channels.cache.get('879315010218774531');
-  cron.schedule('0 0 0 * * *', now => {
-    new Promise((resolve, reject) =>
-      test_server_general.send('真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ')
-    ).catch(reason => { console.error('真夜中:だめです: %s', reason); });
-  }, {
-    timezone: 'Asia/Tokyo'
-  });
+  //cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' });
 });
 
 client.on('interactionCreate', async interaction => {
