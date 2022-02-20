@@ -186,9 +186,9 @@ client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
 
   if (msg.content === '#ping') {
-    await msg.channel.send('Pong?');
+    await msg.reply('Pong?');
   }
-  if (msg.content.startsWith('!test')) {
+  if (msg.content.startsWith('!test') || msg.content.includes('console.print')) {
     console.info(msg.content);
   }
   if (msg.guildId === '879315010218774528' && msg.content.startsWith('!pumpkin')) {
