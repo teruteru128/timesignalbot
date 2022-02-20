@@ -41,3 +41,16 @@ class TimeSignalBot(commands.Bot):
         # if not member in role.members:
         #    await member.add_roles(role)
         # pass
+
+    async def on_message_delete(self, message: Message):
+        print("{}", message)
+
+    async def on_bulk_message_delete(self, messages: list[Message]):
+        for message in messages:
+            print("{}", message)
+
+    async def on_raw_message_delete(self, payload: RawMessageDeleteEvent):
+        print("{}", payload)
+
+    async def on_raw_bulk_message_delete(self, payload: RawMessageDeleteEvent):
+        print("{}", payload)
