@@ -1,5 +1,5 @@
 
-from discord import Activity, ActivityType, Member, Status
+from discord import Activity, ActivityType, Member, Message, RawMessageDeleteEvent, Status
 from discord.ext import commands
 
 
