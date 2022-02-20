@@ -137,6 +137,17 @@ client.on('voiceStateUpdate', async (oldState, newState) => { });
 client.on('warn', async info => console.warn('warn : %s', info));
 client.on('webhookUpdate', async channel => { });
 
+// スラッシュコマンド登録用データ
+const data = [{
+  name: 'ping',
+  description: 'Replies with Pong!',
+  options: [{ name: 'payload', description: 'The message returned with the pong.', type: 'STRING', /* required: true */ }]
+}, {
+  name: 'nyanpass',
+  description: 'get nyanpass count from nyanpass.com',
+  optins: []
+}];
+
 client.on('ready', async client => {
   // スラッシュコマンドをギルドに登録
   await client.application.commands.set(data, '879315010218774528');
