@@ -19,7 +19,7 @@ Time signal bot for Discord
 
 ## 環境変数による設定
 
-- DISCORD_TOKEN
+- DISCORD_TOKEN (Require)
   - Discordのトークンを設定します。
 - COMMAND_PREFIX (Option)
   - コマンドのプレフィックスを設定することができます。デフォルトは '/' です。
