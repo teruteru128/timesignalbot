@@ -189,7 +189,7 @@ client.on('messageCreate', async msg => {
     await msg.reply('Pong?');
   }
   if (msg.content.startsWith('!test') || msg.content.includes('console.print')) {
-    console.info(msg.content);
+    console.info("%s", msg.content);
   }
   if (msg.guildId === '879315010218774528' && msg.content.startsWith('!pumpkin')) {
     // 反省を促す
