@@ -58,17 +58,6 @@ const data1 = new SlashCommandBuilder().setName().setDescription()
   .addStringOption(opt => opt.setName('').setDescription().setRequired(true));
  */
 
-// スラッシュコマンド登録用データ
-const data = [{
-  name: 'ping',
-  description: 'Replies with Pong!',
-  options: [{ name: 'payload', description: 'The message returned with the pong.', type: 'STRING', /* required: true */ }]
-}, {
-  name: 'nyanpass',
-  description: 'get nyanpass count from nyanpass.com',
-  optins: []
-}];
-
 // 全てのイベントにリスナーを設定する
 client.on('apiRequest', async request => { });
 client.on('apiResponse', async (request, response) => { });
