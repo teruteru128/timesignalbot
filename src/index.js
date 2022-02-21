@@ -92,7 +92,7 @@ client.on('invalidated', async () => console.log('invalidated'));
 client.on('invalidRequestWarning', async invalidRequestWarningData => { });
 client.on('inviteCreate', async invite => { console.log('inviceCreate : %s', invite); });
 client.on('inviteDelete', async invite => { console.log('inviteDelete : %s', invite); });
-client.on('messageDelete', async message => { console.log(`削除されました : ${message.content}`); });
+client.on('messageDelete', async message => { console.log(`削除されました : ${message}`); });
 client.on('messageDeleteBulk', async messages => { });
 client.on('messageReactionAdd', async (messageReaction, user) => { });
 client.on('messageReactionRemove', async (messageReaction, user) => { });
@@ -249,7 +249,7 @@ client.on('messageCreate', async msg => {
         mine_role = msg.guild.roles.cache.get('844886159984558121');
         promises.push(msg.member.roles.add(mine_role));
       }
-      promises.push(interaction.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
+      promises.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
     }
     return promises;
   })).catch(e => console.log('%s', e));
