@@ -92,7 +92,7 @@ client.on('invalidated', async () => console.log('invalidated'));
 client.on('invalidRequestWarning', async invalidRequestWarningData => { });
 client.on('inviteCreate', async invite => { console.log('inviceCreate : %s', invite); });
 client.on('inviteDelete', async invite => { console.log('inviteDelete : %s', invite); });
-client.on('messageDelete', async message => { console.log(`${msg.channel.name}(${msg.guild.name})で送信された${message.author.username}のメッセージが削除されました : ${message.content}`); });
+client.on('messageDelete', async message => { console.log(`${message.channel.name}(${message.guild.name})で送信された${message.author.username}のメッセージが削除されました : ${message.content}`); });
 client.on('messageDeleteBulk', async messages => messages.forEach((v, k, m) => console.log(`削除されましたs : ${v}`)));
 client.on('messageReactionAdd', async (messageReaction, user) => { });
 client.on('messageReactionRemove', async (messageReaction, user) => { });
