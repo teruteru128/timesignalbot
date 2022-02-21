@@ -203,7 +203,7 @@ const MINES = process.env.MINES.split(',');
 
 client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
-  console.log('%s(%s) : %s', msg.author, msg.channel, msg.content);
+  console.debug('%s(%s) : %s', msg.author.displayName, msg.channel.name, msg.content);
 
   if (msg.content === '#ping') {
     await msg.reply('Pong?');
