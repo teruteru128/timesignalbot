@@ -94,6 +94,23 @@ client.on('inviteCreate', async invite => { console.log('inviceCreate : %s', inv
 client.on('inviteDelete', async invite => { console.log('inviteDelete : %s', invite); });
 client.on('messageDelete', async message => {
   console.log(`msg.author : ${message.author.username}`);
+  var logmsg = '';
+  logmsg += `${message.channel.name}`;
+  if (message.inGuild()) {
+    logmsg += `(${message.guild.name})`;
+  }
+  logmsg += `で送信された`;
+  if (message.author !== null) {
+    if (message.author.username !== null)
+      logmsg += `${message.author.username}`;
+    else
+      logmsg += '💩';
+  }
+  else {
+    logmsg += '💢';
+  }
+  logmsg += `のメッセージが削除されました : ${message.content}`;
+  console.log(logmsg);
 });
 client.on('messageDeleteBulk', async messages => messages.forEach((v, k, m) => console.log(`削除されましたs : ${v}`)));
 client.on('messageReactionAdd', async (messageReaction, user) => { });
