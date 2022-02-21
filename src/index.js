@@ -242,6 +242,10 @@ client.on('messageCreate', async msg => {
     if (msg.content.includes(mine)) {
       msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178')
         .catch(e => console.log('%s', e));
+      if (msg.guildId === '795353457996595200') {
+        mine_role = msg.guild.roles.cache.get('844886159984558121');
+        msg.member.roles.add(mine_role);
+      }
     }
   });
   if (SEX_PATTERN.test(msg.content)) {
