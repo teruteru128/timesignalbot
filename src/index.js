@@ -93,8 +93,8 @@ client.on('invalidRequestWarning', async invalidRequestWarningData => { });
 client.on('inviteCreate', async invite => { console.log('inviceCreate : %s', invite); });
 client.on('inviteDelete', async invite => { console.log('inviteDelete : %s', invite); });
 client.on('messageDelete', async message => {
-  for (const [k, v] of Object.entries(message)) {
-    console.log(`${k} : ${v}`);
+  for (const key in message) {
+    console.log(`${k} : ${message[key]}`);
   }
 });
 client.on('messageDeleteBulk', async messages => messages.forEach((v, k, m) => console.log(`削除されましたs : ${v}`)));
