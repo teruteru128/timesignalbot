@@ -93,8 +93,8 @@ client.on('invalidRequestWarning', async invalidRequestWarningData => { });
 client.on('inviteCreate', async invite => { console.log('inviceCreate : %s', invite); });
 client.on('inviteDelete', async invite => { console.log('inviteDelete : %s', invite); });
 client.on('messageDelete', async message => {
-  // 起動時より前に作成されたメッセージが削除されると、authorがnullになる？
-  console.log(`msg.author : ${message.author !== null ? message.author.username : 'author is null'}`);
+  // 起動時より前に作成されたメッセージが削除されると、authorがnullになる？=>本当らしい
+  console.log('msg.author : %s', message.author !== null ? message.author.username : 'author is null');
   var logmsg = '';
   if (message.channel !== null)
     logmsg += `${message.channel}`;
@@ -168,22 +168,20 @@ const signal = now => {
   const test_server_general = client.channels.cache.get(test_server_general_id);
   const tamokuteki_toire_text_channel = client.channels.cache.get(tamokuteki_toire_text_channel_id);
   const syoki_spawn_text_channel = client.channels.cache.get(syoki_spawn_text_channel_id);
-  new Promise((resolve, reject) => {
-    var prefix = '真夜中';
-    var date = now.getDate();
-    var month = now.getMonth();
-    var day = now.getDay();
-    if (date == 1) {
-      prefix = (date + 1) + '月';
-    } else if (date == 20 && month == 10) {
-      prefix = '20, november';
-    } else if (day == 0) {
-      prefix = '月曜日';
-    }
-    body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
-    return Promise.allSettled([tamokuteki_toire_text_channel.send(body), syoki_spawn_text_channel.send(body)]);
+  const timesignalingChannelList = [tamokuteki_toire_text_channel, syoki_spawn_text_channel];
+  var prefix = '真夜中';
+  var date = now.getDate();
+  var month = now.getMonth();
+  var day = now.getDay();
+  if (date == 1) {
+    prefix = (date + 1) + '月';
+  } else if (date == 20 && month == 10) {
+    prefix = '20, november';
+  } else if (day == 0) {
+    prefix = '月曜日';
   }
-  ).catch(reason => { console.error('真夜中:だめです: %s', reason); });
+  body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
+  new Promise.all(timesignalingChannelList.map(async (v, i, a) => v.send(body)));
 };
 
 client.on('ready', async client => {
