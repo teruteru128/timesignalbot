@@ -169,6 +169,8 @@ const signal = now => {
   const tamokuteki_toire_text_channel = client.channels.cache.get(tamokuteki_toire_text_channel_id);
   const syoki_spawn_text_channel = client.channels.cache.get(syoki_spawn_text_channel_id);
   const timesignalingChannelList = [tamokuteki_toire_text_channel, syoki_spawn_text_channel];
+  // やっぱり時代はリスト処理なんかねえ？
+  /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24), GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
   var prefix = '真夜中';
   var date = now.getDate();
   var month = now.getMonth();
@@ -264,18 +266,18 @@ client.on('messageCreate', async msg => {
   if (msg.content.includes('\u{1f1ff}')) {
     await msg.reply('\u{1f1ff} includes! 4');
   }
-  await Promise.all(MINES.flatMap(async (mine, index, array) => {
+  await Promise.allSettled(MINES.flatMap((mine, index, array) => {
     var promises = [];
-    if (msg.content.includes(mine)) {
-      promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
-      if (msg.guildId === '795353457996595200') {
-        mine_role = msg.guild.roles.cache.get('844886159984558121');
-        promises.push(msg.member.roles.add(mine_role));
+    if (this.content.includes(mine)) {
+      promises.push(this.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
+      if (this.guildId === '795353457996595200') {
+        mine_role = this.guild.roles.cache.get('844886159984558121');
+        promises.push(this.member.roles.add(mine_role));
       }
-      // promises.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
+      // promises.push(this.client.users.cache.get('310413442760572929').send(`${this.channel.name}(${this.guild.name}) で ${this.author.username} さんが地雷を踏みました。`));
     }
     return promises;
-  })).catch(e => console.log('%s', e));
+  }, msg)).catch(e => console.log('%s', e));
   if (SEX_PATTERN.test(msg.content)) {
     await msg.reply('やめないか！');
   }
