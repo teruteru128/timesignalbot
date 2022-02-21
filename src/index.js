@@ -277,7 +277,7 @@ client.on('messageCreate', async msg => {
       // promises.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
     }
     return promises;
-  }, msg)).catch(e => console.log('%s', e));
+  })).catch(e => console.log('%s', e));
   if (SEX_PATTERN.test(msg.content)) {
     await msg.reply('やめないか！');
   }
