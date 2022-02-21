@@ -204,7 +204,7 @@ const MINES = process.env.MINES.split(',');
 client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
   if (msg.channel instanceof TextChannel) {
-    console.debug('%s(%s) : %s', msg.member.displayName, msg.channel.name, msg.content);
+    // console.debug('%s(%s) : %s', msg.member.displayName, msg.channel.name, msg.content);
   }
   if (msg.channel instanceof ThreadChannel) {
     console.debug('%s(%s) : %s', msg.member.displayName, msg.channel.name, msg.content);
