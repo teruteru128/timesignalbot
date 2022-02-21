@@ -8,7 +8,7 @@ const cron = require('node-cron');
 const builders = require('@discordjs/builders');
 const { SlashCommandBuilder } = builders;
 const client = new Client({
-  partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
+  partials: ['CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'REACTION', 'USER'],
   intents: [
     Intents.FLAGS.DIRECT_MESSAGES,
     Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
@@ -203,7 +203,7 @@ const MINES = process.env.MINES.split(',');
 
 client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
-  console.debug('%s(%s) : %s', msg.member.displayName, msg.channel.name, msg.content);
+  console.debug('%s(%s) : %s', msg.member !== null ? msg.member.displayName : msg.author.nickname, msg.channel.name, msg.content);
 
   if (msg.content === '#ping') {
     await msg.reply('Pong?');
@@ -236,7 +236,7 @@ client.on('messageCreate', async msg => {
   MINES.forEach(mine => {
     if (msg.content.includes(mine)) {
       msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178')
-      .catch(e => console.log('%s', e));
+        .catch(e => console.log('%s', e));
     }
   });
   if (SEX_PATTERN.test(msg.content)) {
