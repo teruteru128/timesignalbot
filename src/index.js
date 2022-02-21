@@ -140,9 +140,11 @@ const data = [{
 
 const test_server_general_id = '879315010218774531';
 const tamokuteki_toire_text_channel_id = '796357249743585290';
+const syoki_spawn_text_channel_id = '572151278428225537';
 const signal = now => {
   const test_server_general = client.channels.cache.get(test_server_general_id);
   const tamokuteki_toire_text_channel = client.channels.cache.get(tamokuteki_toire_text_channel_id);
+  const syoki_spawn_text_channel = client.channels.cache.get(syoki_spawn_text_channel_id);
   new Promise((resolve, reject) => {
     var prefix = '真夜中';
     var date = now.getDate();
@@ -156,7 +158,7 @@ const signal = now => {
       prefix = '月曜日';
     }
     body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
-    return Promise.allSettled([test_server_general.send(body), tamokuteki_toire_text_channel.send(body)]);
+    return Promise.allSettled([tamokuteki_toire_text_channel.send(body), syoki_spawn_text_channel.send(body)]);
   }
   ).catch(reason => { console.error('真夜中:だめです: %s', reason); });
 };
