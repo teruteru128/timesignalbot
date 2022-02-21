@@ -93,11 +93,7 @@ client.on('invalidRequestWarning', async invalidRequestWarningData => { });
 client.on('inviteCreate', async invite => { console.log('inviceCreate : %s', invite); });
 client.on('inviteDelete', async invite => { console.log('inviteDelete : %s', invite); });
 client.on('messageDelete', async message => {
-  console.log(`msg.author : ${message.author.displayName}`);
-  console.log(`isDMChannel : ${message.channel instanceof DMChannel}`);
-  for (const key in message) {
-    console.log(`${key} : ${message[key]}`);
-  }
+  console.log(`msg.author : ${message.author.username}`);
 });
 client.on('messageDeleteBulk', async messages => messages.forEach((v, k, m) => console.log(`削除されましたs : ${v}`)));
 client.on('messageReactionAdd', async (messageReaction, user) => { });
