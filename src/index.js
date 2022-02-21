@@ -8,6 +8,7 @@ const cron = require('node-cron');
 const builders = require('@discordjs/builders');
 const { SlashCommandBuilder } = builders;
 const client = new Client({
+  partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
   intents: [
     Intents.FLAGS.DIRECT_MESSAGES,
     Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
@@ -51,7 +52,7 @@ new Promise(async (resolve, reject) => {
   } finally {
     client.release();
   }
-}).catch(err => console.error("pg error : %s", err));
+}).catch(err => console.error('pg error : %s', err));
 
 /* 
 const data1 = new SlashCommandBuilder().setName().setDescription()
@@ -208,7 +209,7 @@ client.on('messageCreate', async msg => {
     await msg.reply('Pong?');
   }
   if (msg.content.startsWith('!test') || msg.content.includes('console.print')) {
-    console.info("%s", msg.content);
+    console.info('%s', msg.content);
   }
   if (msg.guildId === '879315010218774528' && msg.content.startsWith('!pumpkin')) {
     // 反省を促す
@@ -234,7 +235,8 @@ client.on('messageCreate', async msg => {
   }
   MINES.forEach(mine => {
     if (msg.content.includes(mine)) {
-      msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178').catch(e => console.log("%s", e));
+      msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178')
+      .catch(e => console.log('%s', e));
     }
   });
   if (SEX_PATTERN.test(msg.content)) {
