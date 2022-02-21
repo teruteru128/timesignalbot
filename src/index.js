@@ -92,7 +92,11 @@ client.on('invalidated', async () => console.log('invalidated'));
 client.on('invalidRequestWarning', async invalidRequestWarningData => { });
 client.on('inviteCreate', async invite => { console.log('inviceCreate : %s', invite); });
 client.on('inviteDelete', async invite => { console.log('inviteDelete : %s', invite); });
-client.on('messageDelete', async message => { });
+client.on('messageDelete', async message => {
+  for (const [k, v] of Object.entries(entries)) {
+    console.log(`${k} : ${v}`);
+  }
+});
 client.on('messageDeleteBulk', async messages => messages.forEach((v, k, m) => console.log(`削除されましたs : ${v}`)));
 client.on('messageReactionAdd', async (messageReaction, user) => { });
 client.on('messageReactionRemove', async (messageReaction, user) => { });
