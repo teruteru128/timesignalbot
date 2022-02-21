@@ -93,7 +93,8 @@ client.on('invalidRequestWarning', async invalidRequestWarningData => { });
 client.on('inviteCreate', async invite => { console.log('inviceCreate : %s', invite); });
 client.on('inviteDelete', async invite => { console.log('inviteDelete : %s', invite); });
 client.on('messageDelete', async message => {
-  console.log(`msg.author : ${message.author.username}`);
+  // 起動時より前に作成されたメッセージが削除されると、authorがnullになる？
+  console.log(`msg.author : ${message.author !== null ? message.author.username : 'author is null'}`);
   var logmsg = '';
   if (message.channel !== null)
     logmsg += `${message.channel}`;
