@@ -164,7 +164,7 @@ const signal = now => {
 client.on('ready', async client => {
   // スラッシュコマンドをギルドに登録
   await client.application.commands.set(data, '879315010218774528');
-  console.log(`${client.user.tag} でログインしています。`);
+  console.log(` ${client.user.username}(${client.user}, ${client.user.tag}) でログインしています。`);
   // 地雷起動時セットアップ
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
   // 時報セットアップ
