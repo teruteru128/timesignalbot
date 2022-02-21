@@ -3,7 +3,7 @@
   やりたいこと逆引き集
   https://scrapbox.io/discordjs-japan/%E3%82%84%E3%82%8A%E3%81%9F%E3%81%84%E3%81%93%E3%81%A8%E9%80%86%E5%BC%95%E3%81%8D%E9%9B%86
 */
-const { Client, Intents, TextChannel, DMChannel } = require('discord.js');
+const { Client, Intents, TextChannel, DMChannel, ThreadChannel } = require('discord.js');
 const cron = require('node-cron');
 const builders = require('@discordjs/builders');
 const { SlashCommandBuilder } = builders;
@@ -203,7 +203,7 @@ const MINES = process.env.MINES.split(',');
 
 client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
-  if (msg.channel instanceof TextChannel) {
+  if (msg.channel instanceof TextChannel || msg.channel instanceof ThreadChannel) {
     console.debug('%s(%s) : %s', msg.member.displayName, msg.channel.name, msg.content);
   }
   if (msg.channel instanceof DMChannel) {
