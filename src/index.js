@@ -207,7 +207,7 @@ client.on('messageCreate', async msg => {
     console.debug('%s(%s) : %s', msg.member.displayName, msg.channel.name, msg.content);
   }
   if (msg.channel instanceof DMChannel) {
-    console.debug('%s(DMChannel)');
+    console.debug('%s(DMChannel)', msg);
   }
 
   if (msg.content === '#ping') {
