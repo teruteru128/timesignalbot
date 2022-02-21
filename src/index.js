@@ -164,7 +164,9 @@ client.on('ready', async client => {
   // スラッシュコマンドをギルドに登録
   await client.application.commands.set(data, '879315010218774528');
   console.log(`${client.user.tag} でログインしています。`);
-  client.user.setActivity('1個の地雷除去', { type: 'COMPETING' });
+  // 地雷起動時セットアップ
+  client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
+  // 時報セットアップ
   cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' });
 });
 
@@ -196,6 +198,7 @@ client.on('interactionCreate', async interaction => {
 
 const YOUBI = ['月', '火', '水', '木', '金', '土', '日'];
 const SEX_PATTERN = /SEックス/i;
+const MINES = process.env.MINES.split(',');
 
 client.on('messageCreate', async msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
@@ -228,10 +231,11 @@ client.on('messageCreate', async msg => {
   if (msg.content.includes('\u{1f1ff}')) {
     await msg.reply('\u{1f1ff} includes! 4');
   }
-  // ご希望どおり自爆させてやろうじゃないか
-  if (msg.content.includes('ここで自爆です')) {
-    await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
-  }
+  MINES.forEach(mine => {
+    if (msg.content.includes(mine)) {
+      msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178').catch(e => console.log("%s", e));
+    }
+  });
   if (SEX_PATTERN.test(msg.content)) {
     await msg.reply('やめないか！');
   }
