@@ -65,7 +65,7 @@ client.on('channelCreate', async channel => { });
 client.on('channelDelete', async channel => { });
 client.on('channelPinsUpdate', async (channel, time) => { });
 client.on('channelUpdate', async (oldChannel, newChannel) => { });
-client.on('debug', async debug => {});
+client.on('debug', async debug => { });
 client.on('emojiCreate', async emoji => { });
 client.on('emojiDelete', async emoji => { });
 client.on('emojiUpdate', async (oldEmoji, newEmoji) => { });
@@ -138,10 +138,25 @@ const data = [{
 }];
 
 const test_server_general_id = '879315010218774531';
+const tamokuteki_toire_text_channel_id = '796357249743585290';
 const signal = now => {
   const test_server_general = client.channels.cache.get(test_server_general_id);
-  new Promise((resolve, reject) =>
-    test_server_general.send('真夜中だよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ')
+  const tamokuteki_toire_text_channel = client.channels.cache.get(tamokuteki_toire_text_channel_id);
+  new Promise((resolve, reject) => {
+    var prefix = '真夜中';
+    var date = now.getDate();
+    var month = now.getMonth();
+    var day = now.getDay();
+    if (date == 1) {
+      prefix = (date + 1) + '月';
+    } else if (date == 20 && month == 10) {
+      prefix = '20, november';
+    } else if (day == 0) {
+      prefix = '月曜日';
+    }
+    body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
+    return Promise.allSettled([test_server_general.send(body), tamokuteki_toire_text_channel.send(body)]);
+  }
   ).catch(reason => { console.error('真夜中:だめです: %s', reason); });
 };
 
@@ -150,7 +165,7 @@ client.on('ready', async client => {
   await client.application.commands.set(data, '879315010218774528');
   console.log(`${client.user.tag} でログインしています。`);
   client.user.setActivity('1個の地雷除去', { type: 'COMPETING' });
-  //cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' });
+  cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' });
 });
 
 client.on('interactionCreate', async interaction => {
