@@ -241,16 +241,18 @@ client.on('messageCreate', async msg => {
   if (msg.content.includes('\u{1f1ff}')) {
     await msg.reply('\u{1f1ff} includes! 4');
   }
-  MINES.forEach(mine => {
+  await Promise.all(MINES.flatMap(async (mine, index, array) => {
+    const promises = [];
     if (msg.content.includes(mine)) {
-      msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178')
-        .catch(e => console.log('%s', e));
+      promises.add(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
       if (msg.guildId === '795353457996595200') {
         mine_role = msg.guild.roles.cache.get('844886159984558121');
-        msg.member.roles.add(mine_role);
+        promises.add(msg.member.roles.add(mine_role));
       }
+      promises.add(interaction.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
     }
-  });
+    return promises;
+  })).catch(e => console.log('%s', e));
   if (SEX_PATTERN.test(msg.content)) {
     await msg.reply('やめないか！');
   }
