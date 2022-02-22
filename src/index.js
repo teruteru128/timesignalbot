@@ -252,7 +252,7 @@ client.on('interactionCreate', interaction => {
     GENBA_NEKO.forEach((v, i, a) => { if (Math.random() < 0.05) { list_of_candidate_cats.push(v); } });
     const CAT_WORK_LIST_LENGTH = list_of_candidate_cats.length;
     const chosen_cat = list_of_candidate_cats[Math.floor(Math.random() * CAT_WORK_LIST_LENGTH)];
-    promises.push(interaction.channel.send(chosen_cat));
+    promises.push(interaction.reply(chosen_cat));
   }
   return Promise.allSettled(promises);
 });
