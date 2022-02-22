@@ -163,8 +163,8 @@ const data = [{
 const test_server_general_id = '879315010218774531';
 const tamokuteki_toire_text_channel_id = '796357249743585290';
 const syoki_spawn_text_channel_id = '572151278428225537';
+const list = [tamokuteki_toire_text_channel_id, syoki_spawn_text_channel_id];
 const signal = now => {
-  const list = [tamokuteki_toire_text_channel_id, syoki_spawn_text_channel_id];
   // やっぱり時代はリスト処理なんかねえ？
   /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24), GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
   var prefix = '真夜中';
