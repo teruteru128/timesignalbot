@@ -97,7 +97,7 @@ client.on('messageDelete', async message => {
   console.log('msg.author : %s', message.author !== null ? message.author.username : 'author is null');
   var logmsg = '';
   if (message.channel !== null)
-    logmsg += `${message.channel}`;
+    logmsg += `${message.channel.name}`;
   else
     logmsg += 'うーん？';
   if (message.inGuild()) {
