@@ -183,7 +183,7 @@ const signal = now => {
     prefix = '月曜日';
   }
   body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
-  new Promise.allSettled(timesignalingChannelList.map(async (v, i, a) => v.send(body)));
+  new Promise.allSettled(timesignalingChannelList.flatMap((v, i, a) => typeof v.send == 'function' ? [v.send(body)] : []));
 };
 
 client.on('ready', async client => {
