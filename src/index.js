@@ -165,10 +165,7 @@ const test_server_general_id = '879315010218774531';
 const tamokuteki_toire_text_channel_id = '796357249743585290';
 const syoki_spawn_text_channel_id = '572151278428225537';
 const signal = now => {
-  const test_server_general = client.channels.cache.get(test_server_general_id);
-  const tamokuteki_toire_text_channel = client.channels.cache.get(tamokuteki_toire_text_channel_id);
-  const syoki_spawn_text_channel = client.channels.cache.get(syoki_spawn_text_channel_id);
-  const timesignalingChannelList = [tamokuteki_toire_text_channel, syoki_spawn_text_channel];
+  const list = [tamokuteki_toire_text_channel_id, syoki_spawn_text_channel_id];
   // やっぱり時代はリスト処理なんかねえ？
   /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24), GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
   var prefix = '真夜中';
@@ -182,8 +179,8 @@ const signal = now => {
   } else if (day == 0) {
     prefix = '月曜日';
   }
-  body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
-  new Promise.allSettled(timesignalingChannelList.flatMap((v, i, a) => typeof v.send == 'function' ? [v.send(body)] : []));
+  var body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
+  new Promise.allSettled(list.map((v, i, a)=>client.channels.cache.get(v)).flatMap((v, i, a) => typeof v.send == 'function' ? [v.send(body)] : []));
 };
 
 client.on('ready', async client => {
