@@ -185,15 +185,16 @@ const signal2 = now => {
   new Promise((res, rej) => client.channels.cache.get(syoki_spawn_text_channel_id).send('ねこtimeだよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'));
 };
 
-client.on('ready', async client => {
+client.on('ready', client => {
   // スラッシュコマンドをギルドに登録
-  await client.application.commands.set(data, '879315010218774528');
+  const promise = client.application.commands.set(data, '879315010218774528');
   console.log(` ${client.user.username}(${client.user}, ${client.user.tag}) でログインしています。`);
   // 地雷起動時セットアップ
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
   // 時報セットアップ
   cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' });
   cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
+  return promise;
 });
 
 client.on('interactionCreate', async interaction => {
