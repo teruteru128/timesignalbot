@@ -62,7 +62,7 @@ const data1 = new SlashCommandBuilder().setName().setDescription()
 // 全てのイベントにリスナーを設定する
 client.on('apiRequest', async request => { });
 client.on('apiResponse', async (request, response) => { });
-client.on('channelCreate', async channel => { console.log("channelCreate : %s, %sが作成されました", channel.name, channel.guild !== null && channel.guild.name !== null ? channel.guild.name : '\'?\''); });
+client.on('channelCreate', async channel => { console.log('channelCreate : %s, %sが作成されました', channel.name, channel.guild !== null && channel.guild.name !== null ? channel.guild.name : '\'?\''); });
 client.on('channelDelete', async channel => { });
 client.on('channelPinsUpdate', async (channel, time) => { });
 client.on('channelUpdate', async (oldChannel, newChannel) => { });
@@ -158,12 +158,20 @@ const data = [{
   name: 'nyanpass',
   description: 'get nyanpass count from nyanpass.com',
   optins: []
+}, {
+  name: 'neko',
+  description: 'show cats face',
+  optins: []
 }];
+
+const kakuninyou_test_guild_id = '879315010218774528';
+const tamokuteki_toire_guild_id = '795353457996595200';
+const farm_server_guild_id = '572150608283566090';
 
 const test_server_general_id = '879315010218774531';
 const tamokuteki_toire_text_channel_id = '796357249743585290';
 const syoki_spawn_text_channel_id = '572151278428225537';
-const list = [tamokuteki_toire_text_channel_id, syoki_spawn_text_channel_id];
+const SIGNALING_TEXT_CHANNEL_LIST = [tamokuteki_toire_text_channel_id, syoki_spawn_text_channel_id];
 const signal = now => {
   // やっぱり時代はリスト処理なんかねえ？
   /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24), GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
@@ -179,25 +187,34 @@ const signal = now => {
     prefix = '月曜日';
   }
   var body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
-  new Promise.allSettled(list.map((v, i, a) => client.channels.cache.get(v)).flatMap((v, i, a) => typeof v.send == 'function' ? [v.send(body)] : []));
+  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((v, i, a) => client.channels.cache.get(v)).flatMap((v, i, a) => typeof v.send == 'function' ? [v.send(body)] : []));
 };
 const signal2 = now => {
-  new Promise((res, rej) => client.channels.cache.get(syoki_spawn_text_channel_id).send('ねこtimeだよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'));
+  new Promise((res, rej) => client.channels.cache.get(tamokuteki_toire_text_channel_id).send('ねこtimeだよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'));
 };
 
 client.on('ready', client => {
   // スラッシュコマンドをギルドに登録
-  const promise = client.application.commands.set(data, '879315010218774528');
+  const promises = [];
+  promises.push(client.application.commands.set(data, kakuninyou_test_guild_id));
+  promises.push(client.application.commands.set(data, farm_server_guild_id));
   console.log(` ${client.user.username}(${client.user}, ${client.user.tag}) でログインしています。`);
   // 地雷起動時セットアップ
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
   // 時報セットアップ
   cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' });
   cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
-  return promise;
+  return Promise.allSettled(promises);
 });
 
-client.on('interactionCreate', async interaction => {
+const INITIAL_CAT_LIST = ['にゃーん', '🐱', '🐈', '🐈‍⬛', '😿', '😻',
+  '😹', '😽', '😾', '🙀', '😸', '😺', '😼'];
+const GENBA_NEKO = ['ヨシ！', 'どうして……', 'どうして\n夜中に\n起きてるん\nですか？', 'ああああ！\nああああ！\nあああああ！あー！',
+  'オレじゃない\nアイツがやった\nシらない\nスんだこと', 'なんだか\n知らんが\nとにかく\nヨシ！', '100万回死んだねこ',
+  'え！！半分の人員で倍の仕事を！？', '弊社なら年内施工も可能です！', 'どうして自分が指定した時間にいないんですか:anger:',
+  'よくわからんが、まぁ動いてるからヨシ！', '正月もGWもお盆も普通に働いていた奴らだ。面構えが違う。'];
+
+client.on('interactionCreate', interaction => {
   console.debug(`isApplicationCommand : ${interaction.isApplicationCommand()}, isAutocomplete : ${interaction.isAutocomplete()},` +
     ` isButton : ${interaction.isButton()}, isCommand: ${interaction.isCommand()}, isContextMenu: ${interaction.isContextMenu()},` +
     ` isMessageComponent(): ${interaction.isMessageComponent()}, isMessageContextMenu(): ${interaction.isMessageContextMenu()},` +
@@ -208,19 +225,36 @@ client.on('interactionCreate', async interaction => {
   }
   // インタラクション(スラッシュコマンド)受信
 
+  const promises = [];
+
   if (interaction.commandName === 'ping') {
     const payload = interaction.options.getString('payload', false);
     // fetchReply プロパティはthenに返信メッセージを渡すフラグ
-    await interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}` });
-    await interaction.followUp('');
+    promises.push(interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}` }));
+    promises.push(interaction.followUp(''));
     // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
     // interaction.followUp
     // interaction.channel.send();
   }
   if (interaction.commandName === 'nyanpass') {
-    await interaction.reply('まだ実装してないのん……');
-    await interaction.client.users.cache.get('310413442760572929').send('にゃんぱすー');
+    promises.push(interaction.reply('まだ実装してないのん……'));
+    promises.push(interaction.client.users.cache.get('310413442760572929').send('にゃんぱすー'));
   }
+  if (interaction.commandName === 'neko') {
+    const list_of_candidate_cats = [];
+    list_of_candidate_cats.splice(list_of_candidate_cats.length, 0, ...INITIAL_CAT_LIST);
+    if (Math.random() < 0.000001) {
+      list_of_candidate_cats.push(Buffer.from('44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb', 'base64').toString());
+    }
+    if (Math.random() < 0.001) {
+      list_of_candidate_cats.push('ねこですよろしくおねがいします');
+    }
+    GENBA_NEKO.forEach((v, i, a) => { if (Math.random() < 0.05) { list_of_candidate_cats.push(v); } });
+    const CAT_WORK_LIST_LENGTH = list_of_candidate_cats.length;
+    const chosen_cat = list_of_candidate_cats[Math.floor(Math.random() * CAT_WORK_LIST_LENGTH)];
+    promises.push(interaction.channel.send(chosen_cat));
+  }
+  return Promise.allSettled(promises);
 });
 
 const YOUBI = ['月', '火', '水', '木', '金', '土', '日'];
@@ -247,11 +281,11 @@ client.on('messageCreate', msg => {
   if (msg.content.startsWith('!test') || msg.content.includes('console.print')) {
     console.info('%s', msg.content);
   }
-  if (msg.guildId === '879315010218774528' && msg.content.startsWith('!pumpkin')) {
+  if (msg.guildId === kakuninyou_test_guild_id && msg.content.startsWith('!pumpkin')) {
     // 反省を促す
     promises.push(msg.reply('<:hansei:940458171309383710>'));
   }
-  if (msg.guildId === '879315010218774528' && msg.content.includes('<:hansei:940458171309383710>')) {
+  if (msg.guildId === kakuninyou_test_guild_id && msg.content.includes('<:hansei:940458171309383710>')) {
     // 反省を促す
     promises.push(msg.reply('||https://www.nicovideo.jp/watch/sm38736861||'));
   }
