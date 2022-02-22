@@ -181,6 +181,9 @@ const signal = now => {
   var body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
   new Promise.allSettled(list.map((v, i, a) => client.channels.cache.get(v)).flatMap((v, i, a) => typeof v.send == 'function' ? [v.send(body)] : []));
 };
+const signal2 = now => {
+  new Promise((res, rej) => client.channels.cache.get(syoki_spawn_text_channel_id).send('ねこtimeだよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'));
+};
 
 client.on('ready', async client => {
   // スラッシュコマンドをギルドに登録
@@ -190,6 +193,7 @@ client.on('ready', async client => {
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
   // 時報セットアップ
   cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' });
+  cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
 });
 
 client.on('interactionCreate', async interaction => {
