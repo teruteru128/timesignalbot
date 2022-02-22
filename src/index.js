@@ -250,19 +250,9 @@ client.on('messageCreate', msg => {
     // 反省を促す
     promises.push(msg.reply('||https://www.nicovideo.jp/watch/sm38736861||'));
   }
-  if (msg.content.includes(':regional_indicator_z:')) {
-    promises.push(msg.reply('z includes! 1'));
-  }
-  if (msg.content.includes('regional_indicator_z')) {
-    promises.push(msg.reply('z includes! 2'));
-  }
-  // 絵文字のZ
+  // FIXME: 絵文字のZをソースコードに含めるのってあんまりやりたくないよね、でも\u{}形式を使いたくない……
   if (msg.content.includes('🇿')) {
-    promises.push(msg.reply('🇿 includes! 3'));
-  }
-  // エスケープシーケンス
-  if (msg.content.includes('\u{1f1ff}')) {
-    promises.push(msg.reply('\u{1f1ff} includes! 4'));
+    promises.push(msg.reply('🇿 includes!'));
   }
   const minepromises = MINES.flatMap((mine, index, array) => {
     var promises = [];
