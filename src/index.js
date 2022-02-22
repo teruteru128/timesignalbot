@@ -62,7 +62,7 @@ const data1 = new SlashCommandBuilder().setName().setDescription()
 // 全てのイベントにリスナーを設定する
 client.on('apiRequest', async request => { });
 client.on('apiResponse', async (request, response) => { });
-client.on('channelCreate', async channel => { });
+client.on('channelCreate', async channel => { console.log("channelCreate : %s, %sが作成されました", channel.name, channel.guild !== null && channel.guild.name !== null ? channel.guild.name : '\'?\''); });
 client.on('channelDelete', async channel => { });
 client.on('channelPinsUpdate', async (channel, time) => { });
 client.on('channelUpdate', async (oldChannel, newChannel) => { });
@@ -94,7 +94,6 @@ client.on('inviteCreate', async invite => { console.log('inviceCreate : %s', inv
 client.on('inviteDelete', async invite => { console.log('inviteDelete : %s', invite); });
 client.on('messageDelete', async message => {
   // 起動時より前に作成されたメッセージが削除されると、authorがnullになる？=>本当らしい
-  console.log('msg.author : %s', message.author !== null ? message.author.username : 'author is null');
   var logmsg = '';
   if (message.channel !== null)
     logmsg += `${message.channel.name}`;
@@ -180,7 +179,7 @@ const signal = now => {
     prefix = '月曜日';
   }
   var body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
-  new Promise.allSettled(list.map((v, i, a)=>client.channels.cache.get(v)).flatMap((v, i, a) => typeof v.send == 'function' ? [v.send(body)] : []));
+  new Promise.allSettled(list.map((v, i, a) => client.channels.cache.get(v)).flatMap((v, i, a) => typeof v.send == 'function' ? [v.send(body)] : []));
 };
 
 client.on('ready', async client => {
