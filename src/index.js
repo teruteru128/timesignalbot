@@ -99,21 +99,21 @@ client.on('messageDelete', async message => {
   if (message.channel !== null)
     logmsg += `${message.channel.name}`;
   else
-    logmsg += 'うーん？';
+    logmsg += '(message.channel is null)';
   if (message.inGuild()) {
     logmsg += `(${message.guild.name})`;
   }
-  logmsg += `で送信された`;
+  logmsg += `で送信された(`;
   if (message.author !== null) {
     if (message.author.username !== null)
-      logmsg += `(${message.author.username})`;
+      logmsg += `${message.author.username}`;
     else
-      logmsg += '(うんちー！)';
+      logmsg += 'message.author.username is null';
   }
   else {
-    logmsg += '(怒)';
+    logmsg += 'message.author is null';
   }
-  logmsg += `のメッセージが削除されました : ${message.content}`;
+  logmsg += `)のメッセージが削除されました : ${message.content}`;
   console.log(logmsg);
 });
 client.on('messageDeleteBulk', async messages => messages.forEach((v, k, m) => console.log(`削除されましたs : ${v}`)));
