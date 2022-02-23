@@ -197,6 +197,7 @@ client.on('ready', client => {
   // スラッシュコマンドをギルドに登録
   const promises = [];
   promises.push(client.application.commands.set(data, kakuninyou_test_guild_id));
+  promises.push(client.application.commands.set(data, tamokuteki_toire_guild_id));
   promises.push(client.application.commands.set(data, farm_server_guild_id));
   console.log(` ${client.user.username}(${client.user}, ${client.user.tag}) でログインしています。`);
   // 地雷起動時セットアップ
