@@ -196,9 +196,8 @@ const signal2 = now => {
 client.on('ready', client => {
   // スラッシュコマンドをギルドに登録
   const promises = [];
-  promises.push(client.application.commands.set(data, kakuninyou_test_guild_id));
-  promises.push(client.application.commands.set(data, tamokuteki_toire_guild_id));
-  promises.push(client.application.commands.set(data, farm_server_guild_id));
+  const guilds = [kakuninyou_test_guild_id, tamokuteki_toire_guild_id, farm_server_guild_id].map((v, i, a) => client.application.commands.set(data, v));
+  promises.splice(promises.list, 0, ...guilds);
   console.log(` ${client.user.username}(${client.user}, ${client.user.tag}) でログインしています。`);
   // 地雷起動時セットアップ
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
@@ -208,8 +207,8 @@ client.on('ready', client => {
   return Promise.allSettled(promises);
 });
 
-const INITIAL_CAT_LIST = ['にゃーん', '🐱', '🐈', '🐈‍⬛', '😿', '😻',
-  '😹', '😽', '😾', '🙀', '😸', '😺', '😼'];
+const INITIAL_CAT_LIST = ['にゃーん', 'にゃん', 'にゃ？', 'にゃ？', 'にゃおーん', 'フシーッ！', '🐱', '🐈', '🐈‍⬛', '😿', '😻',
+  '😹', '😽', '😾', '🙀', '😸', '😺', '😼', '🐾'];
 const GENBA_NEKO = ['ヨシ！', 'どうして……', 'どうして\n夜中に\n起きてるん\nですか？', 'ああああ！\nああああ！\nあああああ！あー！',
   'オレじゃない\nアイツがやった\nシらない\nスんだこと', 'なんだか\n知らんが\nとにかく\nヨシ！', '100万回死んだねこ',
   'え！！半分の人員で倍の仕事を！？', '弊社なら年内施工も可能です！', 'どうして自分が指定した時間にいないんですか:anger:',
