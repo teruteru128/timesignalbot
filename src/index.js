@@ -275,6 +275,7 @@ client.on('messageCreate', msg => {
   }
 
   const promises = [];
+  console.log('promises.length == %d', promises.length);
 
   if (msg.content === '#ping') {
     promises.push(msg.reply('Pong?'));
