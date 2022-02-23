@@ -232,7 +232,8 @@ client.on('interactionCreate', interaction => {
     const payload = interaction.options.getString('payload', false);
     // fetchReply プロパティはthenに返信メッセージを渡すフラグ
     promises.push(interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}` }));
-    promises.push(interaction.followUp(''));
+    if(interaction.guild !== null && interaction.guildId === kakuninyou_test_guild_id)
+      promises.push(interaction.followUp('うんちー！'));
     // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
     // interaction.followUp
     // interaction.channel.send();
