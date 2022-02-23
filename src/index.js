@@ -227,6 +227,7 @@ client.on('interactionCreate', interaction => {
   // インタラクション(スラッシュコマンド)受信
 
   const promises = [];
+  console.log('interactionCreate : promises.length == %d', promises.length);
 
   if (interaction.commandName === 'ping') {
     const payload = interaction.options.getString('payload', false);
@@ -275,7 +276,7 @@ client.on('messageCreate', msg => {
   }
 
   const promises = [];
-  console.log('promises.length == %d', promises.length);
+  console.log('messageCreate : promises.length == %d', promises.length);
 
   if (msg.content === '#ping') {
     promises.push(msg.reply('Pong?'));
