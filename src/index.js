@@ -215,7 +215,7 @@ const GENBA_NEKO = ['ヨシ！', 'どうして……', 'どうして\n夜中に\
   'え！！半分の人員で倍の仕事を！？', '弊社なら年内施工も可能です！', 'どうして自分が指定した時間にいないんですか:anger:',
   'よくわからんが、まぁ動いてるからヨシ！', '正月もGWもお盆も普通に働いていた奴らだ。面構えが違う。'];
 
-client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', interaction => {
   console.debug(`isApplicationCommand : ${interaction.isApplicationCommand()}, isAutocomplete : ${interaction.isAutocomplete()},` +
     ` isButton : ${interaction.isButton()}, isCommand: ${interaction.isCommand()}, isContextMenu: ${interaction.isContextMenu()},` +
     ` isMessageComponent(): ${interaction.isMessageComponent()}, isMessageContextMenu(): ${interaction.isMessageContextMenu()},` +
@@ -226,20 +226,26 @@ client.on('interactionCreate', async interaction => {
   }
   // インタラクション(スラッシュコマンド)受信
 
+  const promises = [];
+
   if (interaction.commandName === 'ping') {
     const payload = interaction.options.getString('payload', false);
     // fetchReply プロパティはthenに返信メッセージを渡すフラグ
-    await interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}` }).then(()=>interaction.followUp('うんちー！'));
+    var promise = interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}` });
     // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
     // then()の中で呼び出すのはあかんのか？
-    //await interaction.followUp('うんちー！');
+    // いけるっぽい
+    if (interaction.guildId === kakuninyou_test_guild_id) {
+      promise = promise.then(() => interaction.followUp('うんちー！'));
+    }
+    promises.push(promise);
     // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
     // interaction.followUp
     // interaction.channel.send();
   }
   if (interaction.commandName === 'nyanpass') {
-    await interaction.reply('まだ実装してないのん……');
-    await interaction.client.users.cache.get('310413442760572929').send('にゃんぱすー');
+    promises.push(interaction.reply('まだ実装してないのん……'));
+    promises.push(interaction.client.users.cache.get('310413442760572929').send('にゃんぱすー'));
   }
   if (interaction.commandName === 'neko') {
     const list_of_candidate_cats = [];
@@ -253,8 +259,9 @@ client.on('interactionCreate', async interaction => {
     GENBA_NEKO.forEach((v, i, a) => { if (Math.random() < 0.05) { list_of_candidate_cats.push(v); } });
     const CAT_WORK_LIST_LENGTH = list_of_candidate_cats.length;
     const chosen_cat = list_of_candidate_cats[Math.floor(Math.random() * CAT_WORK_LIST_LENGTH)];
-    await interaction.reply(chosen_cat);
+    promises.push(interaction.reply(chosen_cat));
   }
+  return Promise.allSettled(promises);
 });
 
 const YOUBI = ['月', '火', '水', '木', '金', '土', '日'];
