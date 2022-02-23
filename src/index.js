@@ -229,8 +229,10 @@ client.on('interactionCreate', async interaction => {
   if (interaction.commandName === 'ping') {
     const payload = interaction.options.getString('payload', false);
     // fetchReply プロパティはthenに返信メッセージを渡すフラグ
-    await interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}` });
-    await interaction.followUp('うんちー！');
+    await interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}` }).then(()=>interaction.followUp('うんちー！'));
+    // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
+    // then()の中で呼び出すのはあかんのか？
+    //await interaction.followUp('うんちー！');
     // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
     // interaction.followUp
     // interaction.channel.send();
