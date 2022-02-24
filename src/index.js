@@ -303,7 +303,6 @@ client.on('messageCreate', msg => {
   if (msg.content.includes('🇿')) {
     promises.push(msg.reply('🇿 includes!'));
   }
-  promises.splice(promises.length, 0, ...minepromises);
   MINES.reduce((p, c, i, a) => {
     if (msg.content.includes(c)) {
       p.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
