@@ -208,7 +208,7 @@ client.on('ready', client => {
   // 地雷起動時セットアップ
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
   // 時報セットアップ
-  cron.schedule('0 * * * * *', signal, { timezone: 'Asia/Tokyo' });
+  cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' });
   // cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
   return Promise.allSettled(promises);
 });
