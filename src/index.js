@@ -308,7 +308,11 @@ client.on('messageCreate', msg => {
     if (msg.content.includes(c)) {
       p.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
       if (msg.guildId === tamokuteki_toire_guild_id) {
-        p.push(msg.member.roles.add(msg.guild.roles.cache.get('844886159984558121')));
+        if (msg.member.roles.cache.has('844886159984558121')) {
+          p.push(msg.member.roles.add(msg.guild.roles.cache.get('844886159984558121')));
+        } else {
+          console.log('地雷を踏みましたが、地雷ロールがすでに割り当てられていたため、新たに割り当てられませんでした。');
+        }
       }
       // p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
     }
