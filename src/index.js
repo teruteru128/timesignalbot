@@ -187,7 +187,7 @@ const signal = now => {
     prefix = '月曜日';
   }
   var body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
-  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((v, i, a) => client.channels.cache.get(v)).reduce((p, c, i, a) => { if (typeof p.send == 'function') { p.push(c.send(body)); } return p; }, []));
+  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((v, i, a) => client.channels.cache.get(v)).reduce((p, c, i, a) => { if (typeof p.send == 'function') { console.log('c : %s', c.name); p.push(c.send(body)); } return p; }, []));
 };
 
 /**
@@ -208,7 +208,7 @@ client.on('ready', client => {
   // 地雷起動時セットアップ
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
   // 時報セットアップ
-  cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' });
+  cron.schedule('0 * * * * *', signal, { timezone: 'Asia/Tokyo' });
   // cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
   return Promise.allSettled(promises);
 });
