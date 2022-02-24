@@ -271,7 +271,7 @@ client.on('interactionCreate', interaction => {
   return Promise.allSettled(promises);
 });
 
-const YOUBI = ['月', '火', '水', '木', '金', '土', '日'];
+const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
 const SEX_PATTERN = /SEックス/i;
 const MINES = process.env.MINES.split(',');
 const MINE_ROLE_ID = '844886159984558121';
