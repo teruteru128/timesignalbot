@@ -189,21 +189,25 @@ const signal = now => {
   var body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
   new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((v, i, a) => client.channels.cache.get(v)).flatMap((v, i, a) => typeof v.send == 'function' ? [v.send(body)] : []));
 };
+
+/**
+ * 2022年2月22日22時22分22秒用コールバック
+ */
 const signal2 = now => {
   new Promise((res, rej) => client.channels.cache.get(tamokuteki_toire_text_channel_id).send('ねこtimeだよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'));
 };
 
+const SIGNAL_GUILD_ID_LIST = [kakuninyou_test_guild_id, tamokuteki_toire_guild_id, farm_server_guild_id];
 client.on('ready', client => {
   // スラッシュコマンドをギルドに登録
   const promises = [];
-  const guilds = [kakuninyou_test_guild_id, tamokuteki_toire_guild_id, farm_server_guild_id].map((v, i, a) => client.application.commands.set(data, v));
-  promises.splice(promises.list, 0, ...guilds);
+  SIGNAL_GUILD_ID_LIST.reduce((p, c, i, a) => { p.push(client.application.commands.set(data, c)); return p; }, promises);
   console.log(` ${client.user.username}(${client.user}, ${client.user.tag}) でログインしています。`);
   // 地雷起動時セットアップ
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
   // 時報セットアップ
   cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' });
-  cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
+  // cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
   return Promise.allSettled(promises);
 });
 
@@ -255,7 +259,7 @@ client.on('interactionCreate', interaction => {
     if (Math.random() < 0.001) {
       list_of_candidate_cats.push('ねこですよろしくおねがいします');
     }
-    GENBA_NEKO.forEach((v, i, a) => { if (Math.random() < 0.05) { list_of_candidate_cats.push(v); } });
+    GENBA_NEKO.reduce((p, c, i, a) => { if (Math.random() < 0.05) { p.push(c); } return p; }, list_of_candidate_cats);
     const CAT_WORK_LIST_LENGTH = list_of_candidate_cats.length;
     const chosen_cat = list_of_candidate_cats[Math.floor(Math.random() * CAT_WORK_LIST_LENGTH)];
     promises.push(interaction.reply(chosen_cat));
@@ -299,19 +303,17 @@ client.on('messageCreate', msg => {
   if (msg.content.includes('🇿')) {
     promises.push(msg.reply('🇿 includes!'));
   }
-  const minepromises = MINES.flatMap((mine, index, array) => {
-    var promises = [];
-    if (msg.content.includes(mine)) {
-      promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
-      if (msg.guildId === '795353457996595200') {
-        mine_role = msg.guild.roles.cache.get('844886159984558121');
-        promises.push(msg.member.roles.add(mine_role));
-      }
-      // promises.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
-    }
-    return promises;
-  });
   promises.splice(promises.length, 0, ...minepromises);
+  MINES.reduce((p, c, i, a) => {
+    if (msg.content.includes(c)) {
+      p.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
+      if (msg.guildId === tamokuteki_toire_guild_id) {
+        p.push(msg.member.roles.add(msg.guild.roles.cache.get('844886159984558121')));
+      }
+      // p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
+    }
+    return p;
+  }, promises);
   if (SEX_PATTERN.test(msg.content)) {
     promises.push(msg.reply('やめないか！'));
   }
