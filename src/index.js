@@ -309,9 +309,9 @@ client.on('messageCreate', msg => {
       console.log('地雷を踏みました');
       if (msg.guildId === tamokuteki_toire_guild_id) {
         console.log('便器民が地雷を踏みました');
-        if (msg.member.roles.cache.has('844886159984558121')) {
-          console.log('地雷を踏んだため、地雷ロールが新たに割り当てられました。');
+        if (!msg.member.roles.cache.has('844886159984558121')) {
           p.push(msg.member.roles.add(msg.guild.roles.cache.get('844886159984558121')));
+          console.log('地雷を踏んだため、地雷ロールが新たに割り当てられました。');
         } else {
           console.log('地雷を踏みましたが、地雷ロールがすでに割り当てられていたため、新たに割り当てられませんでした。');
         }
