@@ -192,9 +192,11 @@ const signal = now => {
 
 /**
  * 2022年2月22日22時22分22秒用コールバック
+ * XXX: このコールバックだけ引数にclientがないの気持ち悪いよね
  */
 const signal2 = now => {
-  new Promise((res, rej) => client.channels.cache.get(tamokuteki_toire_text_channel_id).send('ねこtimeだよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'));
+  new Promise((res, rej) => client.channels.cache.get(tamokuteki_toire_text_channel_id))
+    .then(channel => channel.send('ねこtimeだよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'));
 };
 
 const SIGNAL_GUILD_ID_LIST = [kakuninyou_test_guild_id, tamokuteki_toire_guild_id, farm_server_guild_id];
