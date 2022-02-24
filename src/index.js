@@ -187,7 +187,7 @@ const signal = now => {
     prefix = '月曜日';
   }
   var body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
-  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((v, i, a) => client.channels.cache.get(v)).reduce((p, c, i, a) => { if (typeof p.send == 'function') { console.log('c : %s', c.name); p.push(c.send(body)); } return p; }, []));
+  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((v, i, a) => client.channels.cache.get(v)).reduce((p, c, i, a) => { if (typeof c.send == 'function') { p.push(c.send(body)); } return p; }, []));
 };
 
 /**
