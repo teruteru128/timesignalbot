@@ -270,6 +270,7 @@ client.on('interactionCreate', interaction => {
 const YOUBI = ['月', '火', '水', '木', '金', '土', '日'];
 const SEX_PATTERN = /SEックス/i;
 const MINES = process.env.MINES.split(',');
+const MINE_ROLE_ID = '844886159984558121';
 
 client.on('messageCreate', msg => {
   if (msg.author.bot) return; //BOTのメッセージには反応しない
@@ -306,15 +307,9 @@ client.on('messageCreate', msg => {
   MINES.reduce((p, c, i, a) => {
     if (msg.content.includes(c)) {
       p.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
-      console.log('地雷を踏みました');
-      if (msg.guildId === tamokuteki_toire_guild_id) {
-        console.log('便器民が地雷を踏みました');
-        if (!msg.member.roles.cache.has('844886159984558121')) {
-          p.push(msg.member.roles.add(msg.guild.roles.cache.get('844886159984558121')));
-          console.log('地雷を踏んだため、地雷ロールが新たに割り当てられました。');
-        } else {
-          console.log('地雷を踏みましたが、地雷ロールがすでに割り当てられていたため、新たに割り当てられませんでした。');
-        }
+      if (msg.guildId === tamokuteki_toire_guild_id && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
+        // 便器民かつ地雷ロールを割り当てられていない
+        p.push(msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID)));
       }
       // p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
     }
