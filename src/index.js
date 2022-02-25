@@ -270,7 +270,7 @@ client.on('interactionCreate', interaction => {
     if (random.nextFloat() < 0.25) {
       list_of_candidate_cats.push('(\\*´ω`\\*)にゃ～ん❤');
     }
-    GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (nextFloat() < 0.05) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
+    GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.05) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
     const CAT_WORK_LIST_LENGTH = list_of_candidate_cats.length;
     const chosen_cat = list_of_candidate_cats[random.nextInt(CAT_WORK_LIST_LENGTH)];
     promises.push(interaction.reply(chosen_cat));
