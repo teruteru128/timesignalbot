@@ -265,7 +265,7 @@ client.on('interactionCreate', interaction => {
       list_of_candidate_cats.push('ねこですよろしくおねがいします');
     }
     if (Math.random() < 0.25) {
-      list_of_candidate_cats.push('(*´ω`*)にゃ～ん❤');
+      list_of_candidate_cats.push('(\\*´ω`\\*)にゃ～ん❤');
     }
     GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (Math.random() < 0.05) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
     const CAT_WORK_LIST_LENGTH = list_of_candidate_cats.length;
