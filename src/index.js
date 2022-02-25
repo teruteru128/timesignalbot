@@ -245,6 +245,14 @@ client.on('ready', client => {
   SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' }));
   // cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
   // crypto.getCiphers().forEach((cipher, i, a) => console.log(cipher));
+  console.log(nextFloat());
+  console.log(nextFloat());
+  console.log(nextFloat());
+  console.log(nextFloat());
+  console.log(nextFloat());
+  console.log(nextInt(8));
+  console.log(nextInt(8));
+  console.log(nextInt(8));
   return Promise.allSettled(promises);
 });
 
