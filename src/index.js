@@ -189,7 +189,7 @@ const signal = now => {
   }
   // build signal message
   var body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
-  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((v, i, a) => client.channels.cache.get(v)).reduce((p, c, i, a) => { if (typeof c.send == 'function') { p.push(c.send(body)); } return p; }, []));
+  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((channelId, i, a) => client.channels.cache.get(channelId)).reduce((promises, channel, i, a) => { if (typeof channel.send == 'function') { promises.push(channel.send(body)); } return promises; }, []));
 };
 
 /**
@@ -205,7 +205,7 @@ const SIGNAL_GUILD_ID_LIST = [kakuninyou_test_guild_id, tamokuteki_toire_guild_i
 client.on('ready', client => {
   // スラッシュコマンドをギルドに登録
   const promises = [];
-  SIGNAL_GUILD_ID_LIST.reduce((p, c, i, a) => { p.push(client.application.commands.set(data, c)); return p; }, promises);
+  SIGNAL_GUILD_ID_LIST.reduce((promises, guildId, i, a) => { promises.push(client.application.commands.set(data, guildId)); return promises; }, promises);
   console.log(` ${client.user.username}(${client.user}, ${client.user.tag}) でログインしています。`);
   // 地雷起動時セットアップ
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
@@ -263,7 +263,7 @@ client.on('interactionCreate', interaction => {
     if (Math.random() < 0.001) {
       list_of_candidate_cats.push('ねこですよろしくおねがいします');
     }
-    GENBA_NEKO.reduce((p, c, i, a) => { if (Math.random() < 0.05) { p.push(c); } return p; }, list_of_candidate_cats);
+    GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (Math.random() < 0.05) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
     const CAT_WORK_LIST_LENGTH = list_of_candidate_cats.length;
     const chosen_cat = list_of_candidate_cats[Math.floor(Math.random() * CAT_WORK_LIST_LENGTH)];
     promises.push(interaction.reply(chosen_cat));
@@ -308,16 +308,16 @@ client.on('messageCreate', msg => {
   if (msg.content.includes('🇿')) {
     promises.push(msg.reply('🇿 includes!'));
   }
-  MINES.reduce((p, c, i, a) => {
-    if (msg.content.includes(c)) {
-      p.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
+  MINES.reduce((promises, mine, i, a) => {
+    if (msg.content.includes(mine)) {
+      promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
       if (msg.guildId === tamokuteki_toire_guild_id && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
         // 便器民かつ地雷ロールを割り当てられていない
-        p.push(msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID)));
+        promises.push(msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID)));
       }
       // p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
     }
-    return p;
+    return promises;
   }, promises);
   if (SEX_PATTERN.test(msg.content)) {
     promises.push(msg.reply('やめないか！'));
