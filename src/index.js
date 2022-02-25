@@ -169,6 +169,7 @@ const data = [{
 // https://github.com/openjdk/jdk/blob/739769c8fc4b496f08a92225a12d07414537b6c0/src/java.base/share/classes/java/util/Random.java#L324
 function nextInt(bound) {
   if (arguments.length < 1) {
+    // crypto.getRandomValues() は node v17.4.0 から使用可能
     return crypto.webcrypto.getRandomValues(new Int32Array(1))[0];
   } else {
     if (bound <= 0) {
@@ -243,6 +244,7 @@ client.on('ready', client => {
   // 時報セットアップ
   SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' }));
   // cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
+  console.log(crypto.getCiphers());
   return Promise.allSettled(promises);
 });
 
