@@ -180,9 +180,9 @@ function nextInt(bound) {
     var array = new Int32Array(1);
     crypto.webcrypto.getRandomValues(array);
     var r = array[0] >>> 1;
-    var m = r - 1;
+    var m = bound - 1;
     if ((bound & m) == 0)
-      r = (bound * r) >>> 31;
+      r = Number(BigInt.asIntN(32, (BigInt(bound) * BigInt(r)) >> 31));
     else {
       for (var u = r; u - (r = u % bound) + m < 0; u = (crypto.webcrypto.getRandomValues(array)[0] >>> 1));
     }
