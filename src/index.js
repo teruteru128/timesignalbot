@@ -244,7 +244,7 @@ client.on('ready', client => {
   // 時報セットアップ
   SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' }));
   // cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
-  console.log(crypto.getCiphers());
+  crypto.getCiphers().forEach((cipher, i, a) => console.log(cipher));
   return Promise.allSettled(promises);
 });
 
