@@ -179,12 +179,12 @@ function nextInt(bound) {
     // FIXME: 呼び出されるたびにarrayが生成されるのはもったいなくない？=>乱数がArray経由でしか取得できないからなんとも……
     var array = new Int32Array(1);
     crypto.webcrypto.getRandomValues(array);
-    var r = array[0] >> 1;
+    var r = array[0] >>> 1;
     var m = r - 1;
     if ((bound & m) == 0)
-      r = (bound * r) >> 31;
+      r = (bound * r) >>> 31;
     else {
-      for (var u = r; u - (r = u % bound) + m < 0; u = (crypto.webcrypto.getRandomValues(array)[0] >> 1));
+      for (var u = r; u - (r = u % bound) + m < 0; u = (crypto.webcrypto.getRandomValues(array)[0] >>> 1));
     }
     return r;
   }
@@ -192,7 +192,7 @@ function nextInt(bound) {
 
 // https://github.com/openjdk/jdk/blob/739769c8fc4b496f08a92225a12d07414537b6c0/src/java.base/share/classes/java/util/Random.java#L425
 function nextFloat() {
-  return (crypto.webcrypto.getRandomValues(new Int32Array(1))[0] >> 8) / (1 << 24);
+  return (crypto.webcrypto.getRandomValues(new Int32Array(1))[0] >>> 8) / (1 << 24);
 }
 
 const kakuninyou_test_guild_id = '879315010218774528';
