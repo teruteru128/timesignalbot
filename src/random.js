@@ -5,6 +5,7 @@ const crypto = require('crypto');
 function nextInt(bound) {
   if (arguments.length < 1) {
     // crypto.getRandomValues() は node v17.4.0 から使用可能
+    // crypto.webcrypto.getRandomValues() は node v15.0.0 から使用可能
     return crypto.webcrypto.getRandomValues(new Int32Array(1))[0];
   } else {
     if (bound <= 0) {
