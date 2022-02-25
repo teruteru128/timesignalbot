@@ -5,6 +5,7 @@
 */
 const { Client, Intents, TextChannel, DMChannel, ThreadChannel } = require('discord.js');
 const cron = require('node-cron');
+const crypto = require('crypto');
 const builders = require('@discordjs/builders');
 const { SlashCommandBuilder } = builders;
 const client = new Client({
