@@ -48,6 +48,7 @@ new Promise(async (resolve, reject) => {
     console.log(result.rows[0]); // Hello world! */
     resolve();
   } catch (error) {
+    console.error(error);
     reject(error);
   } finally {
     client.release();
@@ -164,6 +165,34 @@ const data = [{
   optins: []
 }];
 
+// https://github.com/openjdk/jdk/blob/739769c8fc4b496f08a92225a12d07414537b6c0/src/java.base/share/classes/java/util/Random.java#L324
+function nextInt(bound) {
+  if (arguments.length < 1) {
+    return crypto.getRandomValues(new Int32Array(1))[0];
+  } else {
+    if (bound <= 0) {
+      throw 'bound must be positive';
+    }
+
+    // FIXME: 呼び出されるたびにarrayが生成されるのはもったいなくない？=>乱数がArray経由でしか取得できないからなんとも……
+    var array = new Int32Array(1);
+    crypto.getRandomValues(array);
+    var r = array[0] >> 1;
+    var m = r - 1;
+    if ((bound & m) == 0)
+      r = (bound * r) >> 31;
+    else {
+      for (var u = r; u - (r = u % bound) + m < 0; u = (crypto.getRandomValues(array)[0] >> 1));
+    }
+    return r;
+  }
+}
+
+// https://github.com/openjdk/jdk/blob/739769c8fc4b496f08a92225a12d07414537b6c0/src/java.base/share/classes/java/util/Random.java#L425
+function nextFloat() {
+  return (crypto.getRandomValues(new Int32Array(1))[0] >> 8) / (1 << 24);
+}
+
 const kakuninyou_test_guild_id = '879315010218774528';
 const tamokuteki_toire_guild_id = '795353457996595200';
 const farm_server_guild_id = '572150608283566090';
@@ -188,7 +217,7 @@ const signal = now => {
     prefix = '月曜日';
   }
   // build signal message
-  var body = prefix + 'だよハルト' + 'オ'.repeat(40 + Math.floor(Math.random() * 60));
+  var body = prefix + 'だよハルト' + 'オ'.repeat(40 + nextInt(60));
   new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((channelId, i, a) => client.channels.cache.get(channelId)).reduce((promises, channel, i, a) => { if (typeof channel.send == 'function') { promises.push(channel.send(body)); } return promises; }, []));
 };
 
@@ -258,18 +287,18 @@ client.on('interactionCreate', interaction => {
   if (interaction.commandName === 'neko') {
     const list_of_candidate_cats = [];
     list_of_candidate_cats.splice(list_of_candidate_cats.length, 0, ...INITIAL_CAT_LIST);
-    if (Math.random() < 0.000001) {
+    if (nextFloat() < 0.000001) {
       list_of_candidate_cats.push(Buffer.from('44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb', 'base64').toString());
     }
-    if (Math.random() < 0.001) {
+    if (nextFloat() < 0.001) {
       list_of_candidate_cats.push('ねこですよろしくおねがいします');
     }
-    if (Math.random() < 0.25) {
+    if (nextFloat() < 0.25) {
       list_of_candidate_cats.push('(\\*´ω`\\*)にゃ～ん❤');
     }
-    GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (Math.random() < 0.05) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
+    GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (nextFloat() < 0.05) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
     const CAT_WORK_LIST_LENGTH = list_of_candidate_cats.length;
-    const chosen_cat = list_of_candidate_cats[Math.floor(Math.random() * CAT_WORK_LIST_LENGTH)];
+    const chosen_cat = list_of_candidate_cats[nextInt(CAT_WORK_LIST_LENGTH)];
     promises.push(interaction.reply(chosen_cat));
   }
   return Promise.allSettled(promises);
