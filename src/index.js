@@ -202,6 +202,7 @@ const signal2 = now => {
 };
 
 const SIGNAL_GUILD_ID_LIST = [kakuninyou_test_guild_id, tamokuteki_toire_guild_id, farm_server_guild_id];
+const SIGNAL_SCHEDULES = [];
 client.on('ready', client => {
   // スラッシュコマンドをギルドに登録
   const promises = [];
@@ -210,7 +211,7 @@ client.on('ready', client => {
   // 地雷起動時セットアップ
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
   // 時報セットアップ
-  cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' });
+  SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' }));
   // cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
   return Promise.allSettled(promises);
 });
@@ -262,6 +263,9 @@ client.on('interactionCreate', interaction => {
     }
     if (Math.random() < 0.001) {
       list_of_candidate_cats.push('ねこですよろしくおねがいします');
+    }
+    if (Math.random() < 0.25) {
+      list_of_candidate_cats.push('(*´ω`*)にゃ～ん❤');
     }
     GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (Math.random() < 0.05) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
     const CAT_WORK_LIST_LENGTH = list_of_candidate_cats.length;
