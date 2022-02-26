@@ -219,12 +219,14 @@ client.on('ready', client => {
   return Promise.allSettled(promises);
 });
 
-const INITIAL_CAT_LIST = ['にゃーん', 'にゃん', 'にゃ？', 'にゃん？', 'にゃおーん', 'フシーッ！', '🐱', '🐈', '🐈‍⬛', '😿', '😻',
-  '😹', '😽', '😾', '🙀', '😸', '😺', '😼', '🐾'];
+const INITIAL_CAT_LIST = ['にゃーん', 'にゃん', 'にゃ？', 'にゃん？', 'にゃおーん', 'フシーッ！'];
+const CAT_EMOJIS = ['🐱', '🐈', '🐈‍⬛', '😿', '😻', '😹', '😽', '😾', '🙀', '😸', '😺', '😼', '🐾'];
 const GENBA_NEKO = ['ヨシ！', 'どうして……', 'どうして\n夜中に\n起きてるん\nですか？', 'ああああ！\nああああ！\nあああああ！あー！',
   'オレじゃない\nアイツがやった\nシらない\nスんだこと', 'なんだか\n知らんが\nとにかく\nヨシ！', '100万回死んだねこ',
   'え！！半分の人員で倍の仕事を！？', '弊社なら年内施工も可能です！', 'どうして自分が指定した時間にいないんですか:anger:',
   'よくわからんが、まぁ動いてるからヨシ！', '正月もGWもお盆も普通に働いていた奴らだ。面構えが違う。'];
+
+const A = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb';
 
 client.on('interactionCreate', interaction => {
   console.debug(`isApplicationCommand : ${interaction.isApplicationCommand()}, isAutocomplete : ${interaction.isAutocomplete()},` +
@@ -262,7 +264,7 @@ client.on('interactionCreate', interaction => {
     const list_of_candidate_cats = [];
     list_of_candidate_cats.splice(list_of_candidate_cats.length, 0, ...INITIAL_CAT_LIST);
     if (random.nextFloat() < 0.000001) {
-      list_of_candidate_cats.push(Buffer.from('44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb', 'base64').toString());
+      list_of_candidate_cats.push(Buffer.from(A, 'base64').toString());
     }
     if (random.nextFloat() < 0.001) {
       list_of_candidate_cats.push('ねこですよろしくおねがいします');
@@ -270,9 +272,9 @@ client.on('interactionCreate', interaction => {
     if (random.nextFloat() < 0.25) {
       list_of_candidate_cats.push('(\\*´ω`\\*)にゃ～ん❤');
     }
-    GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.05) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
-    const CAT_WORK_LIST_LENGTH = list_of_candidate_cats.length;
-    const chosen_cat = list_of_candidate_cats[random.nextInt(CAT_WORK_LIST_LENGTH)];
+    CAT_EMOJIS.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.25) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
+    GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.1015625) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
+    const chosen_cat = list_of_candidate_cats[random.nextInt(list_of_candidate_cats.length)];
     promises.push(interaction.reply(chosen_cat));
   }
   return Promise.allSettled(promises);
