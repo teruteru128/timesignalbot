@@ -24,6 +24,10 @@ describe('nextInt', () => {
         assert(-2147483648 <= a && a <= 2147483647, `a is ${a}`);
     });
 
+    it('negative bounds', () => {
+        assert.throws(() => random.nextInt(-1));
+    });
+
     it('bound is not a power of 2', () => {
         let a = random.nextInt(1023);
         assert(0 <= a && a < 1023, `a is ${a}`);
