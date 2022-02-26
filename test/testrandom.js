@@ -7,7 +7,7 @@ const random = require('../src/random');
 
 it('nextFloat', () => {
     var a = random.nextFloat();
-    assert(0 <= a && a < 1);
+    assert(0 <= a && a < 1, `a is ${a}`);
 });
 
 it('nextInt 1', () => {
