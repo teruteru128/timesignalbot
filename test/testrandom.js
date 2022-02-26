@@ -31,7 +31,8 @@ describe('nextInt', () => {
 
     it('too many arguments', () => {
         // TODO: 引数が多すぎるときはどうすべきか？
-        //assert.throws(() => random.nextInt(12, 13));
+        let a = random.nextInt(12, 13);
+        assert(0 <= a && a < 12);
     });
 
     it('bound is not a power of 2', () => {
