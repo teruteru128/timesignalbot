@@ -29,4 +29,9 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
-    - run: npm run bench
+    - run: npm run bench | tee output.txt
+    - name: Store benchmark result
+      uses: benchmark-action/github-action-benchmark@v1
+      with:
+        tool: 'benchmarkjs'
+        output-file-path: output.txt
