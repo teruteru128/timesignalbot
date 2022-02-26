@@ -34,5 +34,16 @@ function nextFloat() {
   return (crypto.webcrypto.getRandomValues(new Int32Array(1))[0] >>> 8) / (1 << 24);
 }
 
+/* 
+const DOUBLE_UNIT = 1.0 / (1 << 53);
+
+// https://github.com/openjdk/jdk/blob/739769c8fc4b496f08a92225a12d07414537b6c0/src/java.base/share/classes/java/util/Random.java#L466
+// JavaScript では安全に64bit整数を Number に変換できないため nextDouble を実装することが不可能
+function nextDouble() {
+  var buffer = crypto.webcrypto.getRandomValues(new Int32Array(2));
+  return Number(BigInt.asIntN(64, (BigInt(buffer[0] >>> 6) << 27n) + BigInt(buffer[1] >>> 5))) * DOUBLE_UNIT;
+}
+ */
+
 module.exports.nextInt = nextInt;
 module.exports.nextFloat = nextFloat;
