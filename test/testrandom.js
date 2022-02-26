@@ -12,15 +12,15 @@ it('nextFloat', () => {
 
 it('nextInt 1', () => {
     var a = random.nextInt();
-    assert(-2147483648 <= a && a <= 2147483647);
+    assert(-2147483648 <= a && a <= 2147483647, `a is ${a}`);
 });
 
 it('nextInt 2', () => {
     var a = random.nextInt(1023);
-    assert(0 <= a && a < 1024);
+    assert(0 <= a && a < 1024, `a is ${a}`);
 });
 
 it('nextInt 3', () => {
     var a = random.nextInt(1024);
-    assert(0 <= a && a < 1024);
+    assert(0 <= a && a < 1024, `a is ${a}`);
 });
