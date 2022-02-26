@@ -13,14 +13,14 @@ function nextInt(bound) {
     }
 
     // FIXME: 呼び出されるたびにarrayが生成されるのはもったいなくない？=>乱数がArray経由でしか取得できないからなんとも……
-    var array = new Int32Array(1);
+    let array = new Int32Array(1);
     crypto.webcrypto.getRandomValues(array);
-    var r = array[0] >>> 1;
-    var m = bound - 1;
+    let r = array[0] >>> 1;
+    let m = bound - 1;
     if ((bound & m) == 0)
       r = Number(BigInt.asIntN(32, (BigInt(bound) * BigInt(r)) >> 31n));
     else {
-      for (var u = r; u - (r = u % bound) + m < 0; u = (crypto.webcrypto.getRandomValues(array)[0] >>> 1));
+      for (let u = r; u - (r = u % bound) + m < 0; u = (crypto.webcrypto.getRandomValues(array)[0] >>> 1));
     }
     return r;
   }
@@ -41,7 +41,7 @@ const DOUBLE_UNIT = 1.0 / (1 << 53);
 // JavaScript では安全に 64bi t整数を Number に変換できないため nextDouble を実装することが不可能
 // double に変換してからシフトして加算するか？=>まずDOUBLE_UNITをNumberで表現できないので不可
 function nextDouble() {
-  var buffer = crypto.webcrypto.getRandomValues(new Int32Array(2));
+  let buffer = crypto.webcrypto.getRandomValues(new Int32Array(2));
   return Number(BigInt.asIntN(64, (BigInt(buffer[0] >>> 6) << 27n) + BigInt(buffer[1] >>> 5))) * DOUBLE_UNIT;
 }
  */

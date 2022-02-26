@@ -96,7 +96,7 @@ client.on('inviteCreate', async invite => { console.log('inviceCreate : %s', inv
 client.on('inviteDelete', async invite => { console.log('inviteDelete : %s', invite); });
 client.on('messageDelete', async message => {
   // 起動時より前に作成されたメッセージが削除されると、authorがnullになる？=>本当らしい
-  var logmsg = '';
+  let logmsg = '';
   if (message.channel !== null)
     logmsg += `${message.channel.name}`;
   else
@@ -177,10 +177,10 @@ const SIGNALING_TEXT_CHANNEL_LIST = [tamokuteki_toire_text_channel_id, syoki_spa
 const signal = now => {
   // やっぱり時代はリスト処理なんかねえ？
   /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24), GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
-  var prefix = '真夜中';
-  var date = now.getDate();
-  var month = now.getMonth();
-  var day = now.getDay();
+  let prefix = '真夜中';
+  let date = now.getDate();
+  let month = now.getMonth();
+  let day = now.getDay();
   // choose prefix
   if (date == 1) {
     prefix = (date + 1) + '月';
@@ -190,7 +190,7 @@ const signal = now => {
     prefix = '月曜日';
   }
   // build signal message
-  var body = prefix + 'だよハルト' + 'オ'.repeat(40 + random.nextInt(60));
+  let body = prefix + 'だよハルト' + 'オ'.repeat(40 + random.nextInt(60));
   new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((channelId, i, a) => client.channels.cache.get(channelId)).reduce((promises, channel, i, a) => { if (typeof channel.send == 'function') { promises.push(channel.send(body)); } return promises; }, []));
 };
 
@@ -244,7 +244,7 @@ client.on('interactionCreate', interaction => {
   if (interaction.commandName === 'ping') {
     const payload = interaction.options.getString('payload', false);
     // fetchReply プロパティはthenに返信メッセージを渡すフラグ
-    var promise = interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}` });
+    let promise = interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}` });
     // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
     // then()の中で呼び出すのはあかんのか？
     // いけるっぽい
@@ -338,7 +338,7 @@ client.on('messageCreate', msg => {
   if (msg.content === 'やったぜ。' || msg.content === 'やりましたわ。' || msg.content === 'やったわ。') {
     // https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97#JST%20%E3%81%8C%E9%81%B8%E6%8A%9E%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E5%A0%B4%E5%90%88
     // https://web.archive.org/web/20211114034218/https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97
-    var now = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
+    let now = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
     promises.push(msg.channel.send(`投稿者：${msg.member.displayName} （${now.getMonth() + 1}月${now.getDate()}日（${YOUBI[now.getDay()]}）` +
       `${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`));
   }
