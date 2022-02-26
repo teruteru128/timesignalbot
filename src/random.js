@@ -38,7 +38,8 @@ function nextFloat() {
 const DOUBLE_UNIT = 1.0 / (1 << 53);
 
 // https://github.com/openjdk/jdk/blob/739769c8fc4b496f08a92225a12d07414537b6c0/src/java.base/share/classes/java/util/Random.java#L466
-// JavaScript では安全に64bit整数を Number に変換できないため nextDouble を実装することが不可能
+// JavaScript では安全に 64bi t整数を Number に変換できないため nextDouble を実装することが不可能
+// double に変換してからシフトして加算するか？=>まずDOUBLE_UNITをNumberで表現できないので不可
 function nextDouble() {
   var buffer = crypto.webcrypto.getRandomValues(new Int32Array(2));
   return Number(BigInt.asIntN(64, (BigInt(buffer[0] >>> 6) << 27n) + BigInt(buffer[1] >>> 5))) * DOUBLE_UNIT;
