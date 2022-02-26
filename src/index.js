@@ -166,14 +166,14 @@ const data = [{
   optins: []
 }];
 
-const kakuninyou_test_guild_id = '879315010218774528';
-const tamokuteki_toire_guild_id = '795353457996595200';
-const farm_server_guild_id = '572150608283566090';
+const KAKUNINYOU_TEST_GUILD_ID = '879315010218774528';
+const TAMOKUTEKI_TOIRE_GUILD_ID = '795353457996595200';
+const FARM_SERVER_GUILD_ID = '572150608283566090';
 
-const test_server_general_id = '879315010218774531';
-const tamokuteki_toire_text_channel_id = '796357249743585290';
-const syoki_spawn_text_channel_id = '572151278428225537';
-const SIGNALING_TEXT_CHANNEL_LIST = [tamokuteki_toire_text_channel_id, syoki_spawn_text_channel_id];
+const TEST_SERVER_GENERAL_ID = '879315010218774531';
+const TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID = '796357249743585290';
+const SYOKI_SPAWN_TEXT_CHANNEL_ID = '572151278428225537';
+const SIGNALING_TEXT_CHANNEL_LIST = [TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID, SYOKI_SPAWN_TEXT_CHANNEL_ID];
 const signal = now => {
   // やっぱり時代はリスト処理なんかねえ？
   /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24), GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
@@ -199,11 +199,11 @@ const signal = now => {
  * XXX: このコールバックだけ引数にclientがないの気持ち悪いよね
  */
 const signal2 = now => {
-  new Promise((res, rej) => client.channels.cache.get(tamokuteki_toire_text_channel_id))
+  new Promise((res, rej) => client.channels.cache.get(TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID))
     .then(channel => channel.send('ねこtimeだよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'));
 };
 
-const SIGNAL_GUILD_ID_LIST = [kakuninyou_test_guild_id, tamokuteki_toire_guild_id, farm_server_guild_id];
+const SIGNAL_GUILD_ID_LIST = [KAKUNINYOU_TEST_GUILD_ID, TAMOKUTEKI_TOIRE_GUILD_ID, FARM_SERVER_GUILD_ID];
 const SIGNAL_SCHEDULES = [];
 client.on('ready', client => {
   // スラッシュコマンドをギルドに登録
@@ -248,7 +248,7 @@ client.on('interactionCreate', interaction => {
     // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
     // then()の中で呼び出すのはあかんのか？
     // いけるっぽい
-    if (interaction.guildId === kakuninyou_test_guild_id) {
+    if (interaction.guildId === KAKUNINYOU_TEST_GUILD_ID) {
       promise = promise.then(() => interaction.followUp('うんちー！'));
     }
     promises.push(promise);
@@ -261,21 +261,21 @@ client.on('interactionCreate', interaction => {
     promises.push(interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`));
   }
   if (interaction.commandName === 'neko') {
-    const list_of_candidate_cats = [];
-    list_of_candidate_cats.splice(list_of_candidate_cats.length, 0, ...INITIAL_CAT_LIST);
+    const LIST_OF_CANDIDATE_CATS = [];
+    LIST_OF_CANDIDATE_CATS.splice(LIST_OF_CANDIDATE_CATS.length, 0, ...INITIAL_CAT_LIST);
     if (random.nextFloat() < 0.000001) {
-      list_of_candidate_cats.push(Buffer.from(A, 'base64').toString());
+      LIST_OF_CANDIDATE_CATS.push(Buffer.from(A, 'base64').toString());
     }
     if (random.nextFloat() < 0.001) {
-      list_of_candidate_cats.push('ねこですよろしくおねがいします');
+      LIST_OF_CANDIDATE_CATS.push('ねこですよろしくおねがいします');
     }
     if (random.nextFloat() < 0.25) {
-      list_of_candidate_cats.push('(\\*´ω`\\*)にゃ～ん❤');
+      LIST_OF_CANDIDATE_CATS.push('(\\*´ω`\\*)にゃ～ん❤');
     }
-    CAT_EMOJIS.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.25) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
-    GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.1015625) { candiCatsList.push(candiCat); } return candiCatsList; }, list_of_candidate_cats);
-    const chosen_cat = list_of_candidate_cats[random.nextInt(list_of_candidate_cats.length)];
-    promises.push(interaction.reply(chosen_cat));
+    CAT_EMOJIS.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.25) { candiCatsList.push(candiCat); } return candiCatsList; }, LIST_OF_CANDIDATE_CATS);
+    GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.1015625) { candiCatsList.push(candiCat); } return candiCatsList; }, LIST_OF_CANDIDATE_CATS);
+    const CHOSEN_CAT = LIST_OF_CANDIDATE_CATS[random.nextInt(LIST_OF_CANDIDATE_CATS.length)];
+    promises.push(interaction.reply(CHOSEN_CAT));
   }
   return Promise.allSettled(promises);
 });
@@ -305,11 +305,11 @@ client.on('messageCreate', msg => {
   if (msg.content.startsWith('!test') || msg.content.includes('console.print')) {
     console.info('%s', msg.content);
   }
-  if (msg.guildId === kakuninyou_test_guild_id && msg.content.startsWith('!pumpkin')) {
+  if (msg.guildId === KAKUNINYOU_TEST_GUILD_ID && msg.content.startsWith('!pumpkin')) {
     // 反省を促す
     promises.push(msg.reply('<:hansei:940458171309383710>'));
   }
-  if (msg.guildId === kakuninyou_test_guild_id && msg.content.includes('<:hansei:940458171309383710>')) {
+  if (msg.guildId === KAKUNINYOU_TEST_GUILD_ID && msg.content.includes('<:hansei:940458171309383710>')) {
     // 反省を促す
     promises.push(msg.reply('||https://www.nicovideo.jp/watch/sm38736861||'));
   }
@@ -320,7 +320,7 @@ client.on('messageCreate', msg => {
   MINES.reduce((promises, mine, i, a) => {
     if (msg.content.includes(mine)) {
       promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
-      if (msg.guildId === tamokuteki_toire_guild_id && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
+      if (msg.guildId === TAMOKUTEKI_TOIRE_GUILD_ID && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
         // 便器民かつ地雷ロールを割り当てられていない
         promises.push(msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID)));
       }
