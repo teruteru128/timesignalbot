@@ -258,7 +258,7 @@ client.on('interactionCreate', interaction => {
   }
   if (interaction.commandName === 'nyanpass') {
     promises.push(interaction.reply('にゃんぱすー！'));
-    promises.push(interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name} でにゃんぱすーしたのん！`));
+    promises.push(interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? `${interaction.channel.guild.name}` : 'DM'}) でにゃんぱすーしたのん！`));
   }
   if (interaction.commandName === 'neko') {
     const list_of_candidate_cats = [];
