@@ -29,8 +29,9 @@ function nextInt(bound) {
 // https://github.com/openjdk/jdk/blob/739769c8fc4b496f08a92225a12d07414537b6c0/src/java.base/share/classes/java/util/Random.java#L425
 function nextFloat() {
   /// FIXME: これ呼び出されるたびにreduceが回るのは絶対重いと思うけどなぁ……
-  return crypto.webcrypto.getRandomValues(new Uint8Array(3)).reduce((previos, current, i, a) => (previos << 8) | current, 0) / (1 << 24);
-  // return (crypto.webcrypto.getRandomValues(new Int32Array(1))[0] >>> 8) / (1 << 24);
+  // return crypto.webcrypto.getRandomValues(new Uint8Array(3)).reduce((previos, current, i, a) => (previos << 8) | current, 0) / (1 << 24);
+  // reduceで回さないほうが早い
+  return (crypto.webcrypto.getRandomValues(new Uint32Array(1))[0] >> 8) / (1 << 24);
 }
 
 module.exports.nextInt = nextInt;
