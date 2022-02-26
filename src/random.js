@@ -17,9 +17,9 @@ function nextInt(bound) {
     crypto.webcrypto.getRandomValues(array);
     let r = array[0] >>> 1;
     let m = bound - 1;
-    if ((bound & m) == 0)
+    if ((bound & m) == 0) {
       r = Number(BigInt.asIntN(32, (BigInt(bound) * BigInt(r)) >> 31n));
-    else {
+    } else {
       for (let u = r; u - (r = u % bound) + m < 0; u = (crypto.webcrypto.getRandomValues(array)[0] >>> 1));
     }
     return r;

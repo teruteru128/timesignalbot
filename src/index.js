@@ -244,14 +244,14 @@ client.on('interactionCreate', interaction => {
   if (interaction.commandName === 'ping') {
     const payload = interaction.options.getString('payload', false);
     // fetchReply プロパティはthenに返信メッセージを渡すフラグ
-    let promise = interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}` });
+    let pongPromise = interaction.reply({ content: payload === null ? `Pong! ${interaction.member.displayName}` : `Pong! ${payload}` });
     // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
     // then()の中で呼び出すのはあかんのか？
     // いけるっぽい
     if (interaction.guildId === KAKUNINYOU_TEST_GUILD_ID) {
-      promise = promise.then(() => interaction.followUp('うんちー！'));
+      pongPromise = pongPromise.then(() => interaction.followUp('うんちー！'));
     }
-    promises.push(promise);
+    promises.push(pongPromise);
     // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
     // interaction.followUp
     // interaction.channel.send();
