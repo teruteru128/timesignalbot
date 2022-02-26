@@ -186,7 +186,7 @@ const signal = now => {
     prefix = (date + 1) + '月';
   } else if (date == 20 && month == 10) {
     prefix = '20, november';
-  } else if (day == 0) {
+  } else if (day == 1) {
     prefix = '月曜日';
   }
   // build signal message
