@@ -257,7 +257,7 @@ client.on('interactionCreate', interaction => {
     // interaction.channel.send();
   }
   if (interaction.commandName === 'nyanpass') {
-    promises.push(interaction.reply('まだ実装してないのん……'));
+    promises.push(interaction.reply('にゃんぱすー！'));
     promises.push(interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name} でにゃんぱすーしたのん！`));
   }
   if (interaction.commandName === 'neko') {
