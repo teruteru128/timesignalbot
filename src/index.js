@@ -277,7 +277,7 @@ client.on('messageCreate', msg => {
     promises.push(msg.reply('Pong?'));
   }
   if (msg.content.startsWith('!test') || msg.content.includes('console.print')) {
-    console.info('\a%s', msg.content);
+    console.info('%s', msg.content);
   }
   if (msg.guildId === KAKUNINYOU_TEST_GUILD_ID && msg.content.startsWith('!pumpkin')) {
     // 反省を促す
