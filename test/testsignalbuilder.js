@@ -58,4 +58,10 @@ describe('buildSignal', () => {
     assert.match(buildSignal(date), /^月曜日だよハルトオ{40,100}$/);
   });
 
+  it('default signal', () => {
+    // 2022年1月1日0時0分0秒
+    let date = new Date(2022, 0, 2, 0, 0, 0);
+    assert.match(buildSignal(date), /^真夜中だよハルトオ{40,100}$/);
+  });
+
 });
