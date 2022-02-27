@@ -14,7 +14,7 @@ function buildSignal(now) {
       prefix = '新年あけましておめでとう';
       secondPrefix = '';
     } else {
-      // 毎年2~12月1日
+      // 2~12月1日
       prefix = (month + 1) + '月';
     }
   } else if (date == 20 && month == 10) {
