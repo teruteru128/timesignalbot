@@ -294,11 +294,11 @@ client.on('messageCreate', msg => {
   MINES.reduce((promises, mine, i, a) => {
     if (msg.content.includes(mine)) {
       promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
+      // 多目的トイレサーバーに参加している
+      promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(msg.author.id)}`));
       if (msg.guildId === TAMOKUTEKI_TOIRE_GUILD_ID && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
         // 便器民かつ地雷ロールを割り当てられていない
         promises.push(msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID)));
-        // 多目的トイレサーバーに参加している
-        promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(msg.author.id)}`));
       }
       // p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
     }
