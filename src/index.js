@@ -5,9 +5,8 @@
 */
 const { Client, Intents, TextChannel, DMChannel, ThreadChannel } = require('discord.js');
 const cron = require('node-cron');
-const random = require('./random');
-const builders = require('@discordjs/builders');
-const { SlashCommandBuilder } = builders;
+const { buildSignal } = require('./signalbuilder');
+const { choiceCat } = require('./catchooser');
 const client = new Client({
   partials: ['CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'REACTION', 'USER'],
   intents: [
@@ -177,21 +176,9 @@ const SIGNALING_TEXT_CHANNEL_LIST = [TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID, SYOKI_SPA
 const signal = now => {
   // やっぱり時代はリスト処理なんかねえ？
   /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24), GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
-  let prefix = '真夜中';
-  let date = now.getDate();
-  let month = now.getMonth();
-  let day = now.getDay();
-  // choose prefix
-  if (date == 1) {
-    prefix = (date + 1) + '月';
-  } else if (date == 20 && month == 10) {
-    prefix = '20, november';
-  } else if (day == 1) {
-    prefix = '月曜日';
-  }
   // build signal message
-  let body = prefix + 'だよハルト' + 'オ'.repeat(40 + random.nextInt(60));
-  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((channelId, i, a) => client.channels.cache.get(channelId)).reduce((promises, channel, i, a) => { if (typeof channel.send == 'function') { promises.push(channel.send(body)); } return promises; }, []));
+  let body = buildSignal(now);
+  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((channelId, i, a) => client.channels.cache.get(channelId)).reduce((promises, channel, i, a) => { if (channel.isText()) { promises.push(channel.send(body)); } return promises; }, []));
 };
 
 /**
@@ -261,20 +248,7 @@ client.on('interactionCreate', interaction => {
     promises.push(interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`));
   }
   if (interaction.commandName === 'neko') {
-    const LIST_OF_CANDIDATE_CATS = [];
-    LIST_OF_CANDIDATE_CATS.splice(LIST_OF_CANDIDATE_CATS.length, 0, ...INITIAL_CAT_LIST);
-    if (random.nextFloat() < 0.000001) {
-      LIST_OF_CANDIDATE_CATS.push(Buffer.from(A, 'base64').toString());
-    }
-    if (random.nextFloat() < 0.001) {
-      LIST_OF_CANDIDATE_CATS.push('ねこですよろしくおねがいします');
-    }
-    if (random.nextFloat() < 0.25) {
-      LIST_OF_CANDIDATE_CATS.push('(\\*´ω`\\*)にゃ～ん❤');
-    }
-    CAT_EMOJIS.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.25) { candiCatsList.push(candiCat); } return candiCatsList; }, LIST_OF_CANDIDATE_CATS);
-    GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.1015625) { candiCatsList.push(candiCat); } return candiCatsList; }, LIST_OF_CANDIDATE_CATS);
-    const CHOSEN_CAT = LIST_OF_CANDIDATE_CATS[random.nextInt(LIST_OF_CANDIDATE_CATS.length)];
+    const CHOSEN_CAT = choiceCat();
     promises.push(interaction.reply(CHOSEN_CAT));
   }
   return Promise.allSettled(promises);
