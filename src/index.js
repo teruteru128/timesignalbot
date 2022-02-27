@@ -274,7 +274,7 @@ client.on('messageCreate', msg => {
   const promises = [];
 
   if (msg.content === '#ping') {
-    promises.push(msg.reply('Pong?'));
+    promises.push(msg.reply('Pong?').then(msg => { console.log(msg.content); return Promise.resolve(msg); }));
   }
   if (msg.content.startsWith('!test') || msg.content.includes('console.print')) {
     console.info('%s', msg.content);
@@ -295,7 +295,8 @@ client.on('messageCreate', msg => {
     if (msg.content.includes(mine)) {
       promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
       // 多目的トイレサーバーに参加している
-      promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(msg.author.id)}`));
+      // promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(msg.author.id)}`));
+      // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
       if (msg.guildId === TAMOKUTEKI_TOIRE_GUILD_ID && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
         // 便器民かつ地雷ロールを割り当てられていない
         promises.push(msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID)));
