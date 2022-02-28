@@ -101,7 +101,7 @@ describe('buildSignal', () => {
   it('20, november, but it\'s monday', () => {
     // TODO: 11月20日が月曜日のとき、「20, novemberだよ」と「月曜日だよ」のどちらを叫ぶべきか？
     // 2023年11月20日は月曜日
-    date = new Date(2023, 10, 20, 0, 0, 0);
+    let date = new Date(2023, 10, 20, 0, 0, 0);
     assert.match(buildSignal(date), /^20, novemberだよハルトオ{40,100}$/);
   });
 
