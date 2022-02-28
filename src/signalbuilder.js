@@ -15,7 +15,10 @@ function buildSignal(now) {
       secondPrefix = '';
     } else {
       // 2~12月1日
-      prefix = (month + 1) + '月';
+      prefix = (month + 1) + '月1日';
+      if (day == 1) {
+        prefix += '月曜日';
+      }
     }
   } else if (date == 20 && month == 10) {
     prefix = '20, november';
