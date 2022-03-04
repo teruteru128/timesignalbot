@@ -1,6 +1,9 @@
 
 const { webcrypto } = require('crypto');
 
+/**
+ * @deprecated This class is not multi-thread safe
+ */
 class Random {
   constructor() {
     /** 暗号学的に強力なランダム値を読み込むためのバッファ。排他制御をしていないので多分バグる。 */
@@ -9,7 +12,7 @@ class Random {
 
   // https://github.com/openjdk/jdk/blob/739769c8fc4b496f08a92225a12d07414537b6c0/src/java.base/share/classes/java/util/Random.java#L324
   nextInt(bound) {
-    if (bound === undefined) {
+    if (arguments.length < 1) {
       // crypto.getRandomValues() は node v17.4.0 から使用可能
       // crypto.webcrypto.getRandomValues() は node v15.0.0 から使用可能
       return webcrypto.getRandomValues(this.arrayBuffer)[0];
@@ -39,7 +42,7 @@ class Random {
 // https://hacknote.jp/archives/31788/
 // https://web.archive.org/web/20210504071450/https://hacknote.jp/archives/31788/
 function nextInt(bound) {
-  if (bound === undefined) {
+  if (arguments.length < 1) {
     // crypto.getRandomValues() は node v17.4.0 から使用可能
     // crypto.webcrypto.getRandomValues() は node v15.0.0 から使用可能
     return webcrypto.getRandomValues(new Int32Array(1))[0];

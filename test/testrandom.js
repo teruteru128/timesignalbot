@@ -73,14 +73,18 @@ describe('nextInt', () => {
     });
 
     it('bounds is invalid array 1', () => {
+        assert.throws(() => random.nextInt(+[]));
+    });
+
+    it('bounds is invalid array 2', () => {
         assert.throws(() => random.nextInt([0]));
     });
-/* 
-    it('bounds is invalid array 2', () => {
-        // 何故かエラーになる
-        assert.throws(() => random.nextInt([1]));
+
+    it('bounds is invalid array 3', () => {
+        // FIXME: 何故かエラーにならずに正常扱いになる。誰か例外を吐くようにしてくれ
+        assert.equal(random.nextInt([1]), 0);
     });
- */
+
     it('bounds is invalid empty string', () => {
         assert.throws(() => random.nextInt(''));
     });
@@ -96,12 +100,12 @@ describe('nextInt', () => {
     it('bounds is invalid null', () => {
         assert.throws(() => random.nextInt(null));
     });
-/* 
+
     it('bounds is invalid undefined', () => {
         // bound === undefined で判定すると引数に undefined が渡されたときに区別ができない
         assert.throws(() => random.nextInt(undefined));
     });
- */
+
     it('negative bounds', () => {
         assert.throws(() => random.nextInt(-1));
     });
