@@ -281,7 +281,7 @@ client.on('messageCreate', msg => {
     promises.push(msg.reply('🇿 includes!'));
   }
   MINES.reduce((promises, mine, i, a) => {
-    if (msg.content.includes(mine)) {
+    if (msg.content.toLowerCase().includes(mine)) {
       promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
       // 多目的トイレサーバーに参加している
       // promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(msg.author.id)}`));
