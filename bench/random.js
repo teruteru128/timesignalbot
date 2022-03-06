@@ -3,11 +3,11 @@
  * TODO: mochaでベンチマークをとるにはどうしたらいいか？
  */
 
-const Benchmark = require('benchmark');
+const { Suite } = require('benchmark');
 const { webcrypto } = require('crypto');
 const random = require('../src/random');
 
-const suite = new Benchmark.Suite();
+const suite = new Suite();
 const instance = new random.Random();
 
 

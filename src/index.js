@@ -185,10 +185,9 @@ const signal = now => {
  * 2022年2月22日22時22分22秒用コールバック
  * XXX: このコールバックだけ引数にclientがないの気持ち悪いよね
  */
-const signal2 = now => {
-  new Promise((res, rej) => client.channels.cache.get(TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID))
-    .then(channel => channel.send('ねこtimeだよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'));
-};
+const signal2 = now =>
+  new Promise((res, rej) => client.channels.cache.get(TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID)
+    .send('ねこtimeだよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'));
 
 const SIGNAL_GUILD_ID_LIST = [KAKUNINYOU_TEST_GUILD_ID, TAMOKUTEKI_TOIRE_GUILD_ID, FARM_SERVER_GUILD_ID];
 const SIGNAL_SCHEDULES = [];
@@ -225,7 +224,7 @@ client.on('interactionCreate', interaction => {
     // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
     // then()の中で呼び出すのはあかんのか？
     // いけるっぽい
-    let pongPromise = interaction.reply({ content: 'Pong!' }).then(msg => { if (interaction.guildId === KAKUNINYOU_TEST_GUILD_ID && payload !== null) { return Promise.resolve(interaction.followUp(`${payload}`)); } else { return Promise.resolve(); } });
+    let pongPromise = interaction.reply({ content: 'Pong!', fetchReply: false }).then(msg => { if (interaction.guildId === KAKUNINYOU_TEST_GUILD_ID && payload !== null) { return Promise.resolve(interaction.followUp(`${payload}`)); } else { return Promise.resolve(); } });
     promises.push(pongPromise);
     // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
     // interaction.followUp
@@ -243,6 +242,7 @@ client.on('interactionCreate', interaction => {
 });
 
 const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
+//const YATTAZE_PATTERN = /^(やったぜ。|やりましたわ。|やったわ。)$/g;
 const SEX_PATTERN = /SEックス/i;
 const MINES = process.env.MINES.split(',');
 const MINE_ROLE_ID = '844886159984558121';
