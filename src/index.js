@@ -278,10 +278,6 @@ client.on('messageCreate', msg => {
     // 反省を促す
     promises.push(msg.reply('||https://www.nicovideo.jp/watch/sm38736861||'));
   }
-  // FIXME: 絵文字のZをソースコードに含めるのってあんまりやりたくないよね、でも\u{}形式を使いたくない……
-  if (msg.content.includes('🇿')) {
-    promises.push(msg.reply('🇿 includes!'));
-  }
   MINES.reduce((promises, mine, i, a) => {
     if (msg.content.toLowerCase().includes(mine)) {
       promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
