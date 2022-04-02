@@ -2,7 +2,7 @@
 const { webcrypto } = require('crypto');
 
 /**
- * @deprecated This class is not multi-thread safe
+ * This class is not multi-thread safe
  */
 class Random {
   constructor() {

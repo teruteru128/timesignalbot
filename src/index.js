@@ -7,6 +7,7 @@ const { Client, Intents, TextChannel, DMChannel, ThreadChannel } = require('disc
 const cron = require('node-cron');
 const { buildSignal } = require('./signalbuilder');
 const { choiceCat } = require('./catchooser');
+const random = require('./random');
 const client = new Client({
   partials: ['CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'REACTION', 'USER'],
   intents: [
@@ -183,14 +184,6 @@ const signal = now => {
   new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((channelId, i, a) => client.channels.cache.get(channelId)).reduce((promises, channel, i, a) => { if (channel.isText()) { promises.push(channel.send(body)); } return promises; }, []));
 };
 
-/**
- * 2022年2月22日22時22分22秒用コールバック
- * XXX: このコールバックだけ引数にclientがないの気持ち悪いよね
- */
-const signal2 = now =>
-  new Promise((res, rej) => client.channels.cache.get(TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID)
-    .send('ねこtimeだよハルトオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオオ'));
-
 const SIGNAL_GUILD_ID_LIST = [KAKUNINYOU_TEST_GUILD_ID, TAMOKUTEKI_TOIRE_GUILD_ID, FARM_SERVER_GUILD_ID];
 const SIGNAL_SCHEDULES = [];
 client.on('ready', client => {
@@ -293,7 +286,7 @@ client.on('messageCreate', msg => {
     return promises;
   }, promises);
   if (SEX_PATTERN.test(msg.content)) {
-    promises.push(msg.reply('やめないか！'));
+    promises.push(msg.reply(random.nextFloat() < 0.02 ? 'やらないか！' : 'やめないか！'));
   }
   // やったぜ。 : o
   // やったわ。 : o
