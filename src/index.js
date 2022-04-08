@@ -67,7 +67,7 @@ const data1 = new SlashCommandBuilder().setName().setDescription()
 client.on('apiRequest', async request => { });
 client.on('apiResponse', async (request, response) => { });
 client.on('channelCreate', async channel => { console.log('channelCreate : %s, %sが作成されました', channel.name, channel.guild !== null && channel.guild.name !== null ? channel.guild.name : '\'?\''); });
-client.on('channelDelete', async channel => { });
+client.on('channelDelete', async channel => { console.log('channelCreate : %s, %sが削除されました', channel.name, channel.guild !== null && channel.guild.name !== null ? channel.guild.name : '\'?\''); });
 client.on('channelPinsUpdate', async (channel, time) => { });
 client.on('channelUpdate', async (oldChannel, newChannel) => { });
 client.on('debug', async debug => { /* console.error('error : %s', debug); */ });
