@@ -1,2 +1,2 @@
 bot: npm start
-create-db: npm create-db
+create-db: npm run create-db
