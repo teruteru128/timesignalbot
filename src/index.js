@@ -238,7 +238,7 @@ client.on('interactionCreate', interaction => {
 
 const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
 //const YATTAZE_PATTERN = /^(やったぜ。|やりましたわ。|やったわ。)$/g;
-const SEX_PATTERN = /SEックス/i;
+const SEX_PATTERN = /(SE|セ)ックス/i;
 const MINES = process.env.MINES.split(',');
 const MINE_ROLE_ID = '844886159984558121';
 
