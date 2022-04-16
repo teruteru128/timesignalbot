@@ -10,7 +10,8 @@
     "test": "mocha",
     "bench": "node bench/index.js",
     "start": "node src/index.js",
-    "start:debug": "node src/index.js"
+    "start:debug": "node src/index.js",
+    "create-db": "node src/managements/create-db.js"
   },
   "repository": {
     "type": "git",
