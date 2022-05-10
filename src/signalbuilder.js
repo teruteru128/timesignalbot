@@ -4,6 +4,7 @@ const random = require('./random');
 function buildSignal(now) {
   let prefix = '真夜中';
   let secondPrefix = 'だよ';
+  let name = 'ハルト';
   let date = now.getDate();
   let month = now.getMonth();
   let day = now.getDay();
@@ -24,10 +25,13 @@ function buildSignal(now) {
     prefix = '20, november';
   } else if (day == 1) {
     prefix = '月曜日';
+  } else if (month == 1 && (date == 2 || date == 22)) {
+    // 2月2日 || 2月22日
+    name = 'にゃんこ';
   }
   // build signal message
   // オは40以上100(未満ではなく)以下
-  return prefix + secondPrefix + 'ハルト' + 'オ'.repeat(40 + random.nextInt(61));
+  return prefix + secondPrefix + name + 'オ'.repeat(40 + random.nextInt(61));
 }
 
 module.exports.buildSignal = buildSignal;
