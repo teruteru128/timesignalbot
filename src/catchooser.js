@@ -14,14 +14,17 @@ const A = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV4
 function choiceCat() {
     const LIST_OF_CANDIDATE_CATS = [];
     LIST_OF_CANDIDATE_CATS.splice(LIST_OF_CANDIDATE_CATS.length, 0, ...INITIAL_CAT_LIST);
-    if (random.nextFloat() < 0.000244140625) {
-        // 4096分の１
+    if (random.nextFloat() < 0.00682556629180908203125) {
+        // 114514/16777216
       LIST_OF_CANDIDATE_CATS.push(Buffer.from(A, 'base64').toString());
     }
-    if (random.nextFloat() < 0.001) {
+    if (random.nextFloat() < 0.046875) {
+      // 3/64
       LIST_OF_CANDIDATE_CATS.push('ねこですよろしくおねがいします');
+      LIST_OF_CANDIDATE_CATS.push('https://www.nicovideo.jp/watch/sm31931584');
     }
     if (random.nextFloat() < 0.25) {
+      // 1/4
       LIST_OF_CANDIDATE_CATS.push('(\\*´ω`\\*)にゃ～ん❤');
     }
     CAT_EMOJIS.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.25) { candiCatsList.push(candiCat); } return candiCatsList; }, LIST_OF_CANDIDATE_CATS);
