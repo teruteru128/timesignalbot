@@ -31,7 +31,8 @@
   "dependencies": {
     "discord.js": "^13.8.0",
     "node-cron": "^3.0.1",
-    "pg": "^8.7.3"
+    "pg": "^8.7.3",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
