@@ -190,21 +190,6 @@ client.on('ready', client => {
   // スラッシュコマンドをギルドに登録
   const promises = [];
   SIGNAL_GUILD_ID_LIST.reduce((promises, guildId, i, a) => { promises.push(client.application.commands.set(data, guildId)); return promises; }, promises);
-  console.log(` ${client.user.username}(${client.user}, ${client.user.tag}) でログインしています。`);
-  // 地雷起動時セットアップ
-  new Promise(async (resolve, reject) => {
-    const client = await pool.connect();
-    try {
-      let result = await client.query('SELECT mine from mines;');
-      result.rows.reduce((mines, mine, i, a) => { mines.push(mine); return mines; }, MINES);
-      resolve();
-    } catch (error) {
-      console.error(error);
-      reject(error);
-    } finally {
-      client.release();
-    }
-  });
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
   // 時報セットアップ
   SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' }));
@@ -252,7 +237,7 @@ client.on('interactionCreate', interaction => {
 const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
 //const YATTAZE_PATTERN = /^(やったぜ。|やりましたわ。|やったわ。)$/g;
 const SEX_PATTERN = /(SE|ＳＥ|セ)(X|Ｘ|ックス)/i;
-const MINES = [];
+const MINES = process.env.MINES.split(',');
 const MINE_ROLE_ID = '844886159984558121';
 
 client.on('messageCreate', msg => {
