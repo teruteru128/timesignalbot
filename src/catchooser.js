@@ -30,6 +30,11 @@ function choiceCat() {
       // シークレットA
       LIST_OF_CANDIDATE_CATS.push('(\\*´ω`\\*)にゃ～ん❤');
     }
+    if (random.nextInt(16) < 1) {
+      // 1/8
+      // 毛玉吐き
+      LIST_OF_CANDIDATE_CATS.push("オエッ");
+    }
     CAT_EMOJIS.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.25) { candiCatsList.push(candiCat); } return candiCatsList; }, LIST_OF_CANDIDATE_CATS);
     GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (random.nextFloat() < 0.1015625) { candiCatsList.push(candiCat); } return candiCatsList; }, LIST_OF_CANDIDATE_CATS);
     return LIST_OF_CANDIDATE_CATS[random.nextInt(LIST_OF_CANDIDATE_CATS.length)];
