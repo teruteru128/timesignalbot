@@ -236,7 +236,7 @@ client.on('interactionCreate', interaction => {
 
 const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
 //const YATTAZE_PATTERN = /^(やったぜ。|やりましたわ。|やったわ。)$/g;
-const SEX_PATTERN = /(SE|ＳＥ|セ)(X|Ｘ|ックス)/i;
+const SEX_PATTERN = /(SE|ＳＥ|セ)(X|Ｘ|ッ(クス|久))/i;
 const MINES = process.env.MINES.split(',');
 const MINE_ROLE_ID = '844886159984558121';
 
@@ -284,7 +284,7 @@ client.on('messageCreate', msg => {
     return promises;
   }, promises);
   if (SEX_PATTERN.test(msg.content)) {
-    promises.push(msg.reply(random.nextFloat() < 0.02 ? 'やらないか！' : 'やめないか！'));
+    promises.push(msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！'));
   }
   // やったぜ。 : o
   // やったわ。 : o
