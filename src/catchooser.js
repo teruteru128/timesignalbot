@@ -2,7 +2,7 @@
 const random = require('./random');
 
 
-const INITIAL_CAT_LIST = ['にゃーん', 'にゃん', 'にゃ？', 'にゃん？', 'にゃおーん', 'フシーッ！', 'ゴロゴロゴロゴロ……', 'Zz...'];
+const INITIAL_CAT_LIST = ['にゃーん', 'にゃん', 'にゃ？', 'にゃん？', 'にゃおーん', 'フシーッ！', 'ゴロゴロゴロゴロ……', 'Zz...', 'なぁーご', 'なぉーん'];
 const CAT_EMOJIS = ['🐱', '🐈', '🐈‍⬛', '😿', '😻', '😹', '😽', '😾', '🙀', '😸', '😺', '😼', '🐾'];
 const GENBA_NEKO = ['ヨシ！', 'どうして……', 'どうして\n夜中に\n起きてるん\nですか？', 'ああああ！\nああああ！\nあああああ！あー！',
   'オレじゃない\nアイツがやった\nシらない\nスんだこと', 'なんだか\n知らんが\nとにかく\nヨシ！', '100万回死んだねこ',
@@ -26,6 +26,10 @@ function choiceCat() {
       // 1/8
       // 毛玉吐き
       LIST_OF_CANDIDATE_CATS.push("オエッ(毛玉)");
+    }
+    if (random.nextInt(16) < 1) {
+      // 1/16
+      LIST_OF_CANDIDATE_CATS.push('は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛');
     }
     // 13/128
     GENBA_NEKO.reduce((candiCatsList, candiCat, i, a) => { if (random.nextInt(128) < 13) { candiCatsList.push(candiCat); } return candiCatsList; }, LIST_OF_CANDIDATE_CATS);
