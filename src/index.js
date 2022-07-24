@@ -3,30 +3,46 @@
   やりたいこと逆引き集
   https://scrapbox.io/discordjs-japan/%E3%82%84%E3%82%8A%E3%81%9F%E3%81%84%E3%81%93%E3%81%A8%E9%80%86%E5%BC%95%E3%81%8D%E9%9B%86
 */
-const { Client, Intents, TextChannel, DMChannel, ThreadChannel } = require('discord.js');
+const { ApplicationCommandType,
+  ApplicationCommandOptionType,
+  ChannelType,
+  Client,
+  GatewayIntentBits,
+  TextChannel,
+  DMChannel,
+  ThreadChannel,
+  Partials, 
+  InteractionType} = require('discord.js');
 const cron = require('node-cron');
 const { buildSignal } = require('./signalbuilder');
 const { choiceCat } = require('./catchooser');
 const random = require('./random');
 const client = new Client({
-  partials: ['CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'REACTION', 'USER'],
+  partials: [Partials.Channel,
+  Partials.GuildMember,
+  Partials.GuildScheduledEvent,
+  Partials.Message,
+  Partials.Reaction,
+  Partials.ThreadMember,
+  Partials.User],
   intents: [
-    Intents.FLAGS.DIRECT_MESSAGES,
-    Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
-    Intents.FLAGS.DIRECT_MESSAGE_TYPING,
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_BANS,
-    Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-    Intents.FLAGS.GUILD_INTEGRATIONS,
-    Intents.FLAGS.GUILD_INVITES,
-    Intents.FLAGS.GUILD_MEMBERS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-    Intents.FLAGS.GUILD_MESSAGE_TYPING,
-    Intents.FLAGS.GUILD_PRESENCES,
-    Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
-    Intents.FLAGS.GUILD_VOICE_STATES,
-    Intents.FLAGS.GUILD_WEBHOOKS
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.DirectMessageReactions,
+    GatewayIntentBits.DirectMessageTyping,
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildBans,
+    GatewayIntentBits.GuildEmojisAndStickers,
+    GatewayIntentBits.GuildIntegrations,
+    GatewayIntentBits.GuildInvites,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildMessageTyping,
+    GatewayIntentBits.GuildPresences,
+    GatewayIntentBits.GuildScheduledEvents,
+    GatewayIntentBits.GuildVoiceStates,
+    GatewayIntentBits.GuildWebhooks,
+    GatewayIntentBits.MessageContent
   ]
 });
 // https://devcenter.heroku.com/ja/articles/getting-started-with-nodejs?singlepage=true#-13
@@ -153,21 +169,6 @@ client.on('voiceStateUpdate', async (oldState, newState) => { });
 client.on('warn', async info => console.warn('warn : %s', info));
 client.on('webhookUpdate', async channel => { });
 
-// スラッシュコマンド登録用データ
-const data = [{
-  name: 'ping',
-  description: 'Replies with Pong!',
-  options: [{ name: 'payload', description: 'The message returned with the pong.', type: 'STRING', /* required: true */ }]
-}, {
-  name: 'nyanpass',
-  description: 'get nyanpass count from nyanpass.com',
-  optins: []
-}, {
-  name: 'neko',
-  description: 'show cats face',
-  optins: []
-}];
-
 const KAKUNINYOU_TEST_GUILD_ID = '879315010218774528';
 const TAMOKUTEKI_TOIRE_GUILD_ID = '795353457996595200';
 const FARM_SERVER_GUILD_ID = '572150608283566090';
@@ -181,15 +182,28 @@ const signal = now => {
   /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24), GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
   // build signal message
   let body = buildSignal(now);
-  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((channelId, i, a) => client.channels.cache.get(channelId)).reduce((promises, channel, i, a) => { if (channel.isText()) { promises.push(channel.send(body)); } return promises; }, []));
+  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((channelId, i, a) => client.channels.cache.get(channelId)).reduce((promises, channel, i, a) => { if (channel.type == ChannelType.GuildText) { promises.push(channel.send(body)); } return promises; }, []));
 };
 
-const SIGNAL_GUILD_ID_LIST = [KAKUNINYOU_TEST_GUILD_ID, TAMOKUTEKI_TOIRE_GUILD_ID, FARM_SERVER_GUILD_ID];
 const SIGNAL_SCHEDULES = [];
 client.on('ready', client => {
-  // スラッシュコマンドをギルドに登録
   const promises = [];
-  SIGNAL_GUILD_ID_LIST.reduce((promises, guildId, i, a) => { promises.push(client.application.commands.set(data, guildId)); return promises; }, promises);
+  console.log(` ${client.user.username}(${client.user}, ${client.user.tag}) でログインしています。`);
+  /*
+  // 地雷起動時セットアップ
+  new Promise(async (resolve, reject) => {
+    const client = await pool.connect();
+    try {
+      let result = await client.query('SELECT mine from mines;');
+      result.rows.reduce((mines, mine, i, a) => { mines.push(mine); return mines; }, MINES);
+      resolve();
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    } finally {
+      client.release();
+    }
+  });*/
   client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
   // 時報セットアップ
   SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' }));
@@ -199,19 +213,20 @@ client.on('ready', client => {
 });
 
 client.on('interactionCreate', interaction => {
-  console.debug(`isApplicationCommand : ${interaction.isApplicationCommand()}, isAutocomplete : ${interaction.isAutocomplete()},` +
-    ` isButton : ${interaction.isButton()}, isCommand: ${interaction.isCommand()}, isContextMenu: ${interaction.isContextMenu()},` +
-    ` isMessageComponent(): ${interaction.isMessageComponent()}, isMessageContextMenu(): ${interaction.isMessageContextMenu()},` +
-    ` isSelectMenu(): ${interaction.isSelectMenu()}, isUserContextMenu(): ${interaction.isUserContextMenu()}`);
-  if (!interaction.isCommand()) {
+  console.debug(`isApplicationCommand : ${interaction.type == InteractionType.ApplicationCommand}, isAutocomplete : ${interaction.type == InteractionType.ApplicationCommandAutocomplete},` +
+    ` isButton : ${interaction.isButton()}, isContextMenu: ${interaction.isContextMenuCommand()},` +
+    ` isMessageComponent(): ${interaction.type == InteractionType.MessageComponent}, isMessageContextMenu(): ${interaction.isMessageContextMenuCommand()},` +
+    ` isSelectMenu(): ${interaction.isSelectMenu()}, isUserContextMenu(): ${interaction.isUserContextMenuCommand()}`);
+  if (!interaction.isChatInputCommand()) {
     // コマンドでない
     return;
   }
   // インタラクション(スラッシュコマンド)受信
 
+  const { commandName } = interaction;
   const promises = [];
 
-  if (interaction.commandName === 'ping') {
+  if (commandName === 'ping') {
     const payload = interaction.options.getString('payload', false);
     // fetchReply プロパティはthenに返信メッセージを渡すフラグ
     // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
@@ -223,11 +238,11 @@ client.on('interactionCreate', interaction => {
     // interaction.followUp
     // interaction.channel.send();
   }
-  if (interaction.commandName === 'nyanpass') {
+  if (commandName === 'nyanpass') {
     promises.push(interaction.reply('にゃんぱすー！'));
     promises.push(interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`));
   }
-  if (interaction.commandName === 'neko') {
+  if (commandName === 'neko') {
     const CHOSEN_CAT = choiceCat();
     promises.push(interaction.reply(CHOSEN_CAT));
   }
