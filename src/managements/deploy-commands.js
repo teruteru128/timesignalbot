@@ -3,7 +3,11 @@
 https://discordjs.guide/creating-your-bot/creating-commands.html#registering-commands
 https://discordjs.guide/interactions/slash-commands.html#guild-commands
  */
-const { SlashCommandBuilder, Routes } = require('discord.js');
+const {
+  ApplicationCommandType,
+  ApplicationCommandOptionType,
+  Routes,
+  SlashCommandBuilder } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 
 // スラッシュコマンド登録用データ

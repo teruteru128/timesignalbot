@@ -5,8 +5,6 @@
 */
 const {
   ActivityType,
-  ApplicationCommandType,
-  ApplicationCommandOptionType,
   ChannelType,
   Client,
   GatewayIntentBits,
