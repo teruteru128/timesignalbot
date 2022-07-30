@@ -3,16 +3,18 @@
   やりたいこと逆引き集
   https://scrapbox.io/discordjs-japan/%E3%82%84%E3%82%8A%E3%81%9F%E3%81%84%E3%81%93%E3%81%A8%E9%80%86%E5%BC%95%E3%81%8D%E9%9B%86
 */
-const { ApplicationCommandType,
+const {
+  ActivityType,
+  ApplicationCommandType,
   ApplicationCommandOptionType,
   ChannelType,
   Client,
   GatewayIntentBits,
+  InteractionType,
   TextChannel,
   DMChannel,
   ThreadChannel,
-  Partials, 
-  InteractionType} = require('discord.js');
+  Partials } = require('discord.js');
 const cron = require('node-cron');
 const { buildSignal } = require('./signalbuilder');
 const { choiceCat } = require('./catchooser');
@@ -182,7 +184,14 @@ const signal = now => {
   /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24), GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
   // build signal message
   let body = buildSignal(now);
-  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST.map((channelId, i, a) => client.channels.cache.get(channelId)).reduce((promises, channel, i, a) => { if (channel.type == ChannelType.GuildText) { promises.push(channel.send(body)); } return promises; }, []));
+  new Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST
+    .map((channelId, i, a) => client.channels.cache.get(channelId))
+    .reduce((promises, channel, i, a) => {
+      if (channel.type == ChannelType.GuildText) {
+        promises.push(channel.send(body));
+      }
+      return promises;
+    }, []));
 };
 
 const SIGNAL_SCHEDULES = [];
@@ -204,7 +213,7 @@ client.on('ready', client => {
       client.release();
     }
   });*/
-  client.user.setActivity(MINES.length + '個の地雷除去', { type: 'COMPETING' });
+  client.user.setActivity(MINES.length + '個の地雷除去', { type: ActivityType.Competing });
   // 時報セットアップ
   SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' }));
   // cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
