@@ -192,6 +192,13 @@ const signal = now => {
     }, []));
 };
 
+const yattaze = now => {
+  let channel =
+    client.channels.cache.get(TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID);
+  if (channel.type == ChannelType.GuildText)
+    channel.send('やったぜ。\nhttps://www.nicovideo.jp/watch/sm28737118').then(reason => reason, reason => console.error(reason));
+};
+
 const SIGNAL_SCHEDULES = [];
 client.on('ready', client => {
   const promises = [];
@@ -216,6 +223,7 @@ client.on('ready', client => {
   SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' }));
   // cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
   // crypto.getCiphers().forEach((cipher, i, a) => console.log(cipher));
+  SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 *', yattaze, { timezone: 'Asia/Tokyo' }));
   return Promise.allSettled(promises);
 });
 
