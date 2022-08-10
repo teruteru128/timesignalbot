@@ -223,6 +223,7 @@ client.on('ready', client => {
   SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' }));
   // cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
   // crypto.getCiphers().forEach((cipher, i, a) => console.log(cipher));
+  // 8月16日（*）07時14分22秒
   SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 *', yattaze, { timezone: 'Asia/Tokyo' }));
   return Promise.allSettled(promises);
 });
@@ -271,7 +272,9 @@ const MINES = process.env.MINES.split(',');
 const MINE_ROLE_ID = '844886159984558121';
 
 client.on('messageCreate', msg => {
-  if (msg.author.bot) return; //BOTのメッセージには反応しない
+  let author = msg.author;
+  // 他のBOTのメッセージには反応しない
+  if (author.bot && !author.equals(client.user)) return;
   if (msg.channel instanceof TextChannel) {
     // console.debug('%s(%s) : %s', msg.member.displayName, msg.channel.name, msg.content);
   }
@@ -279,7 +282,7 @@ client.on('messageCreate', msg => {
     console.debug('%s(%s) : %s', msg.member.displayName, msg.channel.name, msg.content);
   }
   if (msg.channel instanceof DMChannel) {
-    console.debug('%s(DMChannel), %s', msg.author.username, msg.content);
+    console.debug('%s(DMChannel), %s', author.username, msg.content);
   }
 
   const promises = [];
@@ -303,13 +306,13 @@ client.on('messageCreate', msg => {
     if (msg.content.toLowerCase().includes(mine)) {
       promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
       // 多目的トイレサーバーに参加している
-      // promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(msg.author.id)}`));
+      // promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(author.id)}`));
       // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
       if (msg.guildId === TAMOKUTEKI_TOIRE_GUILD_ID && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
         // 便器民かつ地雷ロールを割り当てられていない
         promises.push(msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID)));
       }
-      // p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${msg.author.username} さんが地雷を踏みました。`));
+      // p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${author.username} さんが地雷を踏みました。`));
     }
     return promises;
   }, promises);
