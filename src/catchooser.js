@@ -3,11 +3,11 @@ const random = require('./random');
 
 
 const INITIAL_CAT_LIST = ['にゃーん', 'にゃん', 'にゃ？', 'にゃん？', 'にゃおーん', 'フシーッ！',
-  'ゴロゴロゴロゴロ……', 'Zz...', '\\N{SLEEPING SYMBOL}', 'なぁーご', 'なぉーん', 'なぁ〜ご'];
-const CAT_EMOJIS = ['\\N{CAT FACE}', '\\N{CAT}', '\\N{CAT}\\N{ZERO WIDTH JOINER}\\N{BLACK LARGE SQUARE}',
-  '\\N{CRYING CAT FACE}', '\\N{SMILING CAT FACE WITH HEART-EYES}', '\\N{CAT FACE WITH TEARS OF JOY}', '\\N{KISSING CAT FACE WITH CLOSED EYES}',
-  '\\N{POUTING CAT FACE}', '\\N{WEARY CAT FACE}', '\\N{GRINNING CAT FACE WITH SMILING EYES}', '\\N{SMILING CAT FACE WITH OPEN MOUTH}',
-  '\\N{CAT FACE WITH WRY SMILE}', '\\N{PAW PRINTS}'];
+  'ゴロゴロゴロゴロ……', 'Zz...', '\N{SLEEPING SYMBOL}', 'なぁーご', 'なぉーん', 'なぁ〜ご'];
+const CAT_EMOJIS = ['\N{CAT FACE}', '\N{CAT}', '\N{CAT}\N{ZERO WIDTH JOINER}\N{BLACK LARGE SQUARE}',
+  '\N{CRYING CAT FACE}', '\N{SMILING CAT FACE WITH HEART-EYES}', '\N{CAT FACE WITH TEARS OF JOY}', '\N{KISSING CAT FACE WITH CLOSED EYES}',
+  '\N{POUTING CAT FACE}', '\N{WEARY CAT FACE}', '\N{GRINNING CAT FACE WITH SMILING EYES}', '\N{SMILING CAT FACE WITH OPEN MOUTH}',
+  '\N{CAT FACE WITH WRY SMILE}', '\N{PAW PRINTS}'];
 const GENBA_NEKO = ['ヨシ！', 'どうして……', 'どうして\n夜中に\n起きてるん\nですか？', 'ああああ！\nああああ！\nあああああ！あー！',
   'オレじゃない\nアイツがやった\nシらない\nスんだこと', 'なんだか\n知らんが\nとにかく\nヨシ！', '100万回死んだねこ',
   'え！！半分の人員で倍の仕事を！？', '弊社なら年内施工も可能です！', 'どうして自分が指定した時間にいないんですか:anger:',
