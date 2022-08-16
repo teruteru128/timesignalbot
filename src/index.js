@@ -223,8 +223,8 @@ client.on('ready', client => {
   SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, { timezone: 'Asia/Tokyo' }));
   // cron.schedule('22 22 22 22 2 *', signal2, { timezone: 'Asia/Tokyo' });
   // crypto.getCiphers().forEach((cipher, i, a) => console.log(cipher));
-  // 8月16日（*）07時14分22秒
-  SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 *', yattaze, { timezone: 'Asia/Tokyo' }));
+  // 8月16日（水）07時14分22秒
+  SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 3', yattaze, { timezone: 'Asia/Tokyo' }));
   return Promise.allSettled(promises);
 });
 
