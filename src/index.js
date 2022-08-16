@@ -196,7 +196,7 @@ const yattaze = now => {
   let channel =
     client.channels.cache.get(TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID);
   if (channel.type == ChannelType.GuildText)
-    channel.send('やったぜ。\nhttps://www.nicovideo.jp/watch/sm28737118').then(reason => reason, reason => console.error(reason));
+    channel.send('やったぜ。\nhttps://www.nicovideo.jp/watch/sm9248590').then(reason => reason, reason => console.error(reason));
 };
 
 const SIGNAL_SCHEDULES = [];
