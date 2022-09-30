@@ -268,7 +268,7 @@ client.on('interactionCreate', interaction => {
 const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
 //const YATTAZE_PATTERN = /^(やったぜ。|やりましたわ。|やったわ。)$/g;
 const SEX_PATTERN = /(SE|ＳＥ|セ)(X|Ｘ|ッ(クス|久))/i;
-const MINES = process.env.MINES.split(',');
+const MINES = new RegExp(process.env.MINES, 'giu');
 const MINE_ROLE_ID = '844886159984558121';
 
 client.on('messageCreate', msg => {
@@ -302,20 +302,17 @@ client.on('messageCreate', msg => {
     // 反省を促す
     promises.push(msg.reply('||https://www.nicovideo.jp/watch/sm38736861||'));
   }
-  MINES.reduce((promises, mine, i, a) => {
-    if (msg.content.toLowerCase().includes(mine)) {
-      promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
-      // 多目的トイレサーバーに参加している
-      // promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(author.id)}`));
-      // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
-      if (msg.guildId === TAMOKUTEKI_TOIRE_GUILD_ID && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
-        // 便器民かつ地雷ロールを割り当てられていない
-        promises.push(msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID)));
-      }
-      // p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${author.username} さんが地雷を踏みました。`));
+  if (MINES.test(msg.content)) {
+    promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
+    // 多目的トイレサーバーに参加している
+    // promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(author.id)}`));
+    // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
+    if (msg.guildId === TAMOKUTEKI_TOIRE_GUILD_ID && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
+      // 便器民かつ地雷ロールを割り当てられていない
+      promises.push(msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID)));
     }
-    return promises;
-  }, promises);
+    // p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${author.username} さんが地雷を踏みました。`));
+  }
   if (SEX_PATTERN.test(msg.content)) {
     promises.push(msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！'));
   }
