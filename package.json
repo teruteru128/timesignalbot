@@ -37,6 +37,6 @@
   "devDependencies": {
     "benchmark": "^2.1.4",
     "jshint": "^2.13.5",
-    "mocha": "^10.0.0"
+    "mocha": "^10.1.0"
   }
 }
