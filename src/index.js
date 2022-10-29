@@ -314,7 +314,15 @@ client.on('messageCreate', msg => {
     // p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}(${msg.guild.name}) で ${author.username} さんが地雷を踏みました。`));
   }
   if (SEX_PATTERN.test(msg.content)) {
-    promises.push(msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！'));
+    // these are utc.
+    let start = new Date('2022-10-31 15:00:00');
+    let finish = new Date('2022-11-30 15:00:00');
+    let now = new Date();
+    if (start.getTime() <= now.getTime() && now.getTime() < finish.getTime()) {
+      promises.push(msg.reply(random.nextInt(100) < 80 ? 'やらないか！' : 'やめないか！'));
+    } else {
+      promises.push(msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！'));
+    }
   }
   // やったぜ。 : o
   // やったわ。 : o
