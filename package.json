@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/teruteru128/timesignalbotjs#readme",
   "dependencies": {
-    "discord.js": "^14.3.0",
+    "discord.js": "^14.6.0",
     "node-cron": "^3.0.2",
     "pg": "^8.8.0",
     "uuid": "^9.0.0"
@@ -37,6 +37,6 @@
   "devDependencies": {
     "benchmark": "^2.1.4",
     "jshint": "^2.13.5",
-    "mocha": "^10.0.0"
+    "mocha": "^10.1.0"
   }
 }
