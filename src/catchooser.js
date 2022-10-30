@@ -28,7 +28,7 @@ function choiceCat() {
     LIST_OF_CANDIDATE_CATS.push('(\\*´ω`\\*)にゃ～ん❤');
   }
   // 絵文字猫13種
-  CAT_EMOJIS.filter(candiCat => random.nextInt(4) < 1).forEach(candiCat => candiCatsList.push(candiCat));
+  CAT_EMOJIS.filter(candiCat => random.nextInt(4) < 1).forEach(candiCat => LIST_OF_CANDIDATE_CATS.push(candiCat));
   if (random.nextInt(8) < 1) {
     // 1/8
     // 毛玉吐き
@@ -39,7 +39,7 @@ function choiceCat() {
     LIST_OF_CANDIDATE_CATS.push('は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛');
   }
   // 現場猫 13/128
-  GENBA_NEKO.filter(candiCat => random.nextInt(128) < 13).forEach(candiCat => candiCatsList.push(candiCat));
+  GENBA_NEKO.filter(candiCat => random.nextInt(128) < 13).forEach(candiCat => LIST_OF_CANDIDATE_CATS.push(candiCat));
   if (random.nextInt(64) < 3) {
     // 3/64
     // シークレットB 2種
