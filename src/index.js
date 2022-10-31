@@ -318,8 +318,54 @@ client.on('messageCreate', msg => {
     let start = new Date('2022-10-31 15:00:00');
     let finish = new Date('2022-11-30 15:00:00');
     let now = new Date();
+    // 性の六時間
+    let c1 = new Date(now.getFullYear(), 11, 24, 12);
+    let c2 = new Date(now.getFullYear(), 11, 24, 18);
     if (start.getTime() <= now.getTime() && now.getTime() < finish.getTime()) {
       promises.push(msg.reply(random.nextInt(100) < 80 ? 'やらないか！' : 'やめないか！'));
+    } else if (c1.getTime() <= now.getTime() && now.getTime() < c2.getTime()) {
+      let percentage = 0;
+      let a = null;
+      do {
+        percentage = random.nextInt(1048576);
+        if (percentage < 70000) {
+          a = '何がクリスマスじゃあい!';
+        } else if (percentage < 120000) {
+          a = 'https://dic.nicovideo.jp/id/4529483';
+        } else if (percentage < 180000) {
+          a = 'https://www.nicovideo.jp/watch/sm975673';
+        } else if (percentage < 240000) {
+          a = 'https://www.nicovideo.jp/watch/sm7755174';
+        } else if (percentage < 300000) {
+          a = 'https://www.nicovideo.jp/watch/sm12271031';
+        } else if (percentage < 360000) {
+          a = 'https://www.nicovideo.jp/watch/sm12904387';
+        } else if (percentage < 420000) {
+          a = 'https://www.nicovideo.jp/watch/sm17071230';
+        } else if (percentage < 480000) {
+          a = 'https://www.nicovideo.jp/watch/sm26450318';
+        } else if (percentage < 540000) {
+          a = 'https://www.nicovideo.jp/watch/sm31568802';
+        } else if (percentage < 600000) {
+          a = 'https://www.nicovideo.jp/watch/sm34346841';
+        } else if (percentage < 660000) {
+          a = 'https://www.nicovideo.jp/watch/sm39120005';
+        } else if (percentage < 720000) {
+          a = 'https://www.nicovideo.jp/watch/so36581429';
+        } else if (percentage < 790000) {
+          a = 'アンアン\n　　　　　　　ｏ\n　　　　ｏ＿ /）\n　 　　 ／＜＜\n\n12月24日の午後9時から翌25日の午前3時までの6時間は\n1年間で最もセックスをする人の多い「性の6時間」です。\n\n貴方の知り合いや友人ももれなくセックスをしています。\n普段はあどけない顔して世間話してるあの娘もセックスをしています。\n貴方が片想いしているあの綺麗な女性もセックスをしています。\n貴方にもし年頃の娘さんや姉・妹がいて、いま家にいないのでしたら間違いなくセックスしてます。\n貴方と別れたあの娘も貴方がその娘にやってきたことを別の男にやられています。\n貴方の将来の恋人や結婚する相手は、いま違う男のいちもつでヒィヒィ言っています。\n貴男が憧れているあのお兄さんやオジサマ方も今宵はベッドであおおーっ!!と他の男性と一夜を共にしていることでしょう。\n\nすべてを諦めましょう。そして、ともに戦いましょう。';
+        } else if (percentage < 920000) {
+          a = 'やらないか！';
+        } else if (percentage < 960000) {
+          a = 'やめないか！';
+        } else if (percentage < 1000000) {
+          a = 'ここに建てた病院とSEX!';
+        } else {
+          continue;
+        }
+        break;
+      } while (1);
+      promises.push(msg.reply(a));
     } else {
       promises.push(msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！'));
     }
