@@ -358,15 +358,12 @@ client.on('messageCreate', msg => {
           a = 'やらないか！';
         } else if (percentage < 905000) {
           a = 'やめないか！';
-        } else if (percentage < 9600000) {
+        } else if (percentage < 960000) {
           a = '(チキンを)食べないか！';
         } else if (percentage < 1000000) {
           a = 'ここに建てた病院とSEX！';
-        } else {
-          continue;
         }
-        break;
-      } while (1);
+      } while (a === NULL);
       promises.push(msg.reply(a));
     } else {
       promises.push(msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！'));
