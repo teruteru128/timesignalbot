@@ -34,6 +34,18 @@ function choiceCat() {
     // 毛玉吐き
     LIST_OF_CANDIDATE_CATS.push("オエッ(毛玉)");
   }
+  if (random.nextInt(32) < 7) {
+    // 7/32
+    LIST_OF_CANDIDATE_CATS.push('みゃ～？');
+  }
+  if (random.nextInt(32) < 7) {
+    // 7/32
+    LIST_OF_CANDIDATE_CATS.push('みゃ！');
+  }
+  if (random.nextInt(32) < 7) {
+    // 7/32
+    LIST_OF_CANDIDATE_CATS.push('Nyanyanyanyanyanyanya!');
+  }
   if (random.nextInt(16) < 1) {
     // 1/16
     LIST_OF_CANDIDATE_CATS.push('は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛');
