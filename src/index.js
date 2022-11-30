@@ -315,15 +315,13 @@ client.on('messageCreate', msg => {
   }
   if (SEX_PATTERN.test(msg.content)) {
     // these are utc.
-    let start = new Date('2022-10-31 15:00:00');
-    let finish = new Date('2022-11-30 15:00:00');
+    //let start = new Date('2022-10-31 15:00:00');
+    //let finish = new Date('2022-11-30 15:00:00');
     let now = new Date();
     // 性の六時間
     let c1 = new Date(now.getFullYear(), 11, 24, 12);
     let c2 = new Date(now.getFullYear(), 11, 24, 18);
-    if (start.getTime() <= now.getTime() && now.getTime() < finish.getTime()) {
-      promises.push(msg.reply(random.nextInt(100) < 80 ? 'やらないか！' : 'やめないか！'));
-    } else if (c1.getTime() <= now.getTime() && now.getTime() < c2.getTime()) {
+    if (c1.getTime() <= now.getTime() && now.getTime() < c2.getTime()) {
       let percentage = 0;
       let a = null;
       do {
