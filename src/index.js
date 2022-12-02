@@ -146,7 +146,7 @@ const SIGNAL_SCHEDULES = [];
 client.on('ready', (c) => {
   const promises = [];
   logger.info(` ${c.user.username}(${c.user}, ${c.user.tag}) でログインしています。`);
-  c.user.setActivity(`${MINES.source.split('\\\\|').length}個の地雷除去`, { type: ActivityType.Competing });
+  c.user.setActivity(`${MINES.source.split('|').length}個の地雷除去`, { type: ActivityType.Competing });
   const timezoneconfig = { timezone: 'Asia/Tokyo' };
   // 時報セットアップ
   SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, timezoneconfig));
@@ -155,7 +155,7 @@ client.on('ready', (c) => {
   // 8月16日（水）07時14分22秒
   SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 3', yattaze, timezoneconfig));
   if (global.gc) {
-    SIGNAL_SCHEDULES.push(cron.schedule('* * * * *', global.gc, timezoneconfig));
+    SIGNAL_SCHEDULES.push(cron.schedule('* * * * */5', global.gc, timezoneconfig));
   } else {
     logger.warning('定期GCが有効化されませんでした。');
   }
@@ -163,10 +163,7 @@ client.on('ready', (c) => {
 });
 
 client.on('interactionCreate', (interaction) => {
-  logger.debug(`isApplicationCommand : ${interaction.type === InteractionType.ApplicationCommand}, isAutocomplete : ${interaction.type === InteractionType.ApplicationCommandAutocomplete},`
-    + ` isButton : ${interaction.isButton()}, isContextMenu: ${interaction.isContextMenuCommand()},`
-    + ` isMessageComponent(): ${interaction.type === InteractionType.MessageComponent}, isMessageContextMenu(): ${interaction.isMessageContextMenuCommand()},`
-    + ` isSelectMenu(): ${interaction.isSelectMenu()}, isUserContextMenu(): ${interaction.isUserContextMenuCommand()}`);
+  logger.debug(`isApplicationCommand : ${interaction.type === InteractionType.ApplicationCommand}, isAutocomplete : ${interaction.type === InteractionType.ApplicationCommandAutocomplete}, isButton : ${interaction.isButton()}, isContextMenu: ${interaction.isContextMenuCommand()}, isMessageComponent(): ${interaction.type === InteractionType.MessageComponent}, isMessageContextMenu(): ${interaction.isMessageContextMenuCommand()}, isStringSelectMenu(): ${interaction.isStringSelectMenu()}, isUserContextMenu(): ${interaction.isUserContextMenuCommand()}, isUserSelectMenu(): ${interaction.isUserSelectMenu()}`);
   if (!interaction.isChatInputCommand()) {
     // コマンドでない
     return null;
@@ -206,7 +203,7 @@ const MINE_ROLE_ID = '844886159984558121';
 
 client.on('messageCreate', (msg) => {
   // 他のBOTのメッセージには反応しない
-  if (msg.author.bot && !msg.author.equals(client.user)) return new Promise();
+  if (msg.author.bot && !msg.author.equals(client.user)) return null;
   if (msg.channel instanceof TextChannel) {
     // logger.debug('%s(%s) : %s', msg.member.displayName, msg.channel.name, msg.content);
   }
