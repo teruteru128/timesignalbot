@@ -1,6 +1,4 @@
-
 const random = require('./random');
-
 
 // 基本猫12種
 const INITIAL_CAT_LIST = ['にゃーん', 'にゃん', 'にゃ？', 'にゃん？', 'にゃおーん', 'フシーッ！', 'ゴロゴロゴロゴロ……', 'Zz...', '💤', 'なぁーご', 'なぁ〜ご', 'なぉーん'];
@@ -17,7 +15,7 @@ const A = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV4
 const B = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44GbCuOBquOBruOBqOOAgOOBsuOBi+OBleOBmeOAgOe3i+iJsuOBrumzpeOCiOOAgOOBqOOBi+OBjeOChOOBvuOBi+OBjeOAgOOBquOCkuOBu+OBteOCjArjgZPjgYbjgZ/jgovjgIDjgarjgajjgovjgIDnt4voibLjga7ps6XjgojjgIDjgbLjgY/jgYTjgojjgb/jgY/jgYTjgIDjgZvjgY3jgajjgYrjgowKCueFjOOAheOBn+OCi+e0heOAheiNkumHjuOBq+mjn+OBv+OBl+W+oemBo+OBhOOBruebruOBq+eXheOBv+OBl+mXh+imluOBn+OCi+efouimi+OBl+OBkeOCi+OCkuS9leOBqOOBquOCiwrlj6Pop5Ljga/pmY3kuIvjgZflip/pgY7jgpLjgoLnoJXjgY3jgZ/jgovmiYDmpa3jgZPjgZ3kvZXjgZ/jgovjgoQK5YW244Gv6KiA5LmL6JGJ44Gr6Z2e44Ga5YW244Gv5aWH5oCq5LmfCuOCq+OCt+OCs+ODn+OAgOOCq+OCt+OCs+ODn+OAgOaVrOOBhOWlieOCiuW+oeawl+aAp+epj+OChOOBi+OBquOCi+OCkumhmOOBhOOBkeOCjArntIXmmJ/jgZ/jgovmmJ/nnLzjgZ/jgovnnLznmLTjgZ/jgovnmLTmsJfjgZ/jgovmsJfolqzjgZ/jgovolqzmr5LjgZ/jgovmr5LnlZzjgZ/jgovnlZznlJ/jgZ/jgovnlJ/npZ7jgZ/jgovmiJHjgonjgYzlvqHkuLvjga7lvqHpgaPjgYTjgoQK5LuK44GT44Gd5p2l44Gf44KJ44KT5oiR44GM6ISz5ry/44Gu5rCR44G4CuS7iuOBk+OBneadpeOBn+OCieOCk+aIkeOBjOS4luOBruW4uOmXh+OBuArku4rjgZPjgZ3mnaXjgZ/jgonjgpPmiJHjgYzmqrvjga7otavngbzjg5gKCue3i+iJsuOBrumzpeOCiOOAgOS7iuOBk+OBneeZuuOBoeOBrA==';
 
 function choiceCat() {
-  let LIST_OF_CANDIDATE_CATS = [];
+  const LIST_OF_CANDIDATE_CATS = [];
   // クリア
   LIST_OF_CANDIDATE_CATS.splice(0, LIST_OF_CANDIDATE_CATS.length);
   // 基本猫12種 100%
@@ -28,11 +26,12 @@ function choiceCat() {
     LIST_OF_CANDIDATE_CATS.push('(\\*´ω`\\*)にゃ～ん❤');
   }
   // 絵文字猫13種
-  CAT_EMOJIS.filter(candiCat => random.nextInt(4) < 1).forEach(candiCat => LIST_OF_CANDIDATE_CATS.push(candiCat));
+  CAT_EMOJIS.filter(() => random.nextInt(4) < 1)
+    .forEach((candiCat) => LIST_OF_CANDIDATE_CATS.push(candiCat));
   if (random.nextInt(8) < 1) {
     // 1/8
     // 毛玉吐き
-    LIST_OF_CANDIDATE_CATS.push("オエッ(毛玉)");
+    LIST_OF_CANDIDATE_CATS.push('オエッ(毛玉)');
   }
   if (random.nextInt(32) < 7) {
     // 7/32
@@ -51,7 +50,8 @@ function choiceCat() {
     LIST_OF_CANDIDATE_CATS.push('は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛');
   }
   // 現場猫 13/128
-  GENBA_NEKO.filter(candiCat => random.nextInt(128) < 13).forEach(candiCat => LIST_OF_CANDIDATE_CATS.push(candiCat));
+  GENBA_NEKO.filter(() => random.nextInt(128) < 13)
+    .forEach((candiCat) => LIST_OF_CANDIDATE_CATS.push(candiCat));
   if (random.nextInt(64) < 3) {
     // 3/64
     // シークレットB 2種

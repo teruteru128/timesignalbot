@@ -9,7 +9,7 @@
   "scripts": {
     "test": "mocha",
     "bench": "node bench/index.js",
-    "start": "node src/index.js",
+    "start": "node --expose-gc src/index.js",
     "start:debug": "node src/index.js",
     "create-db": "node src/managements/create-db.js"
   },
@@ -32,10 +32,17 @@
     "discord.js": "^14.7.1",
     "node-cron": "^3.0.2",
     "pg": "^8.8.0",
+    "pino": "^8.7.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
+    "eslint": "^8.28.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.5.1",
+    "eslint-plugin-promise": "^6.1.1",
     "jshint": "^2.13.6",
     "mocha": "^10.1.0"
   }
