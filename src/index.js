@@ -8,13 +8,11 @@ const {
   Client,
   GatewayIntentBits,
   InteractionType,
-  TextChannel,
   DMChannel,
-  ThreadChannel,
   Partials,
 } = require('discord.js');
 const cron = require('node-cron');
-const pino = require('pino');
+const { pino } = require('pino');
 
 const { buildSignal } = require('./signalbuilder');
 const { choiceCat } = require('./catchooser');
@@ -77,36 +75,6 @@ const data1 = new SlashCommandBuilder().setName().setDescription()
   .addStringOption(opt => opt.setName('').setDescription().setRequired(true));
  */
 
-client.on('invalidated', async () => logger.info('invalidated'));
-client.on('inviteCreate', async (invite) => { logger.info('inviceCreate : %s in %s', invite, invite.guild.name); });
-client.on('inviteDelete', async (invite) => { logger.info('inviteDelete : %s', invite); });
-client.on('messageDelete', async (message) => {
-  // 起動時より前に作成されたメッセージが削除されると、authorがnullになる？=>本当らしい
-  let logmsg = '';
-  if (message.channel !== null) {
-    logmsg += `${message.channel.name}`;
-  } else {
-    logmsg += '(message.channel is null)';
-  }
-  if (message.inGuild()) {
-    logmsg += `(${message.guild.name})`;
-  }
-  logmsg += 'で送信された(';
-  if (message.author !== null) {
-    if (message.author.username !== null) {
-      logmsg += `${message.author.username}`;
-    } else {
-      logmsg += 'message.author.username is null';
-    }
-  } else {
-    logmsg += 'message.author is null';
-  }
-  logmsg += `)のメッセージが削除されました : ${message.content}`;
-  logger.info(logmsg);
-});
-client.on('messageDeleteBulk', async (messages) => messages.forEach((v) => logger.info(`削除されましたs : ${v}`)));
-client.on('threadCreate', async (thread) => logger.info('スレッド\'%s\'が\'%s\'で作成されました。', thread.name, thread.guild.name));
-
 // GUILD ID
 const KAKUNINYOU_TEST_GUILD_ID = '879315010218774528';
 const TAMOKUTEKI_TOIRE_GUILD_ID = '795353457996595200';
@@ -155,7 +123,7 @@ client.on('ready', (c) => {
   // 8月16日（水）07時14分22秒
   SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 3', yattaze, timezoneconfig));
   if (global.gc) {
-    SIGNAL_SCHEDULES.push(cron.schedule('* * * * */5', global.gc, timezoneconfig));
+    SIGNAL_SCHEDULES.push(cron.schedule('* * * * */5', async () => { logger.debug('do garbage collect'); global.gc(); }, timezoneconfig));
   } else {
     logger.warning('定期GCが有効化されませんでした。');
   }
@@ -204,15 +172,6 @@ const MINE_ROLE_ID = '844886159984558121';
 client.on('messageCreate', (msg) => {
   // 他のBOTのメッセージには反応しない
   if (msg.author.bot && !msg.author.equals(client.user)) return null;
-  if (msg.channel instanceof TextChannel) {
-    // logger.debug('%s(%s) : %s', msg.member.displayName, msg.channel.name, msg.content);
-  }
-  if (msg.channel instanceof ThreadChannel) {
-    logger.debug('%s(%s) : %s', msg.member.displayName, msg.channel.name, msg.content);
-  }
-  if (msg.channel instanceof DMChannel) {
-    logger.debug('%s(DMChannel), %s', msg.author.username, msg.content);
-  }
 
   const promises = [];
 
@@ -234,15 +193,15 @@ client.on('messageCreate', (msg) => {
   if (MINES.test(msg.content)) {
     promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
     // 多目的トイレサーバーに参加している
-    // promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(
-    // TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(author.id)}`));
+    /* promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(
+     TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(author.id)}`)); */
     // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
     if (msg.guildId === TAMOKUTEKI_TOIRE_GUILD_ID && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
       // 便器民かつ地雷ロールを割り当てられていない
       promises.push(msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID)));
     }
-    // p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}
-    // (${msg.guild.name}) で ${author.username} さんが地雷を踏みました。`));
+    /* p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}
+     (${msg.guild.name}) で ${author.username} さんが地雷を踏みました。`)); */
   }
   if (SEX_PATTERN.test(msg.content)) {
     // these are utc.
