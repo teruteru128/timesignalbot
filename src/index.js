@@ -10,6 +10,7 @@ const {
   InteractionType,
   DMChannel,
   Partials,
+  PermissionsBitField,
 } = require('discord.js');
 const cron = require('node-cron');
 const { pino } = require('pino');
@@ -134,12 +135,11 @@ client.on('interactionCreate', (interaction) => {
   logger.debug(`isApplicationCommand : ${interaction.type === InteractionType.ApplicationCommand}, isAutocomplete : ${interaction.type === InteractionType.ApplicationCommandAutocomplete}, isButton : ${interaction.isButton()}, isContextMenu: ${interaction.isContextMenuCommand()}, isMessageComponent(): ${interaction.type === InteractionType.MessageComponent}, isMessageContextMenu(): ${interaction.isMessageContextMenuCommand()}, isStringSelectMenu(): ${interaction.isStringSelectMenu()}, isUserContextMenu(): ${interaction.isUserContextMenuCommand()}, isUserSelectMenu(): ${interaction.isUserSelectMenu()}`);
   if (!interaction.isChatInputCommand()) {
     // コマンドでない
-    return null;
+    return Promise.resolve();
   }
   // インタラクション(スラッシュコマンド)受信
 
   const { commandName } = interaction;
-  const promises = [];
 
   if (commandName === 'ping') {
     const payload = interaction.options.getString('payload', false);
@@ -147,21 +147,28 @@ client.on('interactionCreate', (interaction) => {
     // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
     // then()の中で呼び出すのはあかんのか？
     // いけるっぽい
-    const pongPromise = interaction.reply({ content: 'Pong!', fetchReply: false }).then(() => { if (interaction.guildId === KAKUNINYOU_TEST_GUILD_ID && payload !== null) { return Promise.resolve(interaction.followUp(`${payload}`)); } return Promise.resolve(); });
-    promises.push(pongPromise);
+    return interaction.reply({ content: 'Pong!', fetchReply: false }).then(() => {
+      if (interaction.guildId === KAKUNINYOU_TEST_GUILD_ID && payload !== null) {
+        return interaction.followUp(`${payload}`);
+      }
+      return Promise.resolve();
+    });
     // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
     // interaction.followUp
     // interaction.channel.send();
   }
   if (commandName === 'nyanpass') {
-    promises.push(interaction.reply('にゃんぱすー！'));
-    promises.push(interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`));
+    return PermissionsBitField.allSettled([
+      interaction.reply('にゃんぱすー！'),
+      interaction.client.users.cache.get('310413442760572929')
+        .send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`),
+    ]);
   }
   if (commandName === 'neko') {
     const CHOSEN_CAT = choiceCat();
-    promises.push(interaction.reply(CHOSEN_CAT));
+    return interaction.reply(CHOSEN_CAT);
   }
-  return Promise.allSettled(promises);
+  return Promise.resolve();
 });
 
 const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
@@ -171,7 +178,7 @@ const MINE_ROLE_ID = '844886159984558121';
 
 client.on('messageCreate', (msg) => {
   // 他のBOTのメッセージには反応しない
-  if (msg.author.bot && !msg.author.equals(client.user)) return null;
+  if (msg.author.bot && !msg.author.equals(client.user)) return Promise.resolve();
 
   const promises = [];
 

@@ -1,14 +1,14 @@
 /* */
-/* 
+/*
 https://discordjs.guide/creating-your-bot/creating-commands.html#registering-commands
 https://discordjs.guide/interactions/slash-commands.html#guild-commands
  */
 const {
-  ApplicationCommandType,
-  ApplicationCommandOptionType,
   Routes,
-  SlashCommandBuilder } = require('discord.js');
+  SlashCommandBuilder,
+} = require('discord.js');
 const { REST } = require('@discordjs/rest');
+const { pino } = require('pino');
 
 // スラッシュコマンド登録用データ
 const commands = [
@@ -16,7 +16,7 @@ const commands = [
     .setName('ping')
     .setDescription('The message returned with the pong.')
     .addStringOption(
-      option => option.setName('payload')
+      (option) => option.setName('payload')
         .setDescription('The message returned with the pong.')
         .setRequired(false)),
   new SlashCommandBuilder()
@@ -26,44 +26,50 @@ const commands = [
     .setName('neko')
     .setDescription('show cats face'),
 ]
-  .map(command => command.toJSON());
+  .map((command) => command.toJSON());
+// 確認用テストギルド
 const KAKUNINYOU_TEST_GUILD_ID = '879315010218774528';
+// 多目的トイレ
 const TAMOKUTEKI_TOIRE_GUILD_ID = '795353457996595200';
+// ファーム
 const FARM_SERVER_GUILD_ID = '572150608283566090';
-const SIGNAL_GUILD_ID_LIST = [KAKUNINYOU_TEST_GUILD_ID, TAMOKUTEKI_TOIRE_GUILD_ID, FARM_SERVER_GUILD_ID];
+const SIGNAL_GUILD_ID_LIST = [KAKUNINYOU_TEST_GUILD_ID, TAMOKUTEKI_TOIRE_GUILD_ID,
+  FARM_SERVER_GUILD_ID];
 
 const clientId = '749274949348229150';
+const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
 // スラッシュコマンドをギルドに登録
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
 (async () => {
   try {
-    console.log('Started refreshing application (/) commands.');
+    logger.info('Started refreshing application (/) commands.');
 
     await rest.put(
-      Routes.applicationGuildCommands(clientId, guildId),
+      Routes.applicationGuildCommands(clientId, TAMOKUTEKI_TOIRE_GUILD_ID),
       { body: commands },
     );
 
-    console.log('Successfully reloaded application (/) commands.');
+    logger.info('Successfully reloaded application (/) commands.');
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 })();
 
-
+/*
 (async () => {
   const promises = [];
-  SIGNAL_GUILD_ID_LIST.reduce((promises, guildId, i, a) => {
-    promises.push(rest.put(
+  SIGNAL_GUILD_ID_LIST.reduce((p, guildId) => {
+    p.push(rest.put(
       Routes.applicationGuildCommands(clientId, guildId),
       { body: commands },
     ));
-    return promises;
+    return p;
   }, promises);
   try {
-    await new Promise.allSettled(promises);
+    await Promise.allSettled(promises);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
   }
 })();
+ */
