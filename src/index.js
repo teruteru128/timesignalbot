@@ -6,11 +6,11 @@ const {
   ActivityType,
   ChannelType,
   Client,
+  Events,
   GatewayIntentBits,
   InteractionType,
   DMChannel,
   Partials,
-  PermissionsBitField,
 } = require('discord.js');
 const cron = require('node-cron');
 const { pino } = require('pino');
@@ -112,7 +112,7 @@ const yattaze = () => {
 const MINES = new RegExp(process.env.MINES, 'giu');
 
 const SIGNAL_SCHEDULES = [];
-client.on('ready', (c) => {
+client.on(Events.ClientReady, (c) => {
   const promises = [];
   logger.info(` ${c.user.username}(${c.user}, ${c.user.tag}) でログインしています。`);
   c.user.setActivity(`${MINES.source.split('|').length}個の地雷除去`, { type: ActivityType.Competing });
@@ -131,11 +131,11 @@ client.on('ready', (c) => {
   return Promise.allSettled(promises);
 });
 
-client.on('interactionCreate', (interaction) => {
+client.on(Events.InteractionCreate, async (interaction) => {
   logger.debug(`isApplicationCommand : ${interaction.type === InteractionType.ApplicationCommand}, isAutocomplete : ${interaction.type === InteractionType.ApplicationCommandAutocomplete}, isButton : ${interaction.isButton()}, isContextMenu: ${interaction.isContextMenuCommand()}, isMessageComponent(): ${interaction.type === InteractionType.MessageComponent}, isMessageContextMenu(): ${interaction.isMessageContextMenuCommand()}, isStringSelectMenu(): ${interaction.isStringSelectMenu()}, isUserContextMenu(): ${interaction.isUserContextMenuCommand()}, isUserSelectMenu(): ${interaction.isUserSelectMenu()}`);
   if (!interaction.isChatInputCommand()) {
     // コマンドでない
-    return Promise.resolve();
+    return;
   }
   // インタラクション(スラッシュコマンド)受信
 
@@ -147,28 +147,25 @@ client.on('interactionCreate', (interaction) => {
     // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
     // then()の中で呼び出すのはあかんのか？
     // いけるっぽい
-    return interaction.reply({ content: 'Pong!', fetchReply: false }).then(() => {
-      if (interaction.guildId === KAKUNINYOU_TEST_GUILD_ID && payload !== null) {
-        return interaction.followUp(`${payload}`);
-      }
-      return Promise.resolve();
-    });
+    await interaction.reply({ content: 'Pong!' });
+    if (interaction.guildId === KAKUNINYOU_TEST_GUILD_ID && payload !== null) {
+      await interaction.followUp(`${payload}`);
+    }
     // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
     // interaction.followUp
     // interaction.channel.send();
   }
   if (commandName === 'nyanpass') {
-    return PermissionsBitField.allSettled([
-      interaction.reply('にゃんぱすー！'),
-      interaction.client.users.cache.get('310413442760572929')
-        .send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`),
-    ]);
+    await interaction.reply('にゃんぱすー！');
+    await interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`);
   }
   if (commandName === 'neko') {
     const CHOSEN_CAT = choiceCat();
-    return interaction.reply(CHOSEN_CAT);
+    await interaction.reply(CHOSEN_CAT);
   }
-  return Promise.resolve();
+  if (commandName === 'hotchocopafe') {
+    await interaction.reply({ content: 'https://twitter.com/LYCO_RECO/status/1561232379733106688' });
+  }
 });
 
 const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
@@ -176,7 +173,7 @@ const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
 const SEX_PATTERN = /(SE|ＳＥ|セ)(X|Ｘ|ッ(クス|久))/i;
 const MINE_ROLE_ID = '844886159984558121';
 
-client.on('messageCreate', (msg) => {
+client.on(Events.MessageCreate, (msg) => {
   // 他のBOTのメッセージには反応しない
   if (msg.author.bot && !msg.author.equals(client.user)) return Promise.resolve();
 

@@ -18,13 +18,17 @@ const commands = [
     .addStringOption(
       (option) => option.setName('payload')
         .setDescription('The message returned with the pong.')
-        .setRequired(false)),
+        .setRequired(false),
+    ),
   new SlashCommandBuilder()
     .setName('nyanpass')
     .setDescription('get nyanpass count from nyanpass.com'),
   new SlashCommandBuilder()
     .setName('neko')
     .setDescription('show cats face'),
+  new SlashCommandBuilder()
+    .setName('hotchocopafe')
+    .setDescription('It\'s shi... hot chocolate pafe!!!!'),
 ]
   .map((command) => command.toJSON());
 // 確認用テストギルド
@@ -33,6 +37,7 @@ const KAKUNINYOU_TEST_GUILD_ID = '879315010218774528';
 const TAMOKUTEKI_TOIRE_GUILD_ID = '795353457996595200';
 // ファーム
 const FARM_SERVER_GUILD_ID = '572150608283566090';
+// list
 const SIGNAL_GUILD_ID_LIST = [KAKUNINYOU_TEST_GUILD_ID, TAMOKUTEKI_TOIRE_GUILD_ID,
   FARM_SERVER_GUILD_ID];
 
@@ -45,10 +50,12 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
   try {
     logger.info('Started refreshing application (/) commands.');
 
-    await rest.put(
-      Routes.applicationGuildCommands(clientId, TAMOKUTEKI_TOIRE_GUILD_ID),
-      { body: commands },
-    );
+    SIGNAL_GUILD_ID_LIST.forEach(async (guild) => {
+      await rest.put(
+        Routes.applicationGuildCommands(clientId, guild),
+        { body: commands },
+      );
+    });
 
     logger.info('Successfully reloaded application (/) commands.');
   } catch (error) {
