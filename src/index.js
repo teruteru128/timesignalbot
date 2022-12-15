@@ -91,10 +91,13 @@ const signal = (now) => {
   GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
   // build signal message
   const body = buildSignal(now);
-  Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST
-    .map((channelId) => client.channels.cache.get(channelId))
-    .filter((channel) => channel.type === ChannelType.GuildText)
-    .map((channel) => channel.send(body)));
+  // チャンネルIDのリストをチャンネルのリストに変換する
+  // filterでGuildText Channelを抽出する
+  // Channelに送信する
+  Promise.allSettled(Promise.all(SIGNALING_TEXT_CHANNEL_LIST
+    .map((channelId) => client.channels.fetch(channelId)))
+    .then((cl) => cl.filter((channel) => channel.type === ChannelType.GuildText)
+      .map((channel) => channel.send(body))));
 };
 /*
 const yattaze = () => {
