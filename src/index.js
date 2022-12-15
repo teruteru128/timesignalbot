@@ -207,12 +207,9 @@ client.on(Events.MessageCreate, async (msg) => {
       // 便器民かつ地雷ロールを割り当てられていない
       await msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID));
     }
-    let minenotice = msg.channel.name;
-    if (msg.inGuild()) {
-      minenotice += `(${msg.guild.name})`;
-    }
-    minenotice += ` で ${msg.author.username} さんが地雷を踏みました。`;
-    await msg.client.users.cache.get('310413442760572929').send(minenotice);
+    await msg.client.users.fetch('310413442760572929')
+      .then((user) => user.createDM())
+      .then((dm) => dm.send(`${msg.author.username}さんが${msg.channel}で地雷を踏みました。 ${msg.url}`));
   }
   if (SEX_PATTERN.test(msg.content)) {
     // these are utc.
