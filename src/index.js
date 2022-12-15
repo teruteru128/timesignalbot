@@ -8,7 +8,6 @@ const {
   Client,
   Events,
   GatewayIntentBits,
-  InteractionType,
   DMChannel,
   Partials,
 } = require('discord.js');
@@ -94,26 +93,22 @@ const signal = (now) => {
   const body = buildSignal(now);
   Promise.allSettled(SIGNALING_TEXT_CHANNEL_LIST
     .map((channelId) => client.channels.cache.get(channelId))
-    .reduce((promises, channel) => {
-      if (channel.type === ChannelType.GuildText) {
-        promises.push(channel.send(body));
-      }
-      return promises;
-    }, []));
+    .filter((channel) => channel.type === ChannelType.GuildText)
+    .map((channel) => channel.send(body)));
 };
-
+/*
 const yattaze = () => {
   const channel = client.channels.cache.get(TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID);
   if (channel.type === ChannelType.GuildText) {
     channel.send('やったぜ。\nhttps://www.nicovideo.jp/watch/sm9248590').then((reason) => reason, (reason) => logger.error(reason));
   }
 };
+*/
 
 const MINES = new RegExp(process.env.MINES, 'giu');
 
 const SIGNAL_SCHEDULES = [];
 client.on(Events.ClientReady, (c) => {
-  const promises = [];
   logger.info(` ${c.user.username}(${c.user}, ${c.user.tag}) でログインしています。`);
   c.user.setActivity(`${MINES.source.split('|').length}個の地雷除去`, { type: ActivityType.Competing });
   const timezoneconfig = { timezone: 'Asia/Tokyo' };
@@ -122,90 +117,102 @@ client.on(Events.ClientReady, (c) => {
   // cron.schedule('22 22 22 22 2 *', signal2, timezoneconfig);
   // crypto.getCiphers().forEach((cipher, i, a) => logger.info(cipher));
   // 8月16日（水）07時14分22秒
-  SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 3', yattaze, timezoneconfig));
+  // SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 3', yattaze, timezoneconfig));
   if (global.gc) {
-    SIGNAL_SCHEDULES.push(cron.schedule('* * * * */5', async () => { logger.debug('do garbage collect'); global.gc(); }, timezoneconfig));
+    SIGNAL_SCHEDULES.push(cron.schedule('* * * * */5', async () => { logger.debug('do auto garbage collect'); global.gc(); }, timezoneconfig));
+    logger.debug('auto garbage collect scheduled');
   } else {
     logger.warning('定期GCが有効化されませんでした。');
   }
-  return Promise.allSettled(promises);
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
-  logger.debug(`isApplicationCommand : ${interaction.type === InteractionType.ApplicationCommand}, isAutocomplete : ${interaction.type === InteractionType.ApplicationCommandAutocomplete}, isButton : ${interaction.isButton()}, isContextMenu: ${interaction.isContextMenuCommand()}, isMessageComponent(): ${interaction.type === InteractionType.MessageComponent}, isMessageContextMenu(): ${interaction.isMessageContextMenuCommand()}, isStringSelectMenu(): ${interaction.isStringSelectMenu()}, isUserContextMenu(): ${interaction.isUserContextMenuCommand()}, isUserSelectMenu(): ${interaction.isUserSelectMenu()}`);
-  if (!interaction.isChatInputCommand()) {
-    // コマンドでない
-    return;
+  if (interaction.isCommand()) {
+    logger.debug('This is command.');
   }
-  // インタラクション(スラッシュコマンド)受信
+  if (interaction.isChatInputCommand()) {
+    // インタラクション(スラッシュコマンド)受信
+    logger.debug('This is chat input command.');
 
-  const { commandName } = interaction;
+    const { commandName } = interaction;
 
-  if (commandName === 'ping') {
-    const payload = interaction.options.getString('payload', false);
-    // fetchReply プロパティはthenに返信メッセージを渡すフラグ
-    // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
-    // then()の中で呼び出すのはあかんのか？
-    // いけるっぽい
-    await interaction.reply({ content: 'Pong!' });
-    if (interaction.guildId === KAKUNINYOU_TEST_GUILD_ID && payload !== null) {
-      await interaction.followUp(`${payload}`);
+    if (commandName === 'ping') {
+      const payload = interaction.options.getString('payload', false);
+      // fetchReply プロパティはthenに返信メッセージを渡すフラグ
+      // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
+      // then()の中で呼び出すのはあかんのか？
+      // いけるっぽい
+      await interaction.reply({ content: 'Pong!' });
+      if (interaction.guildId === KAKUNINYOU_TEST_GUILD_ID && payload !== null) {
+        await interaction.followUp(`${payload}`);
+      }
+      // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
+      // interaction.followUp
+      // interaction.channel.send();
     }
-    // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
-    // interaction.followUp
-    // interaction.channel.send();
+    if (commandName === 'nyanpass') {
+      await interaction.reply('にゃんぱすー！');
+      await interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`);
+    }
+    if (commandName === 'neko') {
+      const CHOSEN_CAT = choiceCat();
+      await interaction.reply(CHOSEN_CAT);
+    }
+    if (commandName === 'hotchocopafe') {
+      await interaction.reply({ content: 'https://twitter.com/LYCO_RECO/status/1561232379733106688' });
+    }
   }
-  if (commandName === 'nyanpass') {
-    await interaction.reply('にゃんぱすー！');
-    await interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`);
+  if (interaction.isContextMenuCommand()) {
+    logger.debug('This is context menu command.');
   }
-  if (commandName === 'neko') {
-    const CHOSEN_CAT = choiceCat();
-    await interaction.reply(CHOSEN_CAT);
+  if (interaction.isMessageContextMenuCommand()) {
+    logger.debug('This is message context menu command.');
   }
-  if (commandName === 'hotchocopafe') {
-    await interaction.reply({ content: 'https://twitter.com/LYCO_RECO/status/1561232379733106688' });
+  if (interaction.isUserContextMenuCommand()) {
+    logger.debug('This is user context menu command.');
   }
 });
 
 const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
-// const YATTAZE_PATTERN = /^(やったぜ。|やりましたわ。|やったわ。)$/g;
+const YATTAZE_PATTERN = /^や(ったぜ|りましたわ|ったわ)。$/g;
 const SEX_PATTERN = /(SE|ＳＥ|セ)(X|Ｘ|ッ(クス|久))/i;
 const MINE_ROLE_ID = '844886159984558121';
 
-client.on(Events.MessageCreate, (msg) => {
+client.on(Events.MessageCreate, async (msg) => {
   // 他のBOTのメッセージには反応しない
-  if (msg.author.bot && !msg.author.equals(client.user)) return Promise.resolve();
-
-  const promises = [];
+  if (msg.author.bot && !msg.author.equals(client.user)) return;
 
   if (msg.content === '#ping') {
     // reply() のあとの then() に渡される msg は返信したメッセージ
-    promises.push(msg.reply('Pong?')/* .then(msg => { logger.info(msg.content); return Promise.resolve(msg); }) */);
+    await msg.reply('Pong?')/* .then(msg => { logger.info(msg.content); }) */;
   }
   if (msg.content.startsWith('!test') || msg.content.includes('console.print')) {
     logger.debug('%s', msg.content);
   }
   if (msg.guildId === KAKUNINYOU_TEST_GUILD_ID && msg.content.startsWith('!pumpkin')) {
     // 反省を促す
-    promises.push(msg.reply('<:hansei:940458171309383710>'));
+    await msg.reply('<:hansei:940458171309383710>');
   }
   if (msg.guildId === KAKUNINYOU_TEST_GUILD_ID && msg.content.includes('<:hansei:940458171309383710>')) {
     // 反省を促す
-    promises.push(msg.reply('||https://www.nicovideo.jp/watch/sm38736861||'));
+    await msg.reply('||https://www.nicovideo.jp/watch/sm38736861||');
   }
   if (MINES.test(msg.content)) {
-    promises.push(msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178'));
+    await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
     // 多目的トイレサーバーに参加している
-    /* promises.push(msg.reply(`joined : ${msg.client.guilds.cache.get(
-     TAMOKUTEKI_TOIRE_GUILD_ID).members.cache.has(author.id)}`)); */
+    // await msg.reply(`joined : ${msg.client.guilds.cache.get(
+    // .members.cache.has(msg.author.id)}`);
     // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
     if (msg.guildId === TAMOKUTEKI_TOIRE_GUILD_ID && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
       // 便器民かつ地雷ロールを割り当てられていない
-      promises.push(msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID)));
+      await msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID));
     }
-    /* p.push(msg.client.users.cache.get('310413442760572929').send(`${msg.channel.name}
-     (${msg.guild.name}) で ${author.username} さんが地雷を踏みました。`)); */
+    let minenotice = msg.channel.name;
+    if (msg.inGuild()) {
+      minenotice += `(${msg.guild.name})`;
+    }
+    minenotice += ` で ${msg.author.username} さんが地雷を踏みました。`;
+    await msg.client.users.cache.get('310413442760572929').send(minenotice);
   }
   if (SEX_PATTERN.test(msg.content)) {
     // these are utc.
@@ -256,22 +263,21 @@ client.on(Events.MessageCreate, (msg) => {
           a = 'ここに建てた病院とSEX！';
         }
       } while (a === null);
-      promises.push(msg.reply(a));
+      await msg.reply(a);
     } else {
-      promises.push(msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！'));
+      await msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！');
     }
   }
   // やったぜ。 : o
   // やったわ。 : o
   // やりましたわ。 : o
   // やりましたぜ。 : x
-  if (msg.content.includes('やったぜ。') || msg.content === 'やりましたわ。' || msg.content === 'やったわ。') {
+  if (YATTAZE_PATTERN.test(msg.content)) {
     // https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97#JST%20%E3%81%8C%E9%81%B8%E6%8A%9E%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E5%A0%B4%E5%90%88
     // https://web.archive.org/web/20211114034218/https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97
     const now = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
-    promises.push(msg.channel.send(`投稿者：${msg.member.displayName} （${now.getMonth() + 1}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`));
+    await msg.channel.send(`投稿者：${msg.member.displayName} （${now.getMonth() + 1}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
   }
-  return Promise.allSettled(promises);
 });
 
 // process.env.DISCORD_TOKEN が設定されている場合、client.tokenはclientをインスタンス化したときにデフォルトで設定される。
