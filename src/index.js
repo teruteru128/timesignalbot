@@ -4,7 +4,6 @@
 */
 const {
   ActivityType,
-  ChannelType,
   Client,
   Events,
   GatewayIntentBits,
@@ -94,10 +93,10 @@ const signal = (now) => {
   // チャンネルIDのリストをチャンネルのリストに変換する
   // filterでGuildText Channelを抽出する
   // Channelに送信する
-  Promise.allSettled(Promise.all(SIGNALING_TEXT_CHANNEL_LIST
+  Promise.all(SIGNALING_TEXT_CHANNEL_LIST
     .map((channelId) => client.channels.fetch(channelId)))
-    .then((cl) => cl.filter((channel) => channel.type === ChannelType.GuildText)
-      .map((channel) => channel.send(body))));
+    .then((cl) => cl.filter((channel) => channel.isTextBased()))
+    .then((c) => c.map((channel) => channel.send(body)));
 };
 /*
 const yattaze = () => {
