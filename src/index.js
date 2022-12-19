@@ -134,16 +134,11 @@ client.on(Events.ClientReady, (c) => {
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
-  if (interaction.isCommand()) {
-    logger.debug('This is command.');
-  }
   if (interaction.isChatInputCommand()) {
     // インタラクション(スラッシュコマンド)受信
     logger.debug('This is chat input command.');
 
-    const { commandName } = interaction;
-
-    if (commandName === 'ping') {
+    if (interaction.commandName === 'ping') {
       const payload = interaction.options.getString('payload', false);
       // fetchReply プロパティはthenに返信メッセージを渡すフラグ
       // followUp() は reply() をawaitしてから送信しないと機能しない、らしい
@@ -156,27 +151,39 @@ client.on(Events.InteractionCreate, async (interaction) => {
       // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
       // interaction.followUp
       // interaction.channel.send();
-    }
-    if (commandName === 'nyanpass') {
+    } else if (interaction.commandName === 'nyanpass') {
       await interaction.reply('にゃんぱすー！');
       await interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`);
-    }
-    if (commandName === 'neko') {
+    } else if (interaction.commandName === 'neko') {
       const CHOSEN_CAT = choiceCat();
       await interaction.reply(CHOSEN_CAT);
-    }
-    if (commandName === 'hotchocopafe') {
+    } else if (interaction.commandName === 'hotchocopafe') {
       await interaction.reply({ content: 'https://twitter.com/LYCO_RECO/status/1561232379733106688' });
+    } else if (interaction.commandName === 'signal') {
+      if (interaction.options.getSubcommand() === 'register') {
+        await interaction.reply({ content: 'Register pong!' });
+      } else if (interaction.options.getSubcommand() === 'unregister') {
+        await interaction.reply({ content: 'Unregister pong!' });
+      } else if (interaction.options.getSubcommand() === 'list') {
+        await interaction.reply({ content: 'List pong!' });
+      }
+    } else if (interaction.commandName === 'mine') {
+      if (interaction.options.getSubcommand() === 'register') {
+        await interaction.reply({ content: 'Register pong!' });
+      } else if (interaction.options.getSubcommand() === 'unregister') {
+        await interaction.reply({ content: 'Unregister pong!' });
+      } else if (interaction.options.getSubcommand() === 'list') {
+        await interaction.reply({ content: 'List pong!' });
+      }
     }
-  }
-  if (interaction.isContextMenuCommand()) {
+  } else if (interaction.isContextMenuCommand()) {
     logger.debug('This is context menu command.');
-  }
-  if (interaction.isMessageContextMenuCommand()) {
+  } else if (interaction.isMessageContextMenuCommand()) {
     logger.debug('This is message context menu command.');
-  }
-  if (interaction.isUserContextMenuCommand()) {
+  } else if (interaction.isUserContextMenuCommand()) {
     logger.debug('This is user context menu command.');
+  } else if (interaction.isAutocomplete()) {
+    logger.debug('This is autocomplete.');
   }
 });
 

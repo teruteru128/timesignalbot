@@ -4,10 +4,12 @@ https://discordjs.guide/creating-your-bot/creating-commands.html#registering-com
 https://discordjs.guide/interactions/slash-commands.html#guild-commands
  */
 const {
+  ChannelType,
+  PermissionFlagsBits,
+  REST,
   Routes,
   SlashCommandBuilder,
 } = require('discord.js');
-const { REST } = require('@discordjs/rest');
 const { pino } = require('pino');
 
 // スラッシュコマンド登録用データ
@@ -29,6 +31,39 @@ const commands = [
   new SlashCommandBuilder()
     .setName('hotchocopafe')
     .setDescription('It\'s shi... hot chocolate pafe!!!!'),
+  new SlashCommandBuilder()
+    .setName('signal')
+    .setDescription('managements time signals')
+    .addSubcommand((sub) => sub.setName('register')
+      .setDescription('register to timesignal')
+      .addChannelOption((opt) => opt.setName('channel')
+        .setDescription('The channel to send time signal')
+        .addChannelTypes(ChannelType.GuildText)))
+    .addSubcommand((sub) => sub.setName('unregister')
+      .setDescription('unregister from timesignal')
+      .addChannelOption((opt) => opt.setName('channel')
+        .setDescription('The channel to send time signal')
+        .addChannelTypes(ChannelType.GuildText)))
+    .addSubcommand((sub) => sub.setName('list')
+      .setDescription('list channels to send time signal'))
+    /* eslint no-bitwise: ["error", {"allow":["|"]}] */
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator
+      | PermissionFlagsBits.ManageChannels
+      | PermissionFlagsBits.ManageThreads),
+  new SlashCommandBuilder()
+    .setName('mine')
+    .setDescription('It\'s mine!')
+    .addSubcommand((sub) => sub.setName('register')
+      .setDescription('register to timesignal')
+      .addStringOption((opt) => opt.setName('channel')
+        .setDescription('The channel to send time signal')))
+    .addSubcommand((sub) => sub.setName('unregister')
+      .setDescription('unregister from timesignal')
+      .addStringOption((opt) => opt.setName('channel')
+        .setDescription('The channel to send time signal')))
+    .addSubcommand((sub) => sub.setName('list')
+      .setDescription('list channels to send time signal'))
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 ]
   .map((command) => command.toJSON());
 // 確認用テストギルド
@@ -54,7 +89,7 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
       await rest.put(
         Routes.applicationGuildCommands(clientId, guild),
         { body: commands },
-      );
+      ).catch((error) => logger.error(error));
     });
 
     logger.info('Successfully reloaded application (/) commands.');
