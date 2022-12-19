@@ -74,6 +74,9 @@ const data1 = new SlashCommandBuilder().setName().setDescription()
   .addStringOption(opt => opt.setName('').setDescription().setRequired(true));
  */
 
+client.on(Events.Error, async (error) => logger.error('error : %s', error));
+client.on(Events.Warn, async (info) => logger.warn('warn : %s', info));
+
 // GUILD ID
 const KAKUNINYOU_TEST_GUILD_ID = '879315010218774528';
 const TAMOKUTEKI_TOIRE_GUILD_ID = '795353457996595200';
@@ -96,7 +99,8 @@ const signal = (now) => {
   Promise.all(SIGNALING_TEXT_CHANNEL_LIST
     .map((channelId) => client.channels.fetch(channelId)))
     .then((cl) => cl.filter((channel) => channel.isTextBased()))
-    .then((c) => c.map((channel) => channel.send(body)));
+    .then((c) => c.map((channel) => channel.send(body)))
+    .catch((error) => logger.error(error));
 };
 /*
 const yattaze = () => {
@@ -126,6 +130,7 @@ client.on(Events.ClientReady, (c) => {
   } else {
     logger.warning('定期GCが有効化されませんでした。');
   }
+  logger.debug('Done client ready event');
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
