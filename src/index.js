@@ -15,6 +15,7 @@ const { pino } = require('pino');
 
 const { buildSignal } = require('./modules/signalbuilder');
 const { choiceCat } = require('./modules/catchooser');
+const { omikuji } = require('./modules/omikuji');
 const random = require('./modules/random');
 
 const client = new Client({
@@ -175,6 +176,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
       } else if (interaction.options.getSubcommand() === 'list') {
         await interaction.reply({ content: 'List pong!' });
       }
+    } else if (interaction.commandName === 'omikuji') {
+      await interaction.reply(`${interaction.user}の運勢は……\n${omikuji()}`);
     }
   } else if (interaction.isContextMenuCommand()) {
     logger.debug('This is context menu command.');

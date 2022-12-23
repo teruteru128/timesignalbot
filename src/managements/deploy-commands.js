@@ -35,6 +35,9 @@ const commands = [
     .setName('unkopafe')
     .setDescription('It\'s a shit pafe!!!!'),
   new SlashCommandBuilder()
+    .setName('omikuji')
+    .setDescription('omikuji'),
+  new SlashCommandBuilder()
     .setName('signal')
     .setDescription('managements time signals')
     .addSubcommand((sub) => sub.setName('register')
