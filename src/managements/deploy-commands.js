@@ -36,7 +36,10 @@ const commands = [
     .setDescription('It\'s a shit pafe!!!! ...parfait?'),
   new SlashCommandBuilder()
     .setName('omikuji')
-    .setDescription('Draw a fortune'),
+    .setDescription('Draw a fortune')
+    .setDescriptionLocalizations({
+      ja: 'おみくじを引きます',
+    }),
   new SlashCommandBuilder()
     .setName('signal')
     .setDescription('managements time signals')
