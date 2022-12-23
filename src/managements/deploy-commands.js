@@ -36,7 +36,7 @@ const commands = [
     .setDescription('It\'s a shit pafe!!!!'),
   new SlashCommandBuilder()
     .setName('omikuji')
-    .setDescription('omikuji'),
+    .setDescription('Draw a fortune'),
   new SlashCommandBuilder()
     .setName('signal')
     .setDescription('managements time signals')
