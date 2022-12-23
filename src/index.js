@@ -157,7 +157,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     } else if (interaction.commandName === 'neko') {
       const CHOSEN_CAT = choiceCat();
       await interaction.reply(CHOSEN_CAT);
-    } else if (interaction.commandName === 'hotchocopafe') {
+    } else if (interaction.commandName === 'hotchocopafe' || interaction.commandName === 'unkopafe') {
       await interaction.reply({ content: 'https://twitter.com/LYCO_RECO/status/1561232379733106688' });
     } else if (interaction.commandName === 'signal') {
       if (interaction.options.getSubcommand() === 'register') {

@@ -30,7 +30,10 @@ const commands = [
     .setDescription('show cats face'),
   new SlashCommandBuilder()
     .setName('hotchocopafe')
-    .setDescription('It\'s shi... hot chocolate pafe!!!!'),
+    .setDescription('It\'s a shi... hot chocolate pafe!!!!'),
+  new SlashCommandBuilder()
+    .setName('unkopafe')
+    .setDescription('It\'s a shit pafe!!!!'),
   new SlashCommandBuilder()
     .setName('signal')
     .setDescription('managements time signals')
