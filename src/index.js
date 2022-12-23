@@ -7,7 +7,6 @@ const {
   Client,
   Events,
   GatewayIntentBits,
-  DMChannel,
   Partials,
 } = require('discord.js');
 const cron = require('node-cron');
@@ -29,6 +28,8 @@ const client = new Client({
     Partials.User,
   ],
   intents: [
+    GatewayIntentBits.AutoModerationConfiguration,
+    GatewayIntentBits.AutoModerationExecution,
     GatewayIntentBits.DirectMessages,
     GatewayIntentBits.DirectMessageReactions,
     GatewayIntentBits.DirectMessageTyping,
@@ -105,10 +106,13 @@ const signal = (now) => {
 };
 /*
 const yattaze = () => {
-  const channel = client.channels.cache.get(TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID);
-  if (channel.type === ChannelType.GuildText) {
-    channel.send('やったぜ。\nhttps://www.nicovideo.jp/watch/sm9248590').then((reason) => reason, (reason) => logger.error(reason));
-  }
+  client.channels.fetch(TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID).then((channel) => {
+    if (channel.type === ChannelType.GuildText) {
+      return channel.send('やったぜ。\nhttps://www.nicovideo.jp/watch/sm9248590')
+        .then((reason) => reason, (reason) => logger.error(reason));
+    }
+    return Promise.resolve();
+  });
 };
 */
 
@@ -154,7 +158,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
       // interaction.channel.send();
     } else if (interaction.commandName === 'nyanpass') {
       await interaction.reply('にゃんぱすー！');
-      await interaction.client.users.cache.get('310413442760572929').send(`${interaction.user.username} さんが ${interaction.channel.name}(${!(interaction.channel instanceof DMChannel) ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`);
+      await interaction.client.users.fetch('310413442760572929')
+        .then((user) => user.send(`${interaction.user.username} さんが ${interaction.channel.name}(${interaction.inGuild() ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`));
     } else if (interaction.commandName === 'neko') {
       const CHOSEN_CAT = choiceCat();
       await interaction.reply(CHOSEN_CAT);
