@@ -13,9 +13,9 @@ const {
 const cron = require('node-cron');
 const { pino } = require('pino');
 
-const { buildSignal } = require('./signalbuilder');
-const { choiceCat } = require('./catchooser');
-const random = require('./random');
+const { buildSignal } = require('./modules/signalbuilder');
+const { choiceCat } = require('./modules/catchooser');
+const random = require('./modules/random');
 
 const client = new Client({
   partials: [
