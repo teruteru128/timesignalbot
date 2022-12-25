@@ -237,69 +237,7 @@ client.on(Events.MessageCreate, async (msg) => {
       .then((dm) => dm.send(`${msg.author.username}さんが${msg.channel}で地雷を踏みました。 ${msg.url}`));
   }
   if (SEX_PATTERN.test(msg.content)) {
-    // these are utc.
-    // let start = new Date('2022-10-31 15:00:00');
-    // let finish = new Date('2022-11-30 15:00:00');
-    const now = new Date();
-    // 性の六時間(24日午後9時から翌25日午前3時まで、実行する場所のタイムゾーンを参照する)
-    const C1 = new Date(now.getFullYear(), 11, 24, 21);
-    const C2 = new Date(now.getFullYear(), 11, 25, 3);
-    if (C1.getTime() <= now.getTime() && now.getTime() < C2.getTime()) {
-      let percentage = 0;
-      let a = null;
-      do {
-        percentage = random.nextInt(1048576);
-        if (percentage < 65000) {
-          a = '何がクリスマスじゃあい!';
-        } else if (percentage < 115000) {
-          // クリスマスヒトリボッチ
-          a = 'https://dic.nicovideo.jp/id/4529483';
-        } else if (percentage < 170000) {
-          // バラライカ PV いさじ with 阿部ダンサーズ
-          a = 'https://www.nicovideo.jp/watch/sm975673';
-        } else if (percentage < 225000) {
-          // カミーユ精神崩壊（再々うp）
-          a = 'https://www.nicovideo.jp/watch/sm7755174';
-        } else if (percentage < 280000) {
-          // すごい歌見つけた
-          a = 'https://www.nicovideo.jp/watch/sm12271031';
-        } else if (percentage < 335000) {
-          // クリスマス？なにそれ美味しいの？2010Ver. 【ヒャダイン】
-          a = 'https://www.nicovideo.jp/watch/sm12904387';
-        } else if (percentage < 390000) {
-          // オーガニック的な台詞集
-          a = 'https://www.nicovideo.jp/watch/sm17071230';
-        } else if (percentage < 445000) {
-          // リディ少尉とＳＥＸ！
-          a = 'https://www.nicovideo.jp/watch/sm26450318';
-        } else if (percentage < 500000) {
-          // リディ少尉とＳＥＸ！
-          a = 'https://www.nicovideo.jp/watch/sm31568802';
-        } else if (percentage < 555000) {
-          // 変態クソスマスソングメドレー
-          a = 'https://www.nicovideo.jp/watch/sm34346841';
-        } else if (percentage < 610000) {
-          // 【巨人の星】一人クリスマス
-          a = 'https://www.nicovideo.jp/watch/sm39120005';
-        } else if (percentage < 665000) {
-          // ブレンパワード 第9話 ジョナサンの刃
-          a = 'https://www.nicovideo.jp/watch/so36581429';
-        } else if (percentage < 730000) {
-          a = 'アンアン\n　　　　　　　ｏ\n　　　　ｏ＿ /）\n　 　　 ／＜＜\n\n12月24日の午後9時から翌25日の午前3時までの6時間は\n1年間で最もセックスをする人の多い「性の6時間」です。\n\n貴方の知り合いや友人ももれなくセックスをしています。\n普段はあどけない顔して世間話してるあの娘もセックスをしています。\n貴方が片想いしているあの綺麗な女性もセックスをしています。\n貴方にもし年頃の娘さんや姉・妹がいて、いま家にいないのでしたら間違いなくセックスしてます。\n貴方と別れたあの娘も貴方がその娘にやってきたことを別の男にやられています。\n貴方の将来の恋人や結婚する相手は、いま違う男のいちもつでヒィヒィ言っています。\n貴男が憧れているあのお兄さんやオジサマ方も今宵はベッドであおおーっ!!と他の男性と一夜を共にしていることでしょう。\n\nすべてを諦めましょう。そして、ともに戦いましょう。';
-        } else if (percentage < 865000) {
-          a = 'やらないか！';
-        } else if (percentage < 905000) {
-          a = 'やめないか！';
-        } else if (percentage < 960000) {
-          a = '(チキンを)食べないか！';
-        } else if (percentage < 1000000) {
-          a = 'ここに建てた病院とSEX！';
-        }
-      } while (a === null);
-      await msg.reply(a);
-    } else {
-      await msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！');
-    }
+    await msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！');
   }
   // やったぜ。 : o
   // やったわ。 : o
