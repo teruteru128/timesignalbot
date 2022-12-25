@@ -1,9 +1,9 @@
-
 const assert = require('assert');
+const { describe, it } = require('mocha');
+
 const { buildSignal } = require('../src/modules/signalbuilder');
 
 describe('buildSignal', () => {
-
   it('January 1st of every month', () => {
     // 2022年01月01日00時00分00秒
     let date = new Date(2022, 0, 1, 0, 0, 0);
@@ -51,13 +51,13 @@ describe('buildSignal', () => {
 
   it('20, november', () => {
     // 2022年01月01日00時00分00秒
-    let date = new Date(2022, 10, 20, 0, 0, 0);
+    const date = new Date(2022, 10, 20, 0, 0, 0);
     assert.match(buildSignal(date), /^20, novemberだよハルトオ{40,100}$/);
   });
 
   it('monday', () => {
     // 2022年01月03日00時00分00秒
-    let date = new Date(2022, 0, 3, 0, 0, 0);
+    const date = new Date(2022, 0, 3, 0, 0, 0);
     assert.match(buildSignal(date), /^月曜日だよハルトオ{40,100}$/);
   });
 
@@ -101,14 +101,13 @@ describe('buildSignal', () => {
   it('20, november, but it\'s monday', () => {
     // TODO: 11月20日が月曜日のとき、「20, novemberだよ」と「月曜日だよ」のどちらを叫ぶべきか？
     // 2023年11月20日は月曜日
-    let date = new Date(2023, 10, 20, 0, 0, 0);
+    const date = new Date(2023, 10, 20, 0, 0, 0);
     assert.match(buildSignal(date), /^20, novemberだよハルトオ{40,100}$/);
   });
 
   it('default signal', () => {
     // 2022年01月01日00時00分00秒
-    let date = new Date(2022, 0, 2, 0, 0, 0);
+    const date = new Date(2022, 0, 2, 0, 0, 0);
     assert.match(buildSignal(date), /^真夜中だよハルトオ{40,100}$/);
   });
-
 });
