@@ -3,7 +3,7 @@
  * TODO: mochaでベンチマークをとるにはどうしたらいいか？
  */
 const assert = require('assert');
-const random = require('../src/random');
+const random = require('../src/modules/random');
 const instance = new random.Random();
 
 describe('instance nextFloat', () => {

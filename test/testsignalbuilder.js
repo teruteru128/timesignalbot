@@ -1,6 +1,6 @@
 
 const assert = require('assert');
-const { buildSignal } = require('../src/signalbuilder');
+const { buildSignal } = require('../src/modules/signalbuilder');
 
 describe('buildSignal', () => {
 
