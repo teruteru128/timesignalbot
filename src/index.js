@@ -183,6 +183,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
       }
     } else if (interaction.commandName === 'omikuji') {
       await interaction.reply(`${interaction.user}の運勢は……\n${omikuji()}`);
+    } else if (interaction.commandName === 'pumpkin') {
+      // 反省を促す
+      await interaction.reply({ content: '<:hansei:940458171309383710>', ephemeral: true });
     }
   } else if (interaction.isContextMenuCommand()) {
     logger.debug('This is context menu command.');
@@ -213,21 +216,21 @@ client.on(Events.MessageCreate, async (msg) => {
   }
   if (msg.guildId === KAKUNINYOU_TEST_GUILD_ID && msg.content.startsWith('!pumpkin')) {
     // 反省を促す
-    await msg.reply('<:hansei:940458171309383710>');
+    await msg.reply({ content: '<:hansei:940458171309383710>', ephemeral: true });
   }
   if (msg.guildId === KAKUNINYOU_TEST_GUILD_ID && msg.content.includes('<:hansei:940458171309383710>')) {
     // 反省を促す
-    await msg.reply('||https://www.nicovideo.jp/watch/sm38736861||');
+    await msg.reply({ content: 'https://www.nicovideo.jp/watch/sm38736861', ephemeral: true });
   }
   if (MINES.test(msg.content)) {
     await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
     // 多目的トイレサーバーに参加している
-    // await msg.reply(`joined : ${msg.client.guilds.cache.get(
-    // .members.cache.has(msg.author.id)}`);
     // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
     if (msg.guildId === TAMOKUTEKI_TOIRE_GUILD_ID && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
       // 便器民かつ地雷ロールを割り当てられていない
-      await msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID));
+      // await msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID));
+      // await msg.guild.roles.fetch(MINE_ROLE_ID).then((role) => msg.member.roles.add(role));
+      await msg.member.roles.add(MINE_ROLE_ID);
     }
     await msg.client.users.fetch('310413442760572929')
       .then((user) => user.createDM())
