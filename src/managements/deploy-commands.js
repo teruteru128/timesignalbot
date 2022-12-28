@@ -29,12 +29,6 @@ const commands = [
     .setName('neko')
     .setDescription('show cats face'),
   new SlashCommandBuilder()
-    .setName('hotchocopafe')
-    .setDescription('It\'s a shi... hot chocolate pafe!!!! ...parfait?'),
-  new SlashCommandBuilder()
-    .setName('unkopafe')
-    .setDescription('It\'s a shit pafe!!!! ...parfait?'),
-  new SlashCommandBuilder()
     .setName('omikuji')
     .setDescription('Draw a fortune')
     .setDescriptionLocalizations({
