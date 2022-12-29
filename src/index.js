@@ -114,24 +114,9 @@ const yattaze = () => {
 
 const MINES = new RegExp(process.env.MINES, 'giu');
 
-const SIGNAL_SCHEDULES = [];
 client.on(Events.ClientReady, (c) => {
   logger.info(` ${c.user.username}(${c.user}, ${c.user.tag}) でログインしています。`);
   c.user.setActivity(`${MINES.source.split('|').length}個の地雷除去`, { type: ActivityType.Competing });
-  const timezoneconfig = { timezone: 'Asia/Tokyo' };
-  // 時報セットアップ
-  SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, timezoneconfig));
-  // cron.schedule('22 22 22 22 2 *', signal2, timezoneconfig);
-  // crypto.getCiphers().forEach((cipher, i, a) => logger.info(cipher));
-  // 8月16日（水）07時14分22秒
-  // SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 3', yattaze, timezoneconfig));
-  if (global.gc) {
-    SIGNAL_SCHEDULES.push(cron.schedule('*/5 * * * *', async () => { logger.debug('do auto garbage collect'); global.gc(); }, timezoneconfig));
-    logger.debug('auto garbage collect scheduled');
-  } else {
-    logger.warning('定期GCが有効化されませんでした。');
-  }
-  logger.debug('Done client ready event');
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
@@ -245,6 +230,22 @@ client.on(Events.MessageCreate, async (msg) => {
     await msg.channel.send(`投稿者：${msg.member.displayName} （${now.getMonth() + 1}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
   }
 });
+
+const SIGNAL_SCHEDULES = [];
+const timezoneconfig = { timezone: 'Asia/Tokyo' };
+// 時報セットアップ
+SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, timezoneconfig));
+// cron.schedule('22 22 22 22 2 *', signal2, timezoneconfig);
+// crypto.getCiphers().forEach((cipher, i, a) => logger.info(cipher));
+// 8月16日（水）07時14分22秒
+// SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 3', yattaze, timezoneconfig));
+if (global.gc) {
+  SIGNAL_SCHEDULES.push(cron.schedule('*/5 * * * *', async () => { logger.debug('do auto garbage collect'); global.gc(); }, timezoneconfig));
+  logger.debug('auto garbage collect scheduled');
+} else {
+  logger.warning('定期GCが有効化されませんでした。');
+}
+logger.debug('Done client ready event');
 
 // process.env.DISCORD_TOKEN が設定されている場合、client.tokenはclientをインスタンス化したときにデフォルトで設定される。
 // https://discord.js.org/#/docs/discord.js/stable/class/Client?scrollTo=login
