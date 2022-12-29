@@ -69,15 +69,14 @@ const commands = [
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 ]
   .map((command) => command.toJSON());
-// 確認用テストギルド
-const KAKUNINYOU_TEST_GUILD_ID = '879315010218774528';
-// 多目的トイレ
-const TAMOKUTEKI_TOIRE_GUILD_ID = '795353457996595200';
-// ファーム
-const FARM_SERVER_GUILD_ID = '572150608283566090';
+const constants = require('../constants');
 // list
-const SIGNAL_GUILD_ID_LIST = [KAKUNINYOU_TEST_GUILD_ID, TAMOKUTEKI_TOIRE_GUILD_ID,
-  FARM_SERVER_GUILD_ID];
+const SIGNAL_GUILD_ID_LIST = [
+  constants.GUILDS.KAKUNINYOU_TEST_GUILD_ID,
+  constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID,
+  constants.GUILDS.FARM_SERVER_GUILD_ID,
+  constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID,
+];
 
 const clientId = '749274949348229150';
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });

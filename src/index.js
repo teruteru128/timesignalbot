@@ -16,6 +16,7 @@ const { buildSignal } = require('./modules/signalbuilder');
 const { choiceCat } = require('./modules/catchooser');
 const { omikuji } = require('./modules/omikuji');
 const random = require('./modules/random');
+const constants = require('./constants');
 
 const client = new Client({
   partials: [
@@ -79,16 +80,11 @@ const data1 = new SlashCommandBuilder().setName().setDescription()
 client.on(Events.Error, async (error) => logger.error('error : %s', error));
 client.on(Events.Warn, async (info) => logger.warn('warn : %s', info));
 
-// GUILD ID
-const KAKUNINYOU_TEST_GUILD_ID = '879315010218774528';
-const TAMOKUTEKI_TOIRE_GUILD_ID = '795353457996595200';
-// const FARM_SERVER_GUILD_ID = '572150608283566090';
-
-// CHANNEL ID
-// const TEST_SERVER_GENERAL_ID = '879315010218774531';
-const TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID = '796357249743585290';
-const SYOKI_SPAWN_TEXT_CHANNEL_ID = '572151278428225537';
-const SIGNALING_TEXT_CHANNEL_LIST = [TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID, SYOKI_SPAWN_TEXT_CHANNEL_ID];
+const SIGNALING_TEXT_CHANNEL_LIST = [
+  constants.CHANNELS.TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID,
+  constants.CHANNELS.SYOKI_SPAWN_TEXT_CHANNEL_ID,
+  constants.CHANNELS.PUBLIC_SYOKI_SPAWN_TEXT_CHANNEL_ID,
+];
 const signal = (now) => {
   // やっぱり時代はリスト処理なんかねえ？
   /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24),
@@ -150,7 +146,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
       // then()の中で呼び出すのはあかんのか？
       // いけるっぽい
       await interaction.reply({ content: 'Pong!' });
-      if (interaction.guildId === KAKUNINYOU_TEST_GUILD_ID && payload !== null) {
+      if (interaction.guildId === constants.GUILDS.KAKUNINYOU_TEST_GUILD_ID && payload !== null) {
         await interaction.followUp(`${payload}`);
       }
       // https://discord.js.org/#/docs/main/stable/class/CommandInteraction?scrollTo=followUp
@@ -212,11 +208,11 @@ client.on(Events.MessageCreate, async (msg) => {
   if (msg.content.startsWith('!test') || msg.content.includes('console.print')) {
     logger.debug('%s', msg.content);
   }
-  if (msg.guildId === KAKUNINYOU_TEST_GUILD_ID && msg.content.startsWith('!pumpkin')) {
+  if (msg.guildId === constants.GUILDS.KAKUNINYOU_TEST_GUILD_ID && msg.content.startsWith('!pumpkin')) {
     // 反省を促す
     await msg.reply({ content: '<:hansei:940458171309383710>', ephemeral: true });
   }
-  if (msg.guildId === KAKUNINYOU_TEST_GUILD_ID && msg.content.includes('<:hansei:940458171309383710>')) {
+  if (msg.guildId === constants.GUILDS.KAKUNINYOU_TEST_GUILD_ID && msg.content.includes('<:hansei:940458171309383710>')) {
     // 反省を促す
     await msg.reply({ content: 'https://www.nicovideo.jp/watch/sm38736861', ephemeral: true });
   }
@@ -224,7 +220,8 @@ client.on(Events.MessageCreate, async (msg) => {
     await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
     // 多目的トイレサーバーに参加している
     // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
-    if (msg.guildId === TAMOKUTEKI_TOIRE_GUILD_ID && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
+    if (msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID
+      && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
       // 便器民かつ地雷ロールを割り当てられていない
       // await msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID));
       // await msg.guild.roles.fetch(MINE_ROLE_ID).then((role) => msg.member.roles.add(role));
