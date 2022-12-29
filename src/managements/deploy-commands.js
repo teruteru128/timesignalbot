@@ -56,6 +56,7 @@ const commands = [
   new SlashCommandBuilder()
     .setName('mine')
     .setDescription('It\'s mine!')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addSubcommand((sub) => sub.setName('register')
       .setDescription('register to timesignal')
       .addStringOption((opt) => opt.setName('channel')
@@ -65,8 +66,7 @@ const commands = [
       .addStringOption((opt) => opt.setName('channel')
         .setDescription('The channel to send time signal')))
     .addSubcommand((sub) => sub.setName('list')
-      .setDescription('list channels to send time signal'))
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+      .setDescription('list channels to send time signal')),
 ]
   .map((command) => command.toJSON());
 const constants = require('../constants');
