@@ -161,19 +161,19 @@ client.on(Events.InteractionCreate, async (interaction) => {
       await interaction.reply(CHOSEN_CAT);
     } else if (interaction.commandName === 'signal') {
       if (interaction.options.getSubcommand() === 'register') {
-        await interaction.reply({ content: 'Register pong!' });
+        await interaction.reply({ content: 'Register pong!', ephemeral: true });
       } else if (interaction.options.getSubcommand() === 'unregister') {
-        await interaction.reply({ content: 'Unregister pong!' });
+        await interaction.reply({ content: 'Unregister pong!', ephemeral: true });
       } else if (interaction.options.getSubcommand() === 'list') {
-        await interaction.reply({ content: 'List pong!' });
+        await interaction.reply({ content: 'List pong!', ephemeral: true });
       }
     } else if (interaction.commandName === 'mine') {
       if (interaction.options.getSubcommand() === 'register') {
-        await interaction.reply({ content: 'Register pong!' });
+        await interaction.reply({ content: 'Register pong!', ephemeral: true });
       } else if (interaction.options.getSubcommand() === 'unregister') {
-        await interaction.reply({ content: 'Unregister pong!' });
+        await interaction.reply({ content: 'Unregister pong!', ephemeral: true });
       } else if (interaction.options.getSubcommand() === 'list') {
-        await interaction.reply({ content: 'List pong!' });
+        await interaction.reply({ content: 'List pong!', ephemeral: true });
       }
     } else if (interaction.commandName === 'omikuji') {
       await interaction.reply(`${interaction.user}の運勢は……\n${omikuji()}`);
