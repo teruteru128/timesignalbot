@@ -37,6 +37,10 @@ const commands = [
   new SlashCommandBuilder()
     .setName('signal')
     .setDescription('managements time signals')
+    /* eslint no-bitwise: ["error", {"allow":["|"]}] */
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator
+      | PermissionFlagsBits.ManageChannels
+      | PermissionFlagsBits.ManageThreads)
     .addSubcommand((sub) => sub.setName('register')
       .setDescription('register to timesignal')
       .addChannelOption((opt) => opt.setName('channel')
@@ -48,11 +52,7 @@ const commands = [
         .setDescription('The channel to send time signal')
         .addChannelTypes(ChannelType.GuildText)))
     .addSubcommand((sub) => sub.setName('list')
-      .setDescription('list channels to send time signal'))
-    /* eslint no-bitwise: ["error", {"allow":["|"]}] */
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator
-      | PermissionFlagsBits.ManageChannels
-      | PermissionFlagsBits.ManageThreads),
+      .setDescription('list channels to send time signal')),
   new SlashCommandBuilder()
     .setName('mine')
     .setDescription('It\'s mine!')
