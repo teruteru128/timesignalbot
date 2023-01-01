@@ -161,7 +161,16 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await interaction.reply({ content: 'List pong!', ephemeral: true });
       }
     } else if (interaction.commandName === 'omikuji') {
-      await interaction.reply(`${interaction.user}の運勢は……\n${omikuji()}`);
+      if (interaction.inGuild()
+        && interaction.guildId === constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID) {
+        await interaction.reply({
+          content: `${interaction.user}の運勢は……\n${omikuji()}`,
+          ephemeral:
+            interaction.channelId !== constants.CHANNELS.FARM_PUBLIC_SERVER_OMIKUJI_CHANNEL_ID,
+        });
+      } else {
+        await interaction.reply(`${interaction.user}の運勢は……\n${omikuji()}`);
+      }
     } else if (interaction.commandName === 'pumpkin') {
       // 反省を促す
       await interaction.reply({ content: '<:hansei:940458171309383710>', ephemeral: true });
