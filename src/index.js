@@ -174,6 +174,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
     } else if (interaction.commandName === 'pumpkin') {
       // 反省を促す
       await interaction.reply({ content: '<:hansei:940458171309383710>', ephemeral: true });
+    } else if (interaction.commandName === 'shout') {
+      await interaction.channel.send(interaction.options.getString('voice'));
+      await interaction.reply({ content: 'Done.', ephemeral: true });
     }
   } else if (interaction.isContextMenuCommand()) {
     logger.debug('This is context menu command.');
