@@ -116,7 +116,7 @@ const MINES = new RegExp(process.env.MINES, 'giu');
 
 client.on(Events.ClientReady, (c) => {
   logger.info(` ${c.user.username}(${c.user}, ${c.user.tag}) でログインしています。`);
-  c.user.setActivity(`${MINES.source.split('|').length}個の地雷除去`, { type: ActivityType.Competing });
+  c.user.setActivity(`${MINES.source.split('|').length}個の地雷`, { type: ActivityType.Watching });
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
@@ -175,8 +175,15 @@ client.on(Events.InteractionCreate, async (interaction) => {
       // 反省を促す
       await interaction.reply({ content: '<:hansei:940458171309383710>', ephemeral: true });
     } else if (interaction.commandName === 'shout') {
-      await interaction.channel.send(interaction.options.getString('voice'));
-      await interaction.reply({ content: 'Done.', ephemeral: true });
+      const voice = interaction.options.getString('voice', true);
+      if (voice !== null && voice.length > 0) {
+        await interaction.channel.send(interaction.options.getString('voice'));
+        await interaction.reply({ content: 'Done.', ephemeral: true });
+      } else if (voice === null) {
+        await interaction.reply({ content: '空のメッセージを送信することはできません。引数voiceを使ってメッセージを指定してください', ephemeral: true });
+      } else {
+        await interaction.reply({ content: '空のメッセージを送信することはできません(voice\'s length is zero)', ephemeral: true });
+      }
     }
   } else if (interaction.isContextMenuCommand()) {
     logger.debug('This is context menu command.');
@@ -191,7 +198,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
 const YATTAZE_PATTERN = /^や(ったぜ|りましたわ|ったわ)。$/g;
-const SEX_PATTERN = /(SE|ＳＥ|せ|セ)(X|Ｘ|(ッ|っ)((く|ク)(す|ス)|久))/i;
+const SEX_PATTERN = /(SE|ＳＥ|[せセ])([XＸ]|[ッっ]([くク][すス]|久))/i;
 const MINE_ROLE_ID = '844886159984558121';
 
 client.on(Events.MessageCreate, async (msg) => {
@@ -217,7 +224,7 @@ client.on(Events.MessageCreate, async (msg) => {
     await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
     // 多目的トイレサーバーに参加している
     // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
-    if (msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID
+    if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID
       && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
       // 便器民かつ地雷ロールを割り当てられていない
       // await msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID));
@@ -226,7 +233,7 @@ client.on(Events.MessageCreate, async (msg) => {
     }
     await msg.client.users.fetch('310413442760572929')
       .then((user) => user.createDM())
-      .then((dm) => dm.send(`${msg.author.username}さんが${msg.channel}で地雷を踏みました。 ${msg.url}`));
+      .then((dm) => dm.send(`${msg.author.username}さんが${msg.channel}で地雷を踏みました。 ${msg.url}`), logger.error);
   }
   if (SEX_PATTERN.test(msg.content)) {
     await msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！');
