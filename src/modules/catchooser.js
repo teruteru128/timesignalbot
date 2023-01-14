@@ -1,4 +1,8 @@
+const fs = require('fs');
+// const { pino } = require('pino');
 const random = require('./random');
+
+// const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
 // 基本猫12種
 const INITIAL_CAT_LIST = ['にゃーん', 'にゃん', 'にゃ？', 'にゃん？', 'にゃおーん', 'フシーッ！', 'ゴロゴロゴロゴロ……', 'Zz...', '💤', 'なぁーご', 'なぁ〜ご', 'なぉーん'];
@@ -9,6 +13,19 @@ const GENBA_NEKO = ['ヨシ！', 'どうして……', 'どうして\n夜中に\
   'オレじゃない\nアイツがやった\nシらない\nスんだこと', 'なんだか\n知らんが\nとにかく\nヨシ！', '100万回死んだねこ',
   'え！！半分の人員で倍の仕事を！？', '弊社なら年内施工も可能です！', 'どうして自分が指定した時間にいないんですか💢',
   'よくわからんが、まぁ動いてるからヨシ！', '正月もGWもお盆も普通に働いていた奴らだ。面構えが違う。'];
+//
+const CAT_KAOMOJI = [];
+
+fs.readFile('./src/modules/catfaces.txt', 'utf-8', (err, data) => {
+  if (err) throw err;
+  CAT_KAOMOJI.splice(CAT_KAOMOJI.length, 0, ...data.replace('\\', '\\\\')
+    .replace('`', '\\`')
+    .replace('*', '\\*')
+    .replace('~', '\\~')
+    .replace('_', '\\_')
+    .replace('|', '\\|')
+    .split(/\n/));
+});
 
 // ??? 2種
 const A = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb';
@@ -26,8 +43,15 @@ function choiceCat() {
     LIST_OF_CANDIDATE_CATS.push('(\\*´ω`\\*)にゃ～ん❤');
   }
   // 絵文字猫13種
-  CAT_EMOJIS.filter(() => random.nextInt(4) < 1)
-    .forEach((candiCat) => LIST_OF_CANDIDATE_CATS.push(candiCat));
+  CAT_EMOJIS.forEach((candiCat) => {
+    if (random.nextInt(4) < 1) LIST_OF_CANDIDATE_CATS.push(candiCat);
+  });
+  CAT_KAOMOJI.forEach((cat) => {
+    // 0.875
+    if (random.nextInt(16777216) < 14680064) {
+      LIST_OF_CANDIDATE_CATS.push(cat);
+    }
+  });
   if (random.nextInt(8) < 1) {
     // 1/8
     // 毛玉吐き
@@ -50,8 +74,11 @@ function choiceCat() {
     LIST_OF_CANDIDATE_CATS.push('は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛');
   }
   // 現場猫 13/128
-  GENBA_NEKO.filter(() => random.nextInt(128) < 13)
-    .forEach((candiCat) => LIST_OF_CANDIDATE_CATS.push(candiCat));
+  GENBA_NEKO.forEach((candiCat) => {
+    if (random.nextInt(128) < 13) {
+      LIST_OF_CANDIDATE_CATS.push(candiCat);
+    }
+  });
   if (random.nextInt(64) < 3) {
     // 3/64
     // シークレットB 2種
