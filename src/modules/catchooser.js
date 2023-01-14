@@ -19,11 +19,11 @@ const CAT_KAOMOJI = [];
 fs.readFile('./src/modules/catfaces.txt', 'utf-8', (err, data) => {
   if (err) throw err;
   CAT_KAOMOJI.splice(CAT_KAOMOJI.length, 0, ...data.replace('\\', '\\\\')
-    .replace('`', '\\`')
-    .replace('*', '\\*')
-    .replace('~', '\\~')
-    .replace('_', '\\_')
-    .replace('|', '\\|')
+    .replace(/`/g, '\\`')
+    .replace(/\*/g, '\\*')
+    .replace(/~/g, '\\~')
+    .replace(/_/g, '\\_')
+    .replace(/\|/g, '\\|')
     .split(/\n/));
 });
 
