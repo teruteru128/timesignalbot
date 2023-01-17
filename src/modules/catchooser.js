@@ -33,8 +33,6 @@ const B = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV4
 
 function choiceCat() {
   const LIST_OF_CANDIDATE_CATS = [];
-  // クリア
-  LIST_OF_CANDIDATE_CATS.splice(0, LIST_OF_CANDIDATE_CATS.length);
   // 基本猫12種 100%
   LIST_OF_CANDIDATE_CATS.splice(LIST_OF_CANDIDATE_CATS.length, 0, ...INITIAL_CAT_LIST);
   if (random.nextInt(4) < 1) {
@@ -47,8 +45,8 @@ function choiceCat() {
     if (random.nextInt(4) < 1) LIST_OF_CANDIDATE_CATS.push(candiCat);
   });
   CAT_KAOMOJI.forEach((cat) => {
-    // 0.875
-    if (random.nextInt(16777216) < 14680064) {
+    // 0.0234375
+    if (random.nextInt(16777216) < 393216) {
       LIST_OF_CANDIDATE_CATS.push(cat);
     }
   });
@@ -85,6 +83,9 @@ function choiceCat() {
     LIST_OF_CANDIDATE_CATS.push('ねこですよろしくおねがいします');
     LIST_OF_CANDIDATE_CATS.push('https://www.nicovideo.jp/watch/sm31931584');
   }
+  if (random.nextInt(256) < 1) {
+    LIST_OF_CANDIDATE_CATS.push('猫');
+  }
   if (random.nextInt(8388608) < 57257) {
     // 114514/16777216
     // シークレットC
@@ -92,7 +93,7 @@ function choiceCat() {
   }
   if (random.nextInt(16777216) < 1) {
     // 1/16777216
-    // シークレットC2
+    // シークレットD
     LIST_OF_CANDIDATE_CATS.push(Buffer.from(B, 'base64').toString());
   }
   return LIST_OF_CANDIDATE_CATS[random.nextInt(LIST_OF_CANDIDATE_CATS.length)];
