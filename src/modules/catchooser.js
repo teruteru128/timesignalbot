@@ -32,71 +32,37 @@ const A = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV4
 const B = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44GbCuOBquOBruOBqOOAgOOBsuOBi+OBleOBmeOAgOe3i+iJsuOBrumzpeOCiOOAgOOBqOOBi+OBjeOChOOBvuOBi+OBjeOAgOOBquOCkuOBu+OBteOCjArjgZPjgYbjgZ/jgovjgIDjgarjgajjgovjgIDnt4voibLjga7ps6XjgojjgIDjgbLjgY/jgYTjgojjgb/jgY/jgYTjgIDjgZvjgY3jgajjgYrjgowKCueFjOOAheOBn+OCi+e0heOAheiNkumHjuOBq+mjn+OBv+OBl+W+oemBo+OBhOOBruebruOBq+eXheOBv+OBl+mXh+imluOBn+OCi+efouimi+OBl+OBkeOCi+OCkuS9leOBqOOBquOCiwrlj6Pop5Ljga/pmY3kuIvjgZflip/pgY7jgpLjgoLnoJXjgY3jgZ/jgovmiYDmpa3jgZPjgZ3kvZXjgZ/jgovjgoQK5YW244Gv6KiA5LmL6JGJ44Gr6Z2e44Ga5YW244Gv5aWH5oCq5LmfCuOCq+OCt+OCs+ODn+OAgOOCq+OCt+OCs+ODn+OAgOaVrOOBhOWlieOCiuW+oeawl+aAp+epj+OChOOBi+OBquOCi+OCkumhmOOBhOOBkeOCjArntIXmmJ/jgZ/jgovmmJ/nnLzjgZ/jgovnnLznmLTjgZ/jgovnmLTmsJfjgZ/jgovmsJfolqzjgZ/jgovolqzmr5LjgZ/jgovmr5LnlZzjgZ/jgovnlZznlJ/jgZ/jgovnlJ/npZ7jgZ/jgovmiJHjgonjgYzlvqHkuLvjga7lvqHpgaPjgYTjgoQK5LuK44GT44Gd5p2l44Gf44KJ44KT5oiR44GM6ISz5ry/44Gu5rCR44G4CuS7iuOBk+OBneadpeOBn+OCieOCk+aIkeOBjOS4luOBruW4uOmXh+OBuArku4rjgZPjgZ3mnaXjgZ/jgonjgpPmiJHjgYzmqrvjga7otavngbzjg5gKCue3i+iJsuOBrumzpeOCiOOAgOS7iuOBk+OBneeZuuOBoeOBrA==';
 
 function choiceCat() {
-  const LIST_OF_CANDIDATE_CATS = [];
-  // 基本猫12種 100%
-  LIST_OF_CANDIDATE_CATS.splice(LIST_OF_CANDIDATE_CATS.length, 0, ...INITIAL_CAT_LIST);
-  if (random.nextInt(4) < 1) {
-    // 1/4
-    // シークレットA 1種
-    LIST_OF_CANDIDATE_CATS.push('(\\*´ω`\\*)にゃ～ん❤');
+  const base = random.nextInt(16777216);
+  if (base < 5033165) {
+    return INITIAL_CAT_LIST[random.nextInt(INITIAL_CAT_LIST.length)];
   }
-  // 絵文字猫13種
-  CAT_EMOJIS.forEach((candiCat) => {
-    if (random.nextInt(4) < 1) LIST_OF_CANDIDATE_CATS.push(candiCat);
-  });
-  CAT_KAOMOJI.forEach((cat) => {
-    // 0.0234375
-    if (random.nextInt(16777216) < 393216) {
-      LIST_OF_CANDIDATE_CATS.push(cat);
-    }
-  });
-  if (random.nextInt(8) < 1) {
-    // 1/8
-    // 毛玉吐き
-    LIST_OF_CANDIDATE_CATS.push('オエッ(毛玉)');
+  if (base < 9227469) {
+    return CAT_EMOJIS[random.nextInt(CAT_EMOJIS.length)];
   }
-  if (random.nextInt(32) < 7) {
-    // 7/32
-    LIST_OF_CANDIDATE_CATS.push('みゃ～？');
+  if (base < 12163482) {
+    return CAT_KAOMOJI[random.nextInt(CAT_KAOMOJI.length)];
   }
-  if (random.nextInt(32) < 7) {
-    // 7/32
-    LIST_OF_CANDIDATE_CATS.push('みゃ！');
+  if (base < 14260634) {
+    return GENBA_NEKO[random.nextInt(GENBA_NEKO.length)];
   }
-  if (random.nextInt(32) < 7) {
-    // 7/32
-    LIST_OF_CANDIDATE_CATS.push('Nyanyanyanyanyanyanya!');
+  if (base < 15810733) {
+    const list = ['(\\*´ω`\\*)にゃ～ん❤', 'オエッ(毛玉)', 'みゃ～？', 'みゃ！',
+      'Nyanyanyanyanyanyanya!', 'は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛'];
+    // 雑多
+    return list[random.nextInt(list.length)];
   }
-  if (random.nextInt(16) < 1) {
-    // 1/16
-    LIST_OF_CANDIDATE_CATS.push('は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛');
+  if (base < 16597165) {
+    const list = ['ねこですよろしくおねがいします', 'https://www.nicovideo.jp/watch/sm31931584'];
+    // 040
+    return list[random.nextInt(list.length)];
   }
-  // 現場猫 13/128
-  GENBA_NEKO.forEach((candiCat) => {
-    if (random.nextInt(128) < 13) {
-      LIST_OF_CANDIDATE_CATS.push(candiCat);
-    }
-  });
-  if (random.nextInt(64) < 3) {
-    // 3/64
-    // シークレットB 2種
-    LIST_OF_CANDIDATE_CATS.push('ねこですよろしくおねがいします');
-    LIST_OF_CANDIDATE_CATS.push('https://www.nicovideo.jp/watch/sm31931584');
+  if (base < 16662701) {
+    return '猫';
   }
-  if (random.nextInt(256) < 1) {
-    LIST_OF_CANDIDATE_CATS.push('猫');
+  if (base < 16777215) {
+    return Buffer.from(A, 'base64').toString();
   }
-  if (random.nextInt(8388608) < 57257) {
-    // 114514/16777216
-    // シークレットC
-    LIST_OF_CANDIDATE_CATS.push(Buffer.from(A, 'base64').toString());
-  }
-  if (random.nextInt(16777216) < 1) {
-    // 1/16777216
-    // シークレットD
-    LIST_OF_CANDIDATE_CATS.push(Buffer.from(B, 'base64').toString());
-  }
-  return LIST_OF_CANDIDATE_CATS[random.nextInt(LIST_OF_CANDIDATE_CATS.length)];
+  return Buffer.from(B, 'base64').toString();
 }
 
 module.exports.choiceCat = choiceCat;
