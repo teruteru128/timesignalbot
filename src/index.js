@@ -162,11 +162,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
       }
     } else if (interaction.commandName === 'omikuji') {
       if (interaction.inGuild()
-        && interaction.guildId === constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID) {
+        && interaction.guildId === constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID
+        && interaction.channelId !== constants.CHANNELS.FARM_PUBLIC_SERVER_OMIKUJI_CHANNEL_ID) {
         await interaction.reply({
           content: `${interaction.user}の運勢は……\n${omikuji()}`,
-          ephemeral:
-            interaction.channelId !== constants.CHANNELS.FARM_PUBLIC_SERVER_OMIKUJI_CHANNEL_ID,
+          ephemeral: true,
         });
       } else {
         await interaction.reply(`${interaction.user}の運勢は……\n${omikuji()}`);
