@@ -68,7 +68,8 @@ const commands = [
     .addSubcommand((sub) => sub.setName('list')
       .setDescription('list channels to send time signal')),
   new SlashCommandBuilder().setName('shout').setDescription('Shout in this channel')
-    .addStringOption((opt) => opt.setName('voice').setDescription('The content of shout')),
+    .addStringOption((opt) => opt.setName('voice').setDescription('The content of shout')
+      .setRequired(true)),
 ]
   .map((command) => command.toJSON());
 const constants = require('../constants');

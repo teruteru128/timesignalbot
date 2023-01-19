@@ -177,7 +177,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
     } else if (interaction.commandName === 'shout') {
       const voice = interaction.options.getString('voice', true);
       if (voice !== null && voice.length > 0) {
-        await interaction.channel.send(interaction.options.getString('voice'));
+        await interaction.channel.send(voice);
         await interaction.reply({ content: 'Done.', ephemeral: true });
       } else if (voice === null) {
         await interaction.reply({ content: '空のメッセージを送信することはできません。引数voiceを使ってメッセージを指定してください', ephemeral: true });
