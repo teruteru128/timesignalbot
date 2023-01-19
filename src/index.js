@@ -205,6 +205,11 @@ client.on(Events.MessageCreate, async (msg) => {
   // 他のBOTのメッセージには反応しない
   if (msg.author.bot) return;
 
+  if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID
+    && random.nextFloat() < 0.00001) {
+    await msg.reply('ｽｲ₍₍(ง˘ω˘)ว⁾⁾ｽｲ');
+  }
+
   if (msg.content === '#ping') {
     // reply() のあとの then() に渡される msg は返信したメッセージ
     await msg.reply('Pong?')/* .then(msg => { logger.info(msg.content); }) */;
