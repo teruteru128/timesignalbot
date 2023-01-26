@@ -26,6 +26,11 @@ fs.readFile('./src/modules/catfaces.txt', 'utf-8', (err, data) => {
     .replace(/\|/g, '\\|')
     .split(/\n/));
 });
+// 040
+const NEKODESU = ['ねこですよろしくおねがいします', 'https://www.nicovideo.jp/watch/sm31931584'];
+// 雑多
+const OTHERS = ['(\\*´ω`\\*)にゃ～ん❤', 'オエッ(毛玉)', 'みゃ～？', 'みゃ！',
+  'Nyanyanyanyanyanyanya!', 'は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛'];
 
 // ??? 2種
 const A = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb';
@@ -46,15 +51,10 @@ function choiceCat() {
     return GENBA_NEKO[random.nextInt(GENBA_NEKO.length)];
   }
   if (base < 15810733) {
-    const list = ['(\\*´ω`\\*)にゃ～ん❤', 'オエッ(毛玉)', 'みゃ～？', 'みゃ！',
-      'Nyanyanyanyanyanyanya!', 'は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛'];
-    // 雑多
-    return list[random.nextInt(list.length)];
+    return OTHERS[random.nextInt(OTHERS.length)];
   }
   if (base < 16597165) {
-    const list = ['ねこですよろしくおねがいします', 'https://www.nicovideo.jp/watch/sm31931584'];
-    // 040
-    return list[random.nextInt(list.length)];
+    return NEKODESU[random.nextInt(NEKODESU.length)];
   }
   if (base < 16662701) {
     return '猫';
