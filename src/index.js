@@ -205,9 +205,13 @@ client.on(Events.MessageCreate, async (msg) => {
   // 他のBOTのメッセージには反応しない
   if (msg.author.bot) return;
 
-  if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID
-    && random.nextFloat() < 0.00001) {
-    await msg.reply('ｽｲ₍₍(ง˘ω˘)ว⁾⁾ｽｲ');
+  if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID) {
+    if (random.nextFloat() < 0.00001) {
+      await msg.reply('ｽｲ₍₍(ง˘ω˘)ว⁾⁾ｽｲ');
+    }
+    if (random.nextInt(16777216) < 17) {
+      await msg.reply('<a:capoo_prpr:1043858275575267438>');
+    }
   }
 
   if (msg.content === '#ping') {
