@@ -30,7 +30,7 @@ fs.readFile('./src/modules/catfaces.txt', 'utf-8', (err, data) => {
 const NEKODESU = ['ねこですよろしくおねがいします', 'https://www.nicovideo.jp/watch/sm31931584'];
 // 雑多
 const OTHERS = ['(\\*´ω`\\*)にゃ～ん❤', 'オエッ(毛玉)', 'みゃ～？', 'みゃ！',
-  'Nyanyanyanyanyanyanya!', 'は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛'];
+  'Nyanyanyanyanyanyanya!', 'は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛', 'お゛ぉ゛ん゛'];
 
 // ??? 2種
 const A = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb';
