@@ -82,7 +82,6 @@ client.on(Events.Warn, async (info) => logger.warn('warn : %s', info));
 
 const SIGNALING_TEXT_CHANNEL_LIST = [
   constants.CHANNELS.TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID,
-  constants.CHANNELS.SYOKI_SPAWN_TEXT_CHANNEL_ID,
   constants.CHANNELS.PUBLIC_SERVER_ZATSUDAN_CHANNEL_ID,
 ];
 const signal = (now) => {
