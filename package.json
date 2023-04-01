@@ -29,19 +29,19 @@
   },
   "homepage": "https://github.com/teruteru128/timesignalbotjs#readme",
   "dependencies": {
-    "discord.js": "^14.7.1",
+    "discord.js": "^14.8.0",
     "node-cron": "^3.0.2",
-    "pg": "^8.9.0",
+    "pg": "^8.10.0",
     "pino": "^8.11.0",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "eslint": "^8.35.0",
+    "eslint": "^8.37.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-promise": "^6.1.1",
     "jshint": "^2.13.6",
     "mocha": "^10.2.0"
