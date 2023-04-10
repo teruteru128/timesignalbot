@@ -13,7 +13,7 @@ const cron = require('node-cron');
 const { pino } = require('pino');
 
 const { buildSignal } = require('./modules/signalbuilder');
-const { choiceCat } = require('./modules/catchooser');
+const { selectCat } = require('./modules/catchooser');
 const { omikuji } = require('./modules/omikuji');
 const random = require('./modules/random');
 const constants = require('./constants');
@@ -141,7 +141,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
       await interaction.client.users.fetch('310413442760572929')
         .then((user) => user.send(`${interaction.user.username} さんが ${interaction.channel.name}(${interaction.inGuild() ? interaction.channel.guild.name : 'DM'}) でにゃんぱすーしたのん！`));
     } else if (interaction.commandName === 'neko') {
-      const CHOSEN_CAT = choiceCat();
+      const CHOSEN_CAT = selectCat();
       await interaction.reply(CHOSEN_CAT);
     } else if (interaction.commandName === 'signal') {
       if (interaction.options.getSubcommand() === 'register') {

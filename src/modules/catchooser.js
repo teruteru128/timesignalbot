@@ -40,33 +40,45 @@ const NEKODESU = ['ねこですよろしくおねがいします', 'https://www.
 const A = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb';
 const B = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44GbCuOBquOBruOBqOOAgOOBsuOBi+OBleOBmeOAgOe3i+iJsuOBrumzpeOCiOOAgOOBqOOBi+OBjeOChOOBvuOBi+OBjeOAgOOBquOCkuOBu+OBteOCjArjgZPjgYbjgZ/jgovjgIDjgarjgajjgovjgIDnt4voibLjga7ps6XjgojjgIDjgbLjgY/jgYTjgojjgb/jgY/jgYTjgIDjgZvjgY3jgajjgYrjgowKCueFjOOAheOBn+OCi+e0heOAheiNkumHjuOBq+mjn+OBv+OBl+W+oemBo+OBhOOBruebruOBq+eXheOBv+OBl+mXh+imluOBn+OCi+efouimi+OBl+OBkeOCi+OCkuS9leOBqOOBquOCiwrlj6Pop5Ljga/pmY3kuIvjgZflip/pgY7jgpLjgoLnoJXjgY3jgZ/jgovmiYDmpa3jgZPjgZ3kvZXjgZ/jgovjgoQK5YW244Gv6KiA5LmL6JGJ44Gr6Z2e44Ga5YW244Gv5aWH5oCq5LmfCuOCq+OCt+OCs+ODn+OAgOOCq+OCt+OCs+ODn+OAgOaVrOOBhOWlieOCiuW+oeawl+aAp+epj+OChOOBi+OBquOCi+OCkumhmOOBhOOBkeOCjArntIXmmJ/jgZ/jgovmmJ/nnLzjgZ/jgovnnLznmLTjgZ/jgovnmLTmsJfjgZ/jgovmsJfolqzjgZ/jgovolqzmr5LjgZ/jgovmr5LnlZzjgZ/jgovnlZznlJ/jgZ/jgovnlJ/npZ7jgZ/jgovmiJHjgonjgYzlvqHkuLvjga7lvqHpgaPjgYTjgoQK5LuK44GT44Gd5p2l44Gf44KJ44KT5oiR44GM6ISz5ry/44Gu5rCR44G4CuS7iuOBk+OBneadpeOBn+OCieOCk+aIkeOBjOS4luOBruW4uOmXh+OBuArku4rjgZPjgZ3mnaXjgZ/jgonjgpPmiJHjgYzmqrvjga7otavngbzjg5gKCue3i+iJsuOBrumzpeOCiOOAgOS7iuOBk+OBneeZuuOBoeOBrA==';
 
-function choiceCat() {
+function selectCat() {
   const base = random.nextInt(16777216);
-  if (base < 5033165) {
+  let numerator = 5033165;
+  if (base < numerator) {
     return INITIAL_CAT_LIST[random.nextInt(INITIAL_CAT_LIST.length)];
   }
-  if (base < 9227469) {
+  numerator += 3932160;
+  if (base < numerator) {
     return CAT_EMOJIS[random.nextInt(CAT_EMOJIS.length)];
   }
-  if (base < 12163482) {
+  numerator += 2673869;
+  if (base < numerator) {
     return CAT_KAOMOJI[random.nextInt(CAT_KAOMOJI.length)];
   }
-  if (base < 14260634) {
+  numerator += 1835008;
+  if (base < numerator) {
     return GENBA_NEKO[random.nextInt(GENBA_NEKO.length)];
   }
-  if (base < 15810733) {
+  numerator += 1550099;
+  if (base < numerator) {
     return OTHERS[random.nextInt(OTHERS.length)];
   }
-  if (base < 16597165) {
+  numerator += 1048576;
+  if (base < numerator) {
+    return selectCat();
+  }
+  numerator += 786432;
+  if (base < numerator) {
     return NEKODESU[random.nextInt(NEKODESU.length)];
   }
-  if (base < 16711679) {
+  numerator += 114514;
+  if (base < numerator) {
     return Buffer.from(A, 'base64').toString();
   }
-  if (base < 16777215) {
+  numerator += 65536;
+  if (base < numerator) {
     return '猫';
   }
   return Buffer.from(B, 'base64').toString();
 }
 
-module.exports.choiceCat = choiceCat;
+module.exports.selectCat = selectCat;
