@@ -60,11 +60,11 @@ function choiceCat() {
   if (base < 16597165) {
     return NEKODESU[random.nextInt(NEKODESU.length)];
   }
-  if (base < 16662701) {
-    return '猫';
+  if (base < 16711679) {
+    return Buffer.from(A, 'base64').toString();
   }
   if (base < 16777215) {
-    return Buffer.from(A, 'base64').toString();
+    return '猫';
   }
   return Buffer.from(B, 'base64').toString();
 }
