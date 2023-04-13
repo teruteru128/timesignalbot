@@ -65,7 +65,7 @@ function selectCat() {
   }
   numerator += 1048576;
   if (base < numerator) {
-    return selectCat();
+    return CAT_UNCHI[random.nextInt(OTHERS.length)];
   }
   numerator += 786432;
   if (base < numerator) {
