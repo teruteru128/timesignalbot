@@ -113,9 +113,10 @@ const yattaze = () => {
 
 const MINES = new RegExp(process.env.MINES, 'giu');
 
+const MINE_STATUS_TXT = `${MINES.source.split('|').length}個の地雷`;
 client.on(Events.ClientReady, (c) => {
   logger.info(` ${c.user.username}(${c.user}, ${c.user.tag}) でログインしています。`);
-  c.user.setActivity(`${MINES.source.split('|').length}個の地雷`, { type: ActivityType.Watching });
+  c.user.setActivity(MINE_STATUS_TXT, { type: ActivityType.Watching });
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
@@ -247,6 +248,14 @@ const SIGNAL_SCHEDULES = [];
 const timezoneconfig = { timezone: 'Asia/Tokyo' };
 // 時報セットアップ
 SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, timezoneconfig));
+SIGNAL_SCHEDULES.push(cron.schedule('*/5 * * * *', () => {
+  const a = random.nextInt(16777216);
+  if (a < 167772) {
+    client.user.setActivity('You', { type: ActivityType.Watching });
+  } else {
+    client.user.setActivity(MINE_STATUS_TXT, { type: ActivityType.Watching });
+  }
+}, timezoneconfig));
 // cron.schedule('22 22 22 22 2 *', signal2, timezoneconfig);
 // crypto.getCiphers().forEach((cipher, i, a) => logger.info(cipher));
 // 8月16日（水）07時14分22秒
