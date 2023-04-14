@@ -6,10 +6,9 @@ const random = require('./random');
 
 // 基本猫12種
 const INITIAL_CAT_LIST = ['にゃーん', 'にゃん', 'にゃ？', 'にゃん？', 'にゃおーん', 'フシーッ！', 'ゴロゴロゴロゴロ……',
-  'Zz...', '💤', 'なぁーご', 'なぁ〜ご', 'なぉーん', 'ﾅｰﾝ'];
+  'Zz...', '💤', 'なぁーご', 'なぁ〜ご', 'なぉーん', 'ﾅｰﾝ', 'ニャアアアアン！'];
 // 絵文字猫13種
 const CAT_EMOJIS = ['🐱', '🐈', '🐈‍⬛', '😿', '😻', '😹', '😽', '😾', '🙀', '😸', '😺', '😼', '🐾'];
-const CAT_UNCHI = ['🐈💩', '🐈‍⬛💩'];
 // 顔文字334種
 const CAT_KAOMOJI = [];
 
@@ -65,7 +64,8 @@ function selectCat() {
   }
   numerator += 1048576;
   if (base < numerator) {
-    return CAT_UNCHI[random.nextInt(OTHERS.length)];
+    // TODO ここにナニか挿れる
+    return selectCat();
   }
   numerator += 786432;
   if (base < numerator) {
