@@ -213,21 +213,6 @@ client.on(Events.MessageCreate, async (msg) => {
     }
   }
 
-  if (msg.content === '#ping') {
-    // reply() のあとの then() に渡される msg は返信したメッセージ
-    await msg.reply('Pong?')/* .then(msg => { logger.info(msg.content); }) */;
-  }
-  if (msg.content.startsWith('!test') || msg.content.includes('console.print')) {
-    logger.debug('%s', msg.content);
-  }
-  if (msg.guildId === constants.GUILDS.KAKUNINYOU_TEST_GUILD_ID && msg.content.startsWith('!pumpkin')) {
-    // 反省を促す
-    await msg.reply({ content: '<:hansei:940458171309383710>', ephemeral: true });
-  }
-  if (msg.guildId === constants.GUILDS.KAKUNINYOU_TEST_GUILD_ID && msg.content.includes('<:hansei:940458171309383710>')) {
-    // 反省を促す
-    await msg.reply({ content: 'https://www.nicovideo.jp/watch/sm38736861', ephemeral: true });
-  }
   if (MINES.test(msg.content)) {
     await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
     // 多目的トイレサーバーに参加している
