@@ -1,6 +1,8 @@
 const fs = require('fs');
-// const { pino } = require('pino');
+const { pino } = require('pino');
 const random = require('./random');
+
+const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
 // const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
@@ -25,11 +27,11 @@ const CAT_KAOMOJI = [];
   });
 })();
 
-// 現場猫11種
+// 現場猫13種
 const GENBA_NEKO = ['ヨシ！', 'どうして……', 'どうして\n夜中に\n起きてるん\nですか？', 'ああああ！\nああああ！\nあああああ！あー！',
   'オレじゃない\nアイツがやった\nシらない\nスんだこと', 'なんだか\n知らんが\nとにかく\nヨシ！', '100万回死んだねこ',
   'え！！半分の人員で倍の仕事を！？', '弊社なら年内施工も可能です！', 'どうして自分が指定した時間にいないんですか💢',
-  'よくわからんが、まぁ動いてるからヨシ！', '正月もGWもお盆も普通に働いていた奴らだ。面構えが違う。'];
+  'よくわからんが、まぁ動いてるからヨシ！', '正月もGWもお盆も普通に働いていた奴らだ。面構えが違う。', '指差し確認☜ν(ФꑣФ)วﾖｼｯ!'];
 
 // 雑多
 const OTHERS = ['(\\*´ω`\\*)にゃ～ん❤', 'オエッ(毛玉)', 'みゃ～？', 'みゃ！', 'Nyanyanyanyanyanyanya!', 'は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛', 'お゛ぉ゛ん゛', '**ね**ない**こ**だれだ', 'ﾅｰﾝ', 'ニャー！(猫ひろし)'];
@@ -64,6 +66,7 @@ function selectCat() {
   }
   numerator += 1048576;
   if (base < numerator) {
+    logger.warn('reraffle a cat');
     // TODO ここにナニか挿れる
     return selectCat();
   }

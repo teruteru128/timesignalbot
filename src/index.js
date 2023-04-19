@@ -251,6 +251,7 @@ SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, timezoneconfig));
 SIGNAL_SCHEDULES.push(cron.schedule('*/5 * * * *', () => {
   const a = random.nextInt(16777216);
   if (a < 167772) {
+    logger.info('Big Brother is watching you');
     client.user.setActivity('You', { type: ActivityType.Watching });
   } else {
     client.user.setActivity(MINE_STATUS_TXT, { type: ActivityType.Watching });
