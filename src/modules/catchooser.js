@@ -1,8 +1,6 @@
 const fs = require('fs');
-const { pino } = require('pino');
+// const { pino } = require('pino');
 const random = require('./random');
-
-const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
 // const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
@@ -66,7 +64,6 @@ function selectCat() {
   }
   numerator += 1048576;
   if (base < numerator) {
-    logger.warn('reraffle a cat');
     // TODO ここにナニか挿れる
     return selectCat();
   }
