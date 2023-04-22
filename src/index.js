@@ -203,7 +203,14 @@ const MINE_ROLE_ID = '844886159984558121';
 
 client.on(Events.MessageCreate, async (msg) => {
   // 他のBOTのメッセージには反応しない
-  if (msg.author.bot) return;
+  if (msg.author.bot) {
+    if (msg.content.includes('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178')) {
+      await msg.client.users.fetch('310413442760572929')
+        .then((user) => user.createDM())
+        .then((dm) => dm.send(`${msg.author.username}さんが${msg.channel}で地雷を踏みました。 ${msg.url}`), logger.error);
+    }
+    return;
+  }
 
   if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID) {
     if (random.nextFloat() < 0.00001) {
@@ -225,9 +232,6 @@ client.on(Events.MessageCreate, async (msg) => {
       // await msg.guild.roles.fetch(MINE_ROLE_ID).then((role) => msg.member.roles.add(role));
       await msg.member.roles.add(MINE_ROLE_ID);
     }
-    await msg.client.users.fetch('310413442760572929')
-      .then((user) => user.createDM())
-      .then((dm) => dm.send(`${msg.author.username}さんが${msg.channel}で地雷を踏みました。 ${msg.url}`), logger.error);
   }
   if (SEX_PATTERN.test(msg.content)) {
     await msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！');
