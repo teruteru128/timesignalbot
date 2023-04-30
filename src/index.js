@@ -4,6 +4,7 @@
 */
 const {
   ActivityType,
+  ChannelType,
   Client,
   Events,
   GatewayIntentBits,
@@ -99,17 +100,6 @@ const signal = (now) => {
     .then((c) => c.map((channel) => channel.send(body)))
     .catch((error) => logger.error(error));
 };
-/*
-const yattaze = () => {
-  client.channels.fetch(TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID).then((channel) => {
-    if (channel.type === ChannelType.GuildText) {
-      return channel.send('やったぜ。\nhttps://www.nicovideo.jp/watch/sm9248590')
-        .then((reason) => reason, (reason) => logger.error(reason));
-    }
-    return Promise.resolve();
-  });
-};
-*/
 
 const MINES = new RegExp(process.env.MINES, 'giu');
 
@@ -262,8 +252,18 @@ SIGNAL_SCHEDULES.push(cron.schedule('0 */5 * * * *', () => {
 }, timezoneconfig));
 // cron.schedule('22 22 22 22 2 *', signal2, timezoneconfig);
 // crypto.getCiphers().forEach((cipher, i, a) => logger.info(cipher));
+function yattaze() {
+  client.channels.fetch(constants.CHANNELS.TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID).then((channel) => {
+    if (channel.type === ChannelType.GuildText) {
+      return channel.send('やったぜ。\nhttps://www.nicovideo.jp/watch/sm9248590')
+        .then((reason) => reason, (reason) => logger.error(reason));
+    }
+    return Promise.resolve();
+  });
+}
 // 8月16日（水）07時14分22秒
 // SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 3', yattaze, timezoneconfig));
+SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 *', yattaze, timezoneconfig));
 if (global.gc) {
   SIGNAL_SCHEDULES.push(cron.schedule('*/5 * * * *', async () => { logger.debug('do auto garbage collect'); global.gc(); }, timezoneconfig));
   logger.debug('auto garbage collect scheduled');
