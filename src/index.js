@@ -188,7 +188,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
 const YATTAZE_PATTERN = /^や(ったぜ|りましたわ|ったわ)。$/g;
-const SEX_PATTERN = /(SE|ＳＥ|[せセ])([XＸ]|[ッっ]([くク][すス]|久))/i;
+const SEX_PATTERN = /(SE|ＳＥ|[せセｾ])([XＸ]|[ッっｯ]([くクｸ][すスｽ]|久))/i;
 const MINE_ROLE_ID = '844886159984558121';
 
 client.on(Events.MessageCreate, async (msg) => {
