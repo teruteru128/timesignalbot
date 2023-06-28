@@ -31,17 +31,17 @@
   "dependencies": {
     "discord.js": "^14.11.0",
     "node-cron": "^3.0.2",
-    "pg": "^8.11.0",
+    "pg": "^8.11.1",
     "pino": "^8.14.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
-    "eslint": "^8.42.0",
+    "eslint": "^8.43.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-n": "^16.0.0",
+    "eslint-plugin-n": "^16.0.1",
     "eslint-plugin-promise": "^6.1.1",
     "jshint": "^2.13.6",
     "mocha": "^10.2.0"
