@@ -33,7 +33,7 @@
     "node-cron": "^3.0.2",
     "pg": "^8.11.3",
     "pino": "^8.15.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
