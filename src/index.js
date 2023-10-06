@@ -191,7 +191,7 @@ const YATTAZE_PATTERN = /^や(ったぜ|りましたわ|ったわ)。$/g;
 const SEX_PATTERN = /(SE|ＳＥ|[せセｾ])([XＸ]|[ッっｯ]([くクｸ][すスｽ]|久))/i;
 const MINE_ROLE_ID = '844886159984558121';
 const EXPLOSION_GIF_URL = 'https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178';
-const EXPLOSION_GIF_URL_2 = 'https://tenor.com/ja/view/house-explosion-explode-boom-kaboom-gif-19506150';
+const EXPLOSION_GIF_URL_2 = 'https://tenor.com/view/house-explosion-explode-boom-kaboom-gif-19506150';
 
 client.on(Events.MessageCreate, async (msg) => {
   // 他のBOTのメッセージには反応しない
@@ -213,7 +213,7 @@ client.on(Events.MessageCreate, async (msg) => {
     }
   }
 
-  // https://tenor.com/ja/view/house-explosion-explode-boom-kaboom-gif-19506150
+  // https://tenor.com/view/house-explosion-explode-boom-kaboom-gif-19506150
   if (/ここで自爆です/.test(msg.content)) {
     await msg.channel.send(EXPLOSION_GIF_URL_2);
   }
