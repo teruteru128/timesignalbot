@@ -190,14 +190,16 @@ const YOUBI = ['日', '月', '火', '水', '木', '金', '土'];
 const YATTAZE_PATTERN = /^や(ったぜ|りましたわ|ったわ)。$/g;
 const SEX_PATTERN = /(SE|ＳＥ|[せセｾ])([XＸ]|[ッっｯ]([くクｸ][すスｽ]|久))/i;
 const MINE_ROLE_ID = '844886159984558121';
+const EXPLOSION_GIF_URL = 'https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178';
+const EXPLOSION_GIF_URL_2 = 'https://tenor.com/ja/view/house-explosion-explode-boom-kaboom-gif-19506150';
 
 client.on(Events.MessageCreate, async (msg) => {
   // 他のBOTのメッセージには反応しない
-  if (msg.author.bot) {
-    if (msg.content.includes('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178')) {
+  if (msg.author.bot && !msg.author.equals(client.user)) {
+    if (msg.content.includes(EXPLOSION_GIF_URL)) {
+      // TODO: use server/bot administrators
       await msg.client.users.fetch('310413442760572929')
-        .then((user) => user.createDM())
-        .then((dm) => dm.send(`${msg.author.username}さんが${msg.channel}で地雷を踏みました。 ${msg.url}`), logger.error);
+        .then((user) => user.send(`${msg.author.username}さんが${msg.channel}で地雷を踏みました。 ${msg.url}`), logger.error);
     }
     return;
   }
@@ -211,6 +213,10 @@ client.on(Events.MessageCreate, async (msg) => {
     }
   }
 
+  // https://tenor.com/ja/view/house-explosion-explode-boom-kaboom-gif-19506150
+  if (/ここで自爆です/.test(msg.content)) {
+    await msg.channel.send(EXPLOSION_GIF_URL_2);
+  }
   if (MINES.test(msg.content)) {
     await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
     // 多目的トイレサーバーに参加している
@@ -222,6 +228,8 @@ client.on(Events.MessageCreate, async (msg) => {
       // await msg.guild.roles.fetch(MINE_ROLE_ID).then((role) => msg.member.roles.add(role));
       await msg.member.roles.add(MINE_ROLE_ID);
     }
+    await msg.client.users.fetch('310413442760572929')
+      .then((user) => user.send(`${msg.author.username}さんが${msg.channel}で地雷を踏みました。 ${msg.url}`), logger.error);
   }
   if (SEX_PATTERN.test(msg.content)) {
     await msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！');
