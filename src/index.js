@@ -194,55 +194,57 @@ const EXPLOSION_GIF_URL = 'https://tenor.com/view/radiation-atomic-bomb-bomb-boo
 const EXPLOSION_GIF_URL_2 = 'https://tenor.com/view/house-explosion-explode-boom-kaboom-gif-19506150';
 
 client.on(Events.MessageCreate, async (msg) => {
+  function sendMessage(message) {
+    return (user) => user.send(`${message.author.username}さんが${message.channel}で地雷を踏みました。 ${message.url}`);
+  }
   // 他のBOTのメッセージには反応しない
   if (msg.author.bot && !msg.author.equals(client.user)) {
     if (msg.content.includes(EXPLOSION_GIF_URL)) {
       // TODO: use server/bot administrators
       await msg.client.users.fetch('310413442760572929')
-        .then((user) => user.send(`${msg.author.username}さんが${msg.channel}で地雷を踏みました。 ${msg.url}`), logger.error);
+        .then(sendMessage(msg), logger.error);
     }
-    return;
-  }
+  } else {
+    if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID) {
+      if (random.nextFloat() < 0.00001) {
+        await msg.reply('ｽｲ₍₍(ง˘ω˘)ว⁾⁾ｽｲ');
+      }
+      if (random.nextInt(16777216) < 17) {
+        await msg.reply('<a:capoo_prpr:1043858275575267438>');
+      }
+    }
 
-  if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID) {
-    if (random.nextFloat() < 0.00001) {
-      await msg.reply('ｽｲ₍₍(ง˘ω˘)ว⁾⁾ｽｲ');
+    // https://tenor.com/view/house-explosion-explode-boom-kaboom-gif-19506150
+    if (/ここで自爆です/.test(msg.content)) {
+      await msg.channel.send(EXPLOSION_GIF_URL_2);
     }
-    if (random.nextInt(16777216) < 17) {
-      await msg.reply('<a:capoo_prpr:1043858275575267438>');
+    if (MINES.test(msg.content)) {
+      await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
+      // 多目的トイレサーバーに参加している
+      // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
+      if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID
+        && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
+        // 便器民かつ地雷ロールを割り当てられていない
+        // await msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID));
+        // await msg.guild.roles.fetch(MINE_ROLE_ID).then((role) => msg.member.roles.add(role));
+        await msg.member.roles.add(MINE_ROLE_ID);
+      }
+      await msg.client.users.fetch('310413442760572929')
+        .then(sendMessage(msg), logger.error);
     }
-  }
-
-  // https://tenor.com/view/house-explosion-explode-boom-kaboom-gif-19506150
-  if (/ここで自爆です/.test(msg.content)) {
-    await msg.channel.send(EXPLOSION_GIF_URL_2);
-  }
-  if (MINES.test(msg.content)) {
-    await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
-    // 多目的トイレサーバーに参加している
-    // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
-    if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID
-      && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
-      // 便器民かつ地雷ロールを割り当てられていない
-      // await msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID));
-      // await msg.guild.roles.fetch(MINE_ROLE_ID).then((role) => msg.member.roles.add(role));
-      await msg.member.roles.add(MINE_ROLE_ID);
+    if (SEX_PATTERN.test(msg.content)) {
+      await msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！');
     }
-    await msg.client.users.fetch('310413442760572929')
-      .then((user) => user.send(`${msg.author.username}さんが${msg.channel}で地雷を踏みました。 ${msg.url}`), logger.error);
-  }
-  if (SEX_PATTERN.test(msg.content)) {
-    await msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！');
-  }
-  // やったぜ。 : o
-  // やったわ。 : o
-  // やりましたわ。 : o
-  // やりましたぜ。 : x
-  if (YATTAZE_PATTERN.test(msg.content)) {
-    // https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97#JST%20%E3%81%8C%E9%81%B8%E6%8A%9E%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E5%A0%B4%E5%90%88
-    // https://web.archive.org/web/20211114034218/https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97
-    const now = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
-    await msg.channel.send(`投稿者：${msg.member.displayName} （${now.getMonth() + 1}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
+    // やったぜ。 : o
+    // やったわ。 : o
+    // やりましたわ。 : o
+    // やりましたぜ。 : x
+    if (YATTAZE_PATTERN.test(msg.content)) {
+      // https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97#JST%20%E3%81%8C%E9%81%B8%E6%8A%9E%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E5%A0%B4%E5%90%88
+      // https://web.archive.org/web/20211114034218/https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97
+      const now = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
+      await msg.channel.send(`投稿者：${msg.member.displayName} （${now.getMonth() + 1}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
+    }
   }
 });
 
