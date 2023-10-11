@@ -198,11 +198,13 @@ client.on(Events.MessageCreate, async (msg) => {
     return (user) => user.send(`${message.author.username}さんが${message.channel}で地雷を踏みました。 ${message.url}`);
   }
   // 他のBOTのメッセージには反応しない
-  if (msg.author.bot && !msg.author.equals(client.user)) {
-    if (msg.content.includes(EXPLOSION_GIF_URL)) {
-      // TODO: use server/bot administrators
-      await msg.client.users.fetch('310413442760572929')
-        .then(sendMessage(msg), logger.error);
+  if (msg.author.bot) {
+    if (!msg.author.equals(client.user)) {
+      if (msg.content.includes(EXPLOSION_GIF_URL)) {
+        // TODO: use server/bot administrators
+        await msg.client.users.fetch('310413442760572929')
+          .then(sendMessage(msg), logger.error);
+      }
     }
   } else {
     if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID) {
