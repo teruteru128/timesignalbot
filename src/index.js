@@ -218,6 +218,7 @@ client.on(Events.MessageCreate, async (msg) => {
 
     // https://tenor.com/view/house-explosion-explode-boom-kaboom-gif-19506150
     if (/ここで自爆です/.test(msg.content)) {
+      logger.info('bomb!');
       await msg.channel.send(EXPLOSION_GIF_URL_2);
     }
     if (MINES.test(msg.content)) {
