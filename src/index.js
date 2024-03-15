@@ -13,7 +13,6 @@ const {
 const cron = require('node-cron');
 const { pino } = require('pino');
 
-const { buildSignal } = require('./modules/signalbuilder');
 const { selectCat } = require('./modules/catchooser');
 const { omikuji } = require('./modules/omikuji');
 const random = require('./modules/random');
@@ -80,26 +79,6 @@ const data1 = new SlashCommandBuilder().setName().setDescription()
 
 client.on(Events.Error, async (error) => logger.error('error : %s', error));
 client.on(Events.Warn, async (info) => logger.warn('warn : %s', info));
-
-const SIGNALING_TEXT_CHANNEL_LIST = [
-  constants.CHANNELS.TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID,
-  constants.CHANNELS.PUBLIC_SERVER_ZATSUDAN_CHANNEL_ID,
-];
-const signal = (now) => {
-  // やっぱり時代はリスト処理なんかねえ？
-  /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24),
-  GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
-  // build signal message
-  const body = buildSignal(now);
-  // チャンネルIDのリストをチャンネルのリストに変換する
-  // filterでGuildText Channelを抽出する
-  // Channelに送信する
-  Promise.all(SIGNALING_TEXT_CHANNEL_LIST
-    .map((channelId) => client.channels.fetch(channelId)))
-    .then((cl) => cl.filter((channel) => channel.isTextBased()))
-    .then((c) => c.map((channel) => channel.send(body)))
-    .catch((error) => logger.error(error));
-};
 
 const MINES = new RegExp(process.env.MINES, 'giu');
 
@@ -254,7 +233,6 @@ client.on(Events.MessageCreate, async (msg) => {
 const SIGNAL_SCHEDULES = [];
 const timezoneconfig = { timezone: 'Asia/Tokyo' };
 // 時報セットアップ
-SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, timezoneconfig));
 SIGNAL_SCHEDULES.push(cron.schedule('0 */5 * * * *', () => {
   const a = random.nextInt(16777216);
   if (a < 167772) {
