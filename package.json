@@ -32,7 +32,7 @@
     "discord.js": "^14.15.0-dev.1712534991-464d627f1",
     "node-cron": "^3.0.3",
     "pg": "^8.11.5",
-    "pino": "^8.19.0"
+    "pino": "^8.20.0"
   },
   "devDependencies": {
     "benchmark": "^2.1.4",
