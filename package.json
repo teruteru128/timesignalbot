@@ -43,7 +43,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.1.1",
-    "globals": "^15.0.0",
+    "globals": "^15.1.0",
     "jshint": "^2.13.6",
     "mocha": "^10.4.0"
   }
