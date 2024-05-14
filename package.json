@@ -32,7 +32,7 @@
     "discord.js": "^14.14.1",
     "node-cron": "^3.0.3",
     "pg": "^8.11.5",
-    "pino": "^8.20.0"
+    "pino": "^9.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.2",
