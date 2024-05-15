@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "None",
         "target": "es2020",
         "jsx": "preserve",
         "strictFunctionTypes": true
