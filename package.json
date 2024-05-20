@@ -36,7 +36,7 @@
     "pino": "^9.1.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.0.2",
+    "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.2.0",
     "benchmark": "^2.1.4",
     "eslint": "^8.57.0",
