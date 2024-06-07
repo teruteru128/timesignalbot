@@ -35,6 +35,8 @@ const GENBA_NEKO = ['ヨシ！', 'どうして……', 'どうして\n夜中に\
 const OTHERS = ['(\\*´ω`\\*)にゃ～ん❤', 'オエッ(毛玉)', 'みゃ～？', 'みゃ！', 'Nyanyanyanyanyanyanya!', 'は゛ぁ゛い゛ニ゛ャ゛ン゛ち゛ゅ゛う゛で゛ぇ゛す゛', 'お゛ぉ゛ん゛', '**ね**ない**こ**だれだ', 'ﾅｰﾝ', 'ニャー！(猫ひろし)'];
 // 040
 const NEKODESU = ['ねこですよろしくおねがいします', 'https://www.nicovideo.jp/watch/sm31931584'];
+// 猫のお土産 3種
+const GIFTS = ['🐀', '🦗', '🪳'];
 
 // ??? 2種
 const A = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV44Gv44G/44Gt44Gv44G/44CA44GR44KS44Gu44Gw44Gb';
@@ -64,8 +66,7 @@ function selectCat() {
   }
   numerator += 1048576;
   if (base < numerator) {
-    // TODO ここにナニか挿れる
-    return selectCat();
+    return `お土産→${GIFTS[random.nextInt(GIFTS.length)]}`;
   }
   numerator += 786432;
   if (base < numerator) {
