@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.2",
-    "@eslint/js": "^9.2.0",
+    "@eslint/js": "^9.7.0",
     "benchmark": "^2.1.4",
     "eslint": "^8.57.0",
     "eslint-config-airbnb": "^19.0.4",
