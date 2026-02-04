@@ -17,6 +17,7 @@ const { selectCat } = require('./modules/catchooser');
 const { omikuji } = require('./modules/omikuji');
 const random = require('./modules/random');
 const constants = require('./constants');
+const { buildSignal } = require('./modules/signalbuilder');
 
 const client = new Client({
   partials: [
