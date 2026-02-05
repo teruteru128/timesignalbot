@@ -85,12 +85,12 @@ const SIGNALING_TEXT_CHANNEL_LIST = [
   constants.CHANNELS.TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID,
   constants.CHANNELS.PUBLIC_SERVER_ZATSUDAN_CHANNEL_ID,
 ];
-const signal = (now) => {
+const signal = (ctx) => {
   // やっぱり時代はリスト処理なんかねえ？
   /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24),
   GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
   // build signal message
-  const body = buildSignal(now);
+  const body = buildSignal(ctx);
   // チャンネルIDのリストをチャンネルのリストに変換する
   // filterでGuildText Channelを抽出する
   // Channelに送信する

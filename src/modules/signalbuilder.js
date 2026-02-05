@@ -1,9 +1,10 @@
 const random = require('./random');
 
-function buildSignal(now) {
+function buildSignal(ctx) {
   let prefix = '真夜中';
   let secondPrefix = 'だよ';
   let name = 'ハルト';
+  const now = ctx.triggeredAt;
   const date = now.getDate();
   const month = now.getMonth();
   const day = now.getDay();
