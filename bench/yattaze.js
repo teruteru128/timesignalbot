@@ -1,6 +1,5 @@
 
 const { Suite } = require('benchmark');
-const random = require('../src/modules/random');
 
 const suite = new Suite();
 const message = 'やりましたぜ。';
