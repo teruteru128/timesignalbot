@@ -215,6 +215,10 @@ client.on(Events.MessageCreate, async (msg) => {
         await msg.reply('<a:capoo_prpr:1043858275575267438>');
       }
     }
+    if(msg.channel.isDMBased())
+    {
+      msg.channel.send('DMありがとうございます！');
+    }  
 
     // https://tenor.com/view/house-explosion-explode-boom-kaboom-gif-19506150
     if (/ここで自爆です/.test(msg.content)) {
@@ -238,6 +242,11 @@ client.on(Events.MessageCreate, async (msg) => {
     if (SEX_PATTERN.test(msg.content)) {
       await msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！');
     }
+    //if (/タックス/.test(msg.content))
+    //{
+    //  await msg.reply('税金払え！');
+    //  msg.client.users.fetch('310413442760572929').then((user)=>{user.send(`タックス！ ${msg.url}`)});
+    //}
     // やったぜ。 : o
     // やったわ。 : o
     // やりましたわ。 : o
@@ -281,7 +290,7 @@ if (global.gc) {
   SIGNAL_SCHEDULES.push(cron.schedule('*/5 * * * *', async () => { logger.debug('do auto garbage collect'); global.gc(); }, timezoneconfig));
   logger.debug('auto garbage collect scheduled');
 } else {
-  logger.warning('定期GCが有効化されませんでした。');
+  //logger.warning('定期GCが有効化されませんでした。');
 }
 logger.debug('Done client ready event');
 
