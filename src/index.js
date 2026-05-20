@@ -290,7 +290,7 @@ if (global.gc) {
   SIGNAL_SCHEDULES.push(cron.schedule('*/5 * * * *', async () => { logger.debug('do auto garbage collect'); global.gc(); }, timezoneconfig));
   logger.debug('auto garbage collect scheduled');
 } else {
-  //logger.warning('定期GCが有効化されませんでした。');
+  //logger.warn('定期GCが有効化されませんでした。');
 }
 logger.debug('Done client ready event');
 
