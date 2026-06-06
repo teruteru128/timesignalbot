@@ -257,9 +257,11 @@ client.on(Events.MessageCreate, async (msg) => {
       const now = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
       await msg.channel.send(`投稿者：${msg.member.displayName} （${now.getMonth() + 1}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
     }
+    // 牧場鯖でステッカーをチェックする
     if (msg.guildId === constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID && msg.stickers.size > 0)
     {
       msg.stickers.forEach(async (sticker) => {
+        // おふろんは爆破する
         if(sticker.id === '1512802395653144678'){
           await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
         }
