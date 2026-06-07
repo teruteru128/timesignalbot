@@ -262,7 +262,7 @@ client.on(Events.MessageCreate, async (msg) => {
     {
       msg.stickers.forEach(async (sticker) => {
         // おふろんは爆破する
-        if(sticker.id === '1512802395653144678'){
+        if(sticker.name.includes('おふろん')){
           await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
         }
       });
