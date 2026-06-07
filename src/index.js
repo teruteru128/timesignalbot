@@ -193,77 +193,74 @@ const MINE_ROLE_ID = '844886159984558121';
 const EXPLOSION_GIF_URL = 'https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178';
 const EXPLOSION_GIF_URL_2 = 'https://tenor.com/view/house-explosion-explode-boom-kaboom-gif-19506150';
 
-client.on(Events.MessageCreate, async (msg) => {
-  function sendMessage(message) {
-    return (user) => user.send(`${message.author.username}さんが${message.channel}で地雷を踏みました。 ${message.url}`);
+client.on(Events.MessageCreate, async (message) => {
+  function sendMessage(recved) {
+    return (user) => user.send(`${recved.author.username}さんが${recved.channel}で地雷を踏みました。 ${recved.url}`);
   }
   // 他のBOTのメッセージには反応しない
-  if (msg.author.bot) {
-    if (!msg.author.equals(client.user)) {
-      if (msg.content.includes(EXPLOSION_GIF_URL)) {
+  if (message.author.bot) {
+    if (message.author.id != client.user.id) {
+      if (message.content.includes(EXPLOSION_GIF_URL)) {
         // TODO: use server/bot administrators
-        await msg.client.users.fetch('310413442760572929')
-          .then(sendMessage(msg), logger.error);
+        await message.client.users.fetch('310413442760572929')
+          .then(sendMessage(message), logger.error);
       }
     }
   } else {
-    if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID) {
+    if (message.inGuild() && message.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID) {
       if (random.nextFloat() < 0.00001) {
-        await msg.reply('ｽｲ₍₍(ง˘ω˘)ว⁾⁾ｽｲ');
+        await message.reply('ｽｲ₍₍(ง˘ω˘)ว⁾⁾ｽｲ');
       }
       if (random.nextInt(16777216) < 17) {
-        await msg.reply('<a:capoo_prpr:1043858275575267438>');
+        await message.reply('<a:capoo_prpr:1043858275575267438>');
       }
     }
-    if(msg.channel.isDMBased())
-    {
-      msg.channel.send('DMありがとうございます！');
-    }  
+    if (message.channel.isDMBased()) {
+      message.channel.send('DMありがとうございます！');
+    }
 
     // https://tenor.com/view/house-explosion-explode-boom-kaboom-gif-19506150
-    if (/ここで自爆です/.test(msg.content)) {
+    if (/ここで自爆です/.test(message.content)) {
       logger.info('bomb!');
-      await msg.channel.send(EXPLOSION_GIF_URL_2);
+      await message.channel.send(EXPLOSION_GIF_URL_2);
     }
-    if (MINES.test(msg.content)) {
-      await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
+    if (MINES.test(message.content)) {
+      await message.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
       // 多目的トイレサーバーに参加している
       // サーバーの外での発言でも地雷ロール割当は無慈悲すぎるからやらない
-      if (msg.inGuild() && msg.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID
-        && !msg.member.roles.cache.has(MINE_ROLE_ID)) {
+      if (message.inGuild() && message.guildId === constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID
+        && !message.member.roles.cache.has(MINE_ROLE_ID)) {
         // 便器民かつ地雷ロールを割り当てられていない
         // await msg.member.roles.add(msg.guild.roles.cache.get(MINE_ROLE_ID));
         // await msg.guild.roles.fetch(MINE_ROLE_ID).then((role) => msg.member.roles.add(role));
-        await msg.member.roles.add(MINE_ROLE_ID);
+        await message.member.roles.add(MINE_ROLE_ID);
       }
-      await msg.client.users.fetch('310413442760572929')
-        .then(sendMessage(msg), logger.error);
+      await message.client.users.fetch('310413442760572929')
+        .then(sendMessage(message), logger.error);
     }
-    if (SEX_PATTERN.test(msg.content)) {
-      await msg.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！');
+    if (SEX_PATTERN.test(message.content)) {
+      await message.reply(random.nextInt(100) < 2 ? 'やらないか！' : 'やめないか！');
     }
-    //if (/タックス/.test(msg.content))
-    //{
-    //  await msg.reply('税金払え！');
-    //  msg.client.users.fetch('310413442760572929').then((user)=>{user.send(`タックス！ ${msg.url}`)});
-    //}
+    if (/タックス/.test(message.content)){
+      await message.reply('税金払え！');
+      message.client.users.fetch('310413442760572929').then((user)=>{user.send(`タックス！ ${message.url}`)});
+    }
     // やったぜ。 : o
     // やったわ。 : o
     // やりましたわ。 : o
     // やりましたぜ。 : x
-    if (YATTAZE_PATTERN.test(msg.content)) {
+    if (YATTAZE_PATTERN.test(message.content)) {
       // https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97#JST%20%E3%81%8C%E9%81%B8%E6%8A%9E%E3%81%A7%E3%81%8D%E3%81%AA%E3%81%84%E3%83%9E%E3%82%B7%E3%83%B3%E3%81%AE%E5%A0%B4%E5%90%88
       // https://web.archive.org/web/20211114034218/https://nju33.com/notes/javascript/articles/%E6%97%A5%E6%9C%AC%E6%99%82%E9%96%93%E3%82%92%E5%8F%96%E5%BE%97
       const now = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
-      await msg.channel.send(`投稿者：${msg.member.displayName} （${now.getMonth() + 1}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
+      await message.channel.send(`投稿者：${message.member.displayName} （${now.getMonth() + 1}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
     }
     // 牧場鯖でステッカーをチェックする
-    if (msg.guildId === constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID && msg.stickers.size > 0)
-    {
-      msg.stickers.forEach(async (sticker) => {
+    if (message.guildId === constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID && message.stickers.size > 0) {
+      message.stickers.forEach(async (sticker) => {
         // おふろんは爆破する
-        if(sticker.name.includes('おふろん')){
-          await msg.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
+        if (sticker.name.includes('おふろん')) {
+          await message.channel.send('https://tenor.com/view/radiation-atomic-bomb-bomb-boom-nuclear-bomb-gif-13364178');
         }
       });
     }
@@ -296,12 +293,6 @@ function yattaze() {
 // 8月16日（水）07時14分22秒
 // SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 3', yattaze, timezoneconfig));
 SIGNAL_SCHEDULES.push(cron.schedule('22 14 7 16 8 *', yattaze, timezoneconfig));
-if (global.gc) {
-  SIGNAL_SCHEDULES.push(cron.schedule('*/5 * * * *', async () => { logger.debug('do auto garbage collect'); global.gc(); }, timezoneconfig));
-  logger.debug('auto garbage collect scheduled');
-} else {
-  //logger.warn('定期GCが有効化されませんでした。');
-}
 logger.debug('Done client ready event');
 
 // process.env.DISCORD_TOKEN が設定されている場合、client.tokenはclientをインスタンス化したときにデフォルトで設定される。
