@@ -33,7 +33,7 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildModeration,
-    GatewayIntentBits.GuildEmojisAndStickers,
+    GatewayIntentBits.GuildExpressions,
     GatewayIntentBits.GuildIntegrations,
     GatewayIntentBits.GuildWebhooks,
     GatewayIntentBits.GuildInvites,
@@ -49,6 +49,8 @@ const client = new Client({
     GatewayIntentBits.GuildScheduledEvents,
     GatewayIntentBits.AutoModerationConfiguration,
     GatewayIntentBits.AutoModerationExecution,
+    GatewayIntentBits.GuildMessagePolls,
+    GatewayIntentBits.DirectMessagePolls
   ],
 });
 /*
