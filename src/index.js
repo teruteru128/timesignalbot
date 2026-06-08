@@ -262,7 +262,7 @@ client.on(Events.MessageCreate, async (message) => {
       message.stickers.forEach(async (sticker) => {
         // おふろんは爆破する
         if (sticker.name.includes('おふろん')) {
-          await message.reply('牧場鯖閉鎖の危機なのだ〜！');
+          await message.reply('牧場鯖爆破の危機なのだ〜！');
         }
       });
     }
