@@ -258,7 +258,7 @@ client.on(Events.MessageCreate, async (message) => {
       await message.channel.send(`投稿者：${message.member.displayName} （${now.getMonth() + 1}月${now.getDate()}日（${YOUBI[now.getDay()]}）${now.getHours().toString().padStart(2, '0')}時${now.getMinutes().toString().padStart(2, '0')}分${now.getSeconds().toString().padStart(2, '0')}秒）`);
     }
     // 牧場鯖でステッカーをチェックする
-    if (message.guildId === constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID && message.stickers.size > 0) {
+    if (message.guildId === constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID && message.member.id == '361055021581860864' && message.stickers.size > 0) {
       message.stickers.forEach(async (sticker) => {
         // おふろんは爆破する
         if (sticker.name.includes('おふろん')) {
