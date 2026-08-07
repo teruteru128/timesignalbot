@@ -45,13 +45,13 @@ const CAT_KAOMOJI = [];
 // 顔文字リスト（非同期で読み込み）
 try {
   const data = fs.readFileSync('./src/modules/catfaces.txt', 'utf-8');
-  CAT_KAOMOJI = data.replace('\\', '\\\\')
+  CAT_KAOMOJI.push(...data.replace('\\', '\\\\')
     .replace(/`/g, '\\`')
     .replace(/\*/g, '\\*')
     .replace(/~/g, '\\~')
     .replace(/_/g, '\\_')
     .replace(/\|/g, '\\|')
-    .split(/\n/);
+    .split(/\n/));
 } catch (err) {// 起動時にファイルが読めなかったら error ログを吐く
   logger.error(err, '顔文字ファイルの読み込みに失敗しました。顔文字枠は空になります。');
 }
