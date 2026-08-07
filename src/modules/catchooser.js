@@ -1,29 +1,15 @@
 const fs = require('fs');
-// const { pino } = require('pino');
+const { pino } = require('pino');
 const random = require('./random');
 
-// const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
+const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
+// === 1. 猫のデータ定義（ここに新しいものを追加するだけ！） ===
 // 基本猫12種
 const INITIAL_CAT_LIST = ['にゃーん', 'にゃん', 'にゃ？', 'にゃん？', 'にゃおーん', 'フシーッ！', 'ゴロゴロゴロゴロ……',
   'Zz...', '💤', 'なぁーご', 'なぁ〜ご', 'なぉーん', 'ﾅｰﾝ', 'ニャアアアアン！'];
 // 絵文字猫13種
 const CAT_EMOJIS = ['🐱', '🐈', '🐈‍⬛', '😿', '😻', '😹', '😽', '😾', '🙀', '😸', '😺', '😼', '🐾'];
-// 顔文字334種
-const CAT_KAOMOJI = [];
-
-(() => {
-  fs.readFile('./src/modules/catfaces.txt', 'utf-8', (err, data) => {
-    if (err) throw err;
-    CAT_KAOMOJI.splice(CAT_KAOMOJI.length, 0, ...data.replace('\\', '\\\\')
-      .replace(/`/g, '\\`')
-      .replace(/\*/g, '\\*')
-      .replace(/~/g, '\\~')
-      .replace(/_/g, '\\_')
-      .replace(/\|/g, '\\|')
-      .split(/\n/));
-  });
-})();
 
 // 現場猫13種
 const GENBA_NEKO = ['ヨシ！', 'どうして……', 'どうして\n夜中に\n起きてるん\nですか？', 'ああああ！\nああああ！\nあああああ！あー！',
@@ -54,46 +40,70 @@ const B = '44GC44GL44GX44GR44CA44KE44Gq44GS44CA57eL6Imy44Gu6bOl44KI44CA44GP44GV4
           'uLvjga7lvqHpgaPjgYTjgoQK5LuK44GT44Gd5p2l44Gf44KJ44KT5oiR44GM6ISz5ry/44Gu5rCR44G4CuS7iuOBk+OBneadpeOBn+OCieOCk+aI' +
           'keOBjOS4luOBruW4uOmXh+OBuArku4rjgZPjgZ3mnaXjgZ/jgonjgpPmiJHjgYzmqrvjga7otavngbzjg5gKCue3i+iJsuOBrumzpeOCiOOAgOS7' +
           'iuOBk+OBneeZuuOBoeOBrA==';
+// 顔文字334種
+const CAT_KAOMOJI = [];
+// 顔文字リスト（非同期で読み込み）
+try {
+  const data = fs.readFileSync('./src/modules/catfaces.txt', 'utf-8');
+  CAT_KAOMOJI = data.replace('\\', '\\\\')
+    .replace(/`/g, '\\`')
+    .replace(/\*/g, '\\*')
+    .replace(/~/g, '\\~')
+    .replace(/_/g, '\\_')
+    .replace(/\|/g, '\\|')
+    .split(/\n/);
+} catch (err) {// 起動時にファイルが読めなかったら error ログを吐く
+  logger.error(err, '顔文字ファイルの読み込みに失敗しました。顔文字枠は空になります。');
+}
+// ★★★ 新しく追加したいコンテンツ ★★★
+const NEW_CAT_TALKS = ['猫「魚くれ」', '猫「シャワーは嫌じゃ」'];
 
+// === 2. 各カテゴリの「重み」を設定するテーブル ===
+// 元のコードの分子の数値をそのまま設定しています
+const CATEGORY_WEIGHTS = [
+  // 🔄 新カテゴリを足すために、元の 4771021 から 500000 枠だけ新カテゴリに譲渡
+  { weight: 4271021, get: () => INITIAL_CAT_LIST[random.nextInt(INITIAL_CAT_LIST.length)] }, 
+  
+  { weight: 3932160, get: () => CAT_EMOJIS[random.nextInt(CAT_EMOJIS.length)] },
+  { weight: 2673869, get: () => CAT_KAOMOJI[random.nextInt(CAT_KAOMOJI.length)] },
+  { weight: 1835008, get: () => GENBA_NEKO[random.nextInt(GENBA_NEKO.length)] },
+  { weight: 1550099, get: () => OTHERS[random.nextInt(OTHERS.length)] },
+  { weight: 1048576, get: () => `お土産→${GIFTS[random.nextInt(GIFTS.length)]}` },
+  { weight: 786432,  get: () => NEKODESU[random.nextInt(NEKODESU.length)] }, // SCP-040-JP
+  { weight: 114514,  get: () => Buffer.from(A, 'base64').toString() },       // SCP-444-JP
+  { weight: 65536,   get: () => '猫' },
+  
+  // 🐾 譲り受けた 500000 枠（約2.98%）で新カテゴリを綺麗に追加！
+  { weight: 500000,  get: () => NEW_CAT_TALKS[random.nextInt(NEW_CAT_TALKS.length)] },
+  
+  // 💎 これで「ヒミツ」は狙い通り完全に 1 / 16777216（0.00000596%）になります
+  { weight: 1,       get: () => Buffer.from(B, 'base64').toString() },
+];
+
+// 残りの確率で選ばれるデフォルト（B）の重みを計算するための総和
+const TOTAL_MAX = 16777216;
+
+// === 3. 抽選システム（どれだけカテゴリが増えてもここは一切書き換え不要） ===
 function selectCat() {
-  const base = random.nextInt(16777216);
-  let numerator = 5033165;
-  if (base < numerator) {
-    return INITIAL_CAT_LIST[random.nextInt(INITIAL_CAT_LIST.length)];
+  const base = random.nextInt(TOTAL_MAX);
+  let currentRange = 0;
+
+  // 設定された重みを順番にチェックしていく自動ループ
+  for (const category of CATEGORY_WEIGHTS) {
+    currentRange += category.weight;
+    if (base < currentRange) {
+      // 通常のカテゴリ当選（デバッグ用にレベルを落としてログ出ししてもOK）
+      logger.debug({ category: category.name, base }, '猫みくじの抽選が行われました');
+      return category.get();
+    }
   }
-  numerator += 3932160;
-  if (base < numerator) {
-    return CAT_EMOJIS[random.nextInt(CAT_EMOJIS.length)];
-  }
-  numerator += 2673869;
-  if (base < numerator) {
-    return CAT_KAOMOJI[random.nextInt(CAT_KAOMOJI.length)];
-  }
-  numerator += 1835008;
-  if (base < numerator) {
-    return GENBA_NEKO[random.nextInt(GENBA_NEKO.length)];
-  }
-  numerator += 1550099;
-  if (base < numerator) {
-    return OTHERS[random.nextInt(OTHERS.length)];
-  }
-  numerator += 1048576;
-  if (base < numerator) {
-    return `お土産→${GIFTS[random.nextInt(GIFTS.length)]}`;
-  }
-  numerator += 786432;
-  if (base < numerator) {
-    return NEKODESU[random.nextInt(NEKODESU.length)];
-  }
-  numerator += 114514;
-  if (base < numerator) {
-    return Buffer.from(A, 'base64').toString();
-  }
-  numerator += 65536;
-  if (base < numerator) {
-    return '猫';
-  }
+
+  // 💎 16777216分の1をすり抜けた「ヒミツ（B）」の処理
+  // 認識災害レベルの事象なので warn でログを残す
+  logger.warn({ base, total: TOTAL_MAX }, '【警告】16777216分の1の「ヒミツ」が当選しました。世界が緋色に染まります。');
+  // どのカテゴリの重みにも引っかからなかった場合は最後の「B」を返す
   return Buffer.from(B, 'base64').toString();
 }
 
 module.exports.selectCat = selectCat;
+

@@ -185,6 +185,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
     logger.debug('This is user context menu command.');
   } else if (interaction.isAutocomplete()) {
     logger.debug('This is autocomplete.');
+  } else {
+    logger.warn('unknown command: %s', interaction);
   }
 });
 
