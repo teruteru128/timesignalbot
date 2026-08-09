@@ -1,5 +1,5 @@
-const { expect } = require('chai');
-const random = require('../src/modules/random'); // 実際の random.js のパスに合わせて調整してください
+import { expect } from 'chai';
+import random from '../src/modules/random.js'; // 実際の random.js のパスに合わせて調整してください
 
 describe('Random モジュールの検証', () => {
   
