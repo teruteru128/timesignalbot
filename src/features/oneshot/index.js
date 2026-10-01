@@ -4,6 +4,7 @@
  */
 const { MessageFlags, PermissionFlagsBits } = require('discord.js');
 
+const { memberCan } = require('../permissions');
 const { KeyedTimers } = require('./KeyedTimers');
 const { parseJstDateTime } = require('./parseDateTime');
 
@@ -11,6 +12,9 @@ const { parseJstDateTime } = require('./parseDateTime');
 const GRACE_SECONDS = 5 * 60;
 const LIST_LIMIT = 20;
 const PREVIEW_LENGTH = 40;
+
+// 予約の作成・取り消しに必要な、送信先チャンネルでの実行者の権限
+const MEMBER_PERMISSIONS = [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages];
 
 const toUnix = (date) => Math.floor(date.getTime() / 1000);
 
@@ -82,6 +86,9 @@ function createOneshotSignals({ client, pool, logger }) {
     if (!permissions?.has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages])) {
       return `${channel} にメッセージを送信する権限がありません。`;
     }
+    if (!memberCan(interaction, channel, MEMBER_PERMISSIONS)) {
+      return `あなたには ${channel} にメッセージを送信する権限がないため、予約できません。`;
+    }
 
     const { rows } = await pool.query(
       `insert into oneshot_signals (send_at, guild_id, channel_id, content, created_by)
@@ -98,14 +105,18 @@ function createOneshotSignals({ client, pool, logger }) {
     const { rows } = await pool.query(
       `select id, send_at, channel_id, content from oneshot_signals
         where guild_id = $1 and status = 'pending'
-        order by send_at
-        limit $2`,
-      [interaction.guildId, LIST_LIMIT],
+        order by send_at`,
+      [interaction.guildId],
     );
-    if (rows.length === 0) {
+    // 実行者が見られないチャンネルあての予約は、文面ごと隠す
+    const visible = rows.filter(({ channel_id: channelId }) => {
+      const channel = interaction.guild.channels.cache.get(channelId);
+      return channel === undefined || memberCan(interaction, channel, PermissionFlagsBits.ViewChannel);
+    });
+    if (visible.length === 0) {
       return '予約中のワンショット時報はありません。';
     }
-    return rows.map(({
+    return visible.slice(0, LIST_LIMIT).map(({
       id, send_at: sendAt, channel_id: channelId, content,
     }) => {
       const preview = content.length > PREVIEW_LENGTH ? `${content.slice(0, PREVIEW_LENGTH)}…` : content;
@@ -115,6 +126,22 @@ function createOneshotSignals({ client, pool, logger }) {
 
   async function cancel(interaction) {
     const id = interaction.options.getInteger('id', true);
+    const notFound = `#${id} は予約中のワンショット時報の中に見つかりませんでした。`;
+    const reservation = await pool.query(
+      "select channel_id from oneshot_signals where id = $1 and guild_id = $2 and status = 'pending'",
+      [id, interaction.guildId],
+    );
+    if (reservation.rows.length === 0) {
+      return notFound;
+    }
+    // 送信先のチャンネルが削除済みなら、守るものがないので取り消しを認める
+    const channel = interaction.guild.channels.cache.get(reservation.rows[0].channel_id);
+    if (channel !== undefined && !memberCan(interaction, channel, MEMBER_PERMISSIONS)) {
+      // 見られないチャンネルあての予約は、存在も明かさない
+      return memberCan(interaction, channel, PermissionFlagsBits.ViewChannel)
+        ? `あなたには ${channel} にメッセージを送信する権限がないため、取り消せません。`
+        : notFound;
+    }
     const { rows } = await pool.query(
       `update oneshot_signals set status = 'canceled'
         where id = $1 and guild_id = $2 and status = 'pending'
@@ -122,7 +149,7 @@ function createOneshotSignals({ client, pool, logger }) {
       [id, interaction.guildId],
     );
     if (rows.length === 0) {
-      return `#${id} は予約中のワンショット時報の中に見つかりませんでした。`;
+      return notFound;
     }
     timers.clear(String(id));
     return `#${id} を取り消しました。`;

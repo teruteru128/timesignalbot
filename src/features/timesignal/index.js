@@ -5,6 +5,7 @@
 const { MessageFlags, PermissionFlagsBits } = require('discord.js');
 
 const { buildSignal } = require('../../modules/signalbuilder');
+const { memberCan } = require('../permissions');
 
 function createTimeSignal({ client, pool, logger }) {
   async function send(ctx) {
@@ -36,6 +37,9 @@ function createTimeSignal({ client, pool, logger }) {
     if (!permissions?.has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages])) {
       return `${channel} にメッセージを送信する権限がありません。`;
     }
+    if (!memberCan(interaction, channel, PermissionFlagsBits.ManageChannels)) {
+      return `あなたには ${channel} のチャンネル管理の権限がないため、登録できません。`;
+    }
     const { rows } = await pool.query(
       `insert into signal_channels (channel_id, guild_id, created_by)
         values ($1, $2, $3)
@@ -51,6 +55,9 @@ function createTimeSignal({ client, pool, logger }) {
 
   async function unregister(interaction) {
     const channel = interaction.options.getChannel('channel') ?? interaction.channel;
+    if (!memberCan(interaction, channel, PermissionFlagsBits.ManageChannels)) {
+      return `あなたには ${channel} のチャンネル管理の権限がないため、外せません。`;
+    }
     const { rows } = await pool.query(
       'delete from signal_channels where channel_id = $1 and guild_id = $2 returning channel_id',
       [channel.id, interaction.guildId],
@@ -66,10 +73,15 @@ function createTimeSignal({ client, pool, logger }) {
       'select channel_id from signal_channels where guild_id = $1 order by created_at',
       [interaction.guildId],
     );
-    if (rows.length === 0) {
+    // 実行者が見られないチャンネルは表示しない
+    const visible = rows.filter(({ channel_id: channelId }) => {
+      const channel = interaction.guild.channels.cache.get(channelId);
+      return channel === undefined || memberCan(interaction, channel, PermissionFlagsBits.ViewChannel);
+    });
+    if (visible.length === 0) {
       return 'このサーバーには時報の送信先がありません。';
     }
-    return ['このサーバーの時報の送信先:', ...rows.map(({ channel_id: channelId }) => `<#${channelId}>`)].join('\n');
+    return ['このサーバーの時報の送信先:', ...visible.map(({ channel_id: channelId }) => `<#${channelId}>`)].join('\n');
   }
 
   const SUBCOMMANDS = { register, unregister, list };
