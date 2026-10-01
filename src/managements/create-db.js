@@ -26,6 +26,9 @@ const DDL = [
   )`,
   `create index if not exists oneshot_signals_pending_idx
     on oneshot_signals (send_at) where status = 'pending'`,
+  // @everyone・@here・ロールへの通知を許可するか。後から追加した列なので alter で足す
+  `alter table oneshot_signals
+    add column if not exists mass_mentions boolean not null default false`,
   // 定常の時報の送信先
   `create table if not exists signal_channels (
     channel_id varchar(24) primary key,

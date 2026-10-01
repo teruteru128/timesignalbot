@@ -18,6 +18,18 @@ const MEMBER_PERMISSIONS = [PermissionFlagsBits.ViewChannel, PermissionFlagsBits
 
 const toUnix = (date) => Math.floor(date.getTime() / 1000);
 
+/**
+ * 送信するメッセージのオプションを作る。
+ * @everyone・@here・ロールへの通知は、予約時に明示的に許可された場合だけ飛ばす
+ * (2025年1月に便器ロールへの誤爆で大惨事になったことがある)
+ */
+function buildMessageOptions(content, massMentions) {
+  return {
+    content,
+    allowedMentions: { parse: massMentions ? ['users', 'roles', 'everyone'] : ['users'] },
+  };
+}
+
 function createOneshotSignals({ client, pool, logger }) {
   const timers = new KeyedTimers();
 
@@ -26,19 +38,19 @@ function createOneshotSignals({ client, pool, logger }) {
     const { rows } = await pool.query(
       `update oneshot_signals set status = 'sent', sent_at = now()
         where id = $1 and status = 'pending'
-        returning channel_id, content`,
+        returning channel_id, content, mass_mentions`,
       [id],
     );
     if (rows.length === 0) {
       return;
     }
-    const { channel_id: channelId, content } = rows[0];
+    const { channel_id: channelId, content, mass_mentions: massMentions } = rows[0];
     try {
       const channel = await client.channels.fetch(channelId);
       if (channel === null || !channel.isTextBased()) {
         throw new Error(`channel ${channelId} is not a text channel`);
       }
-      await channel.send(content);
+      await channel.send(buildMessageOptions(content, massMentions));
       logger.info('sent oneshot signal #%s to %s', id, channelId);
     } catch (error) {
       logger.error(error, 'failed to send oneshot signal #%s', id);
@@ -71,6 +83,7 @@ function createOneshotSignals({ client, pool, logger }) {
     const text = interaction.options.getString('datetime', true);
     const content = interaction.options.getString('content', true);
     const channel = interaction.options.getChannel('channel') ?? interaction.channel;
+    const massMentions = interaction.options.getBoolean('mass_mentions') ?? false;
 
     const sendAt = parseJstDateTime(text);
     if (sendAt === null) {
@@ -89,21 +102,27 @@ function createOneshotSignals({ client, pool, logger }) {
     if (!memberCan(interaction, channel, MEMBER_PERMISSIONS)) {
       return `あなたには ${channel} にメッセージを送信する権限がないため、予約できません。`;
     }
+    if (massMentions && !memberCan(interaction, channel, PermissionFlagsBits.MentionEveryone)) {
+      return `あなたには ${channel} で @everyone・@here・すべてのロールにメンションする権限がないため、mass_mentions は指定できません。`;
+    }
 
     const { rows } = await pool.query(
-      `insert into oneshot_signals (send_at, guild_id, channel_id, content, created_by)
-        values ($1, $2, $3, $4, $5)
+      `insert into oneshot_signals (send_at, guild_id, channel_id, content, created_by, mass_mentions)
+        values ($1, $2, $3, $4, $5, $6)
         returning id`,
-      [sendAt, interaction.guildId, channel.id, content, interaction.user.id],
+      [sendAt, interaction.guildId, channel.id, content, interaction.user.id, massMentions],
     );
     const { id } = rows[0];
     arm(id, sendAt);
-    return `#${id} を予約しました: <t:${toUnix(sendAt)}:F> (<t:${toUnix(sendAt)}:R>) に ${channel} へ送信します。`;
+    const reply = `#${id} を予約しました: <t:${toUnix(sendAt)}:F> (<t:${toUnix(sendAt)}:R>) に ${channel} へ送信します。`;
+    return massMentions
+      ? `${reply}\n📢 **送信時に @everyone・@here・ロールへの通知が飛びます。** 不要なら \`/signal oneshot cancel id:${id}\` で取り消してください。`
+      : reply;
   }
 
   async function list(interaction) {
     const { rows } = await pool.query(
-      `select id, send_at, channel_id, content from oneshot_signals
+      `select id, send_at, channel_id, content, mass_mentions from oneshot_signals
         where guild_id = $1 and status = 'pending'
         order by send_at`,
       [interaction.guildId],
@@ -117,10 +136,10 @@ function createOneshotSignals({ client, pool, logger }) {
       return '予約中のワンショット時報はありません。';
     }
     return visible.slice(0, LIST_LIMIT).map(({
-      id, send_at: sendAt, channel_id: channelId, content,
+      id, send_at: sendAt, channel_id: channelId, content, mass_mentions: massMentions,
     }) => {
       const preview = content.length > PREVIEW_LENGTH ? `${content.slice(0, PREVIEW_LENGTH)}…` : content;
-      return `#${id} <t:${toUnix(sendAt)}:F> <#${channelId}> ${preview.replaceAll('\n', ' ')}`;
+      return `#${id} <t:${toUnix(sendAt)}:F> <#${channelId}> ${massMentions ? '📢 ' : ''}${preview.replaceAll('\n', ' ')}`;
     }).join('\n');
   }
 
@@ -178,3 +197,4 @@ function createOneshotSignals({ client, pool, logger }) {
 }
 
 module.exports.createOneshotSignals = createOneshotSignals;
+module.exports.buildMessageOptions = buildMessageOptions;

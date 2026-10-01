@@ -3,6 +3,7 @@ const { describe, it } = require('mocha');
 
 const { parseJstDateTime } = require('../src/features/oneshot/parseDateTime');
 const { KeyedTimers } = require('../src/features/oneshot/KeyedTimers');
+const { buildMessageOptions } = require('../src/features/oneshot');
 
 describe('parseJstDateTime', () => {
   it('日本時間として解釈する', () => {
@@ -44,5 +45,14 @@ describe('KeyedTimers', () => {
     timers.set('a', new Date(Date.now() + 30), () => done(new Error('fired')));
     setTimeout(() => timers.clear('a'), 15);
     setTimeout(done, 60);
+  });
+});
+
+describe('buildMessageOptions', () => {
+  it('指定がなければ個人あてのメンションだけ通知する', () => {
+    assert.deepStrictEqual(buildMessageOptions('@everyone <@&1>', false).allowedMentions, { parse: ['users'] });
+  });
+  it('mass_mentions を指定したら @everyone・ロールにも通知する', () => {
+    assert.deepStrictEqual(buildMessageOptions('@everyone <@&1>', true).allowedMentions, { parse: ['users', 'roles', 'everyone'] });
   });
 });
