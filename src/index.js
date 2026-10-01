@@ -17,9 +17,9 @@ const { selectCat } = require('./modules/catchooser');
 const { omikuji } = require('./modules/omikuji');
 const random = require('./modules/random');
 const constants = require('./constants');
-const { buildSignal } = require('./modules/signalbuilder');
 const { pool } = require('./db');
 const { createOneshotSignals } = require('./features/oneshot');
+const { createTimeSignal } = require('./features/timesignal');
 
 const client = new Client({
   partials: [
@@ -85,29 +85,10 @@ const data1 = new SlashCommandBuilder().setName().setDescription()
 client.on(Events.Error, async (error) => logger.error('error : %s', error));
 client.on(Events.Warn, async (info) => logger.warn('warn : %s', info));
 
-const SIGNALING_TEXT_CHANNEL_LIST = [
-  constants.CHANNELS.TAMOKUTEKI_TOIRE_TEXT_CHANNEL_ID,
-  constants.CHANNELS.PUBLIC_SERVER_ZATSUDAN_CHANNEL_ID,
-];
-const signal = (ctx) => {
-  // やっぱり時代はリスト処理なんかねえ？
-  /* create table SIGNALING_CHANNEL_ID(CHANNEL_ID varchar(24),
-  GUILD_ID varchar(24), DESCRIPTION text,primary key(ID)); */
-  // build signal message
-  const body = buildSignal(ctx);
-  // チャンネルIDのリストをチャンネルのリストに変換する
-  // filterでGuildText Channelを抽出する
-  // Channelに送信する
-  Promise.all(SIGNALING_TEXT_CHANNEL_LIST
-    .map((channelId) => client.channels.fetch(channelId)))
-    .then((cl) => cl.filter((channel) => channel.isTextBased()))
-    .then((c) => c.map((channel) => channel.send(body)))
-    .catch((error) => logger.error(error));
-};
-
 // 待機中の接続のエラーを拾わないとプロセスが落ちる
 pool.on('error', (error) => logger.error(error, 'pg pool error'));
 const oneshotSignals = createOneshotSignals({ client, pool, logger });
+const timeSignal = createTimeSignal({ client, pool, logger });
 
 const MINES = new RegExp(process.env.MINES, 'giu');
 
@@ -146,12 +127,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
     } else if (interaction.commandName === 'signal') {
       if (interaction.options.getSubcommandGroup(false) === 'oneshot') {
         await oneshotSignals.handleInteraction(interaction);
-      } else if (interaction.options.getSubcommand() === 'register') {
-        await interaction.reply({ content: 'Register pong!', ephemeral: true });
-      } else if (interaction.options.getSubcommand() === 'unregister') {
-        await interaction.reply({ content: 'Unregister pong!', ephemeral: true });
-      } else if (interaction.options.getSubcommand() === 'list') {
-        await interaction.reply({ content: 'List pong!', ephemeral: true });
+      } else {
+        await timeSignal.handleInteraction(interaction);
       }
     } else if (interaction.commandName === 'mine') {
       if (interaction.options.getSubcommand() === 'register') {
@@ -274,7 +251,9 @@ client.on(Events.MessageCreate, async (message) => {
 const SIGNAL_SCHEDULES = [];
 const timezoneconfig = { timezone: 'Asia/Tokyo' };
 // 時報セットアップ
-SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', signal, timezoneconfig));
+SIGNAL_SCHEDULES.push(cron.schedule('0 0 0 * * *', (ctx) => {
+  timeSignal.send(ctx).catch((error) => logger.error(error, 'failed to send time signal'));
+}, timezoneconfig));
 SIGNAL_SCHEDULES.push(cron.schedule('0 */5 * * * *', () => {
   const a = random.nextInt(16777216);
   if (a < 167772) {
