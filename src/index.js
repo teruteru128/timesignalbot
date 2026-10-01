@@ -18,6 +18,8 @@ const { omikuji } = require('./modules/omikuji');
 const random = require('./modules/random');
 const constants = require('./constants');
 const { buildSignal } = require('./modules/signalbuilder');
+const { pool } = require('./db');
+const { createOneshotSignals } = require('./features/oneshot');
 
 const client = new Client({
   partials: [
@@ -103,12 +105,17 @@ const signal = (ctx) => {
     .catch((error) => logger.error(error));
 };
 
+// 待機中の接続のエラーを拾わないとプロセスが落ちる
+pool.on('error', (error) => logger.error(error, 'pg pool error'));
+const oneshotSignals = createOneshotSignals({ client, pool, logger });
+
 const MINES = new RegExp(process.env.MINES, 'giu');
 
 const MINE_STATUS_TXT = `${MINES.source.split('|').length}個の地雷`;
 client.on(Events.ClientReady, (c) => {
   logger.info(` ${c.user.username}(${c.user}, ${c.user.tag}) でログインしています。`);
   c.user.setActivity(MINE_STATUS_TXT, { type: ActivityType.Watching });
+  oneshotSignals.restore().catch((error) => logger.error(error, 'failed to restore oneshot signals'));
 });
 
 client.on(Events.InteractionCreate, async (interaction) => {
@@ -137,7 +144,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
       const CHOSEN_CAT = selectCat();
       await interaction.reply(CHOSEN_CAT);
     } else if (interaction.commandName === 'signal') {
-      if (interaction.options.getSubcommand() === 'register') {
+      if (interaction.options.getSubcommandGroup(false) === 'oneshot') {
+        await oneshotSignals.handleInteraction(interaction);
+      } else if (interaction.options.getSubcommand() === 'register') {
         await interaction.reply({ content: 'Register pong!', ephemeral: true });
       } else if (interaction.options.getSubcommand() === 'unregister') {
         await interaction.reply({ content: 'Unregister pong!', ephemeral: true });

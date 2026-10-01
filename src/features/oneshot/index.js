@@ -1,0 +1,153 @@
+/**
+ * ワンショット時報
+ * 予約は oneshot_signals テーブルに保存し、起動時に未送信の分を読み込んでタイマーを張り直す。
+ */
+const { MessageFlags, PermissionFlagsBits } = require('discord.js');
+
+const { KeyedTimers } = require('./KeyedTimers');
+const { parseJstDateTime } = require('./parseDateTime');
+
+// 停止中に送信時刻を過ぎた予約を、起動時に遅れて送る猶予
+const GRACE_SECONDS = 5 * 60;
+const LIST_LIMIT = 20;
+const PREVIEW_LENGTH = 40;
+
+const toUnix = (date) => Math.floor(date.getTime() / 1000);
+
+function createOneshotSignals({ client, pool, logger }) {
+  const timers = new KeyedTimers();
+
+  async function fire(id) {
+    // 取り消しと競合しても二重送信しないよう、送信済みにできた場合だけ送る
+    const { rows } = await pool.query(
+      `update oneshot_signals set status = 'sent', sent_at = now()
+        where id = $1 and status = 'pending'
+        returning channel_id, content`,
+      [id],
+    );
+    if (rows.length === 0) {
+      return;
+    }
+    const { channel_id: channelId, content } = rows[0];
+    try {
+      const channel = await client.channels.fetch(channelId);
+      if (channel === null || !channel.isTextBased()) {
+        throw new Error(`channel ${channelId} is not a text channel`);
+      }
+      await channel.send(content);
+      logger.info('sent oneshot signal #%s to %s', id, channelId);
+    } catch (error) {
+      logger.error(error, 'failed to send oneshot signal #%s', id);
+      await pool.query("update oneshot_signals set status = 'failed' where id = $1", [id]);
+    }
+  }
+
+  function arm(id, sendAt) {
+    timers.set(String(id), sendAt, () => {
+      fire(id).catch((error) => logger.error(error, 'oneshot signal #%s', id));
+    });
+  }
+
+  async function restore() {
+    const missed = await pool.query(
+      `update oneshot_signals set status = 'missed'
+        where status = 'pending' and send_at < now() - make_interval(secs => $1)
+        returning id`,
+      [GRACE_SECONDS],
+    );
+    missed.rows.forEach(({ id }) => logger.warn('oneshot signal #%s was missed', id));
+    const { rows } = await pool.query(
+      "select id, send_at from oneshot_signals where status = 'pending'",
+    );
+    rows.forEach(({ id, send_at: sendAt }) => arm(id, sendAt));
+    logger.info('restored %d oneshot signal(s)', rows.length);
+  }
+
+  async function add(interaction) {
+    const text = interaction.options.getString('datetime', true);
+    const content = interaction.options.getString('content', true);
+    const channel = interaction.options.getChannel('channel') ?? interaction.channel;
+
+    const sendAt = parseJstDateTime(text);
+    if (sendAt === null) {
+      return `日時 \`${text}\` を読み取れませんでした。\`2026-12-31 23:59:59\` のように日本時間で指定してください。`;
+    }
+    if (sendAt.getTime() <= Date.now()) {
+      return `<t:${toUnix(sendAt)}:F> はすでに過ぎています。`;
+    }
+    if (channel === null || !channel.isTextBased()) {
+      return '送信先にはテキストチャンネルを指定してください。';
+    }
+    const permissions = channel.permissionsFor(interaction.client.user);
+    if (!permissions?.has([PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages])) {
+      return `${channel} にメッセージを送信する権限がありません。`;
+    }
+
+    const { rows } = await pool.query(
+      `insert into oneshot_signals (send_at, guild_id, channel_id, content, created_by)
+        values ($1, $2, $3, $4, $5)
+        returning id`,
+      [sendAt, interaction.guildId, channel.id, content, interaction.user.id],
+    );
+    const { id } = rows[0];
+    arm(id, sendAt);
+    return `#${id} を予約しました: <t:${toUnix(sendAt)}:F> (<t:${toUnix(sendAt)}:R>) に ${channel} へ送信します。`;
+  }
+
+  async function list(interaction) {
+    const { rows } = await pool.query(
+      `select id, send_at, channel_id, content from oneshot_signals
+        where guild_id = $1 and status = 'pending'
+        order by send_at
+        limit $2`,
+      [interaction.guildId, LIST_LIMIT],
+    );
+    if (rows.length === 0) {
+      return '予約中のワンショット時報はありません。';
+    }
+    return rows.map(({
+      id, send_at: sendAt, channel_id: channelId, content,
+    }) => {
+      const preview = content.length > PREVIEW_LENGTH ? `${content.slice(0, PREVIEW_LENGTH)}…` : content;
+      return `#${id} <t:${toUnix(sendAt)}:F> <#${channelId}> ${preview.replaceAll('\n', ' ')}`;
+    }).join('\n');
+  }
+
+  async function cancel(interaction) {
+    const id = interaction.options.getInteger('id', true);
+    const { rows } = await pool.query(
+      `update oneshot_signals set status = 'canceled'
+        where id = $1 and guild_id = $2 and status = 'pending'
+        returning id`,
+      [id, interaction.guildId],
+    );
+    if (rows.length === 0) {
+      return `#${id} は予約中のワンショット時報の中に見つかりませんでした。`;
+    }
+    timers.clear(String(id));
+    return `#${id} を取り消しました。`;
+  }
+
+  const SUBCOMMANDS = { add, list, cancel };
+
+  async function handleInteraction(interaction) {
+    if (!interaction.inGuild()) {
+      await interaction.reply({ content: 'サーバー内で実行してください。', flags: MessageFlags.Ephemeral });
+      return;
+    }
+    const subcommand = SUBCOMMANDS[interaction.options.getSubcommand()];
+    let content;
+    try {
+      content = await subcommand(interaction);
+    } catch (error) {
+      logger.error(error, 'oneshot command failed');
+      content = 'エラーが発生しました。';
+    }
+    // 予約一覧の本文に含まれるメンションで通知が飛ばないようにする
+    await interaction.reply({ content, flags: MessageFlags.Ephemeral, allowedMentions: { parse: [] } });
+  }
+
+  return { restore, handleInteraction };
+}
+
+module.exports.createOneshotSignals = createOneshotSignals;

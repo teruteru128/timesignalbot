@@ -1,37 +1,22 @@
-
 /**
+ * 環境変数 MINES (| 区切り) の地雷を mines テーブルに登録する。登録済みのものは無視する。
  * https://12factor.net/ja/admin-processes
- * https://devcenter.heroku.com/ja/articles/management-visibility
  */
-console.log('Hello create-db!');
-const { Pool } = require('pg');
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
-  }
-});
-new Promise(async (resolve, reject) => {
-  // https://node-postgres.com/
-  const client = await pool.connect();
-  const promises = [];
+const { pool } = require('../db');
+
+(async () => {
+  const mines = (process.env.MINES ?? '').split('|').filter((mine) => mine.length > 0);
   try {
-    //地雷
-    // mine unique not null (primary key?)
-    // guild 不必要？
-    // comment
-    // create table mines();
-    
-    process.env.MINE.split(',').reduce((promises, element) => {
-      promises.push(client.query('insert into mine(mine, comment) values ($1::text, "");', mine));
-    }, promises);
-    //ギルド(サーバー)
-    // create table guilds;
-    resolve(Promise.allSettled(promises));
+    const results = await Promise.all(mines.map((mine) => pool.query(
+      'insert into mines (mine) values ($1) on conflict (mine) do nothing',
+      [mine],
+    )));
+    const inserted = results.reduce((sum, result) => sum + result.rowCount, 0);
+    console.log('Inserted %d of %d mine(s).', inserted, mines.length);
   } catch (error) {
-    console.error(error);
-    reject(error);
+    console.error('pg error : %s', error);
+    process.exitCode = 1;
   } finally {
-    client.release();
+    await pool.end();
   }
-}).catch(err => console.error('pg error : %s', err));
+})();

@@ -52,7 +52,29 @@ const commands = [
         .setDescription('The channel to send time signal')
         .addChannelTypes(ChannelType.GuildText)))
     .addSubcommand((sub) => sub.setName('list')
-      .setDescription('list channels to send time signal')),
+      .setDescription('list channels to send time signal'))
+    .addSubcommandGroup((group) => group.setName('oneshot')
+      .setDescription('one-shot time signals')
+      .addSubcommand((sub) => sub.setName('add')
+        .setDescription('schedule a one-shot time signal')
+        .addStringOption((opt) => opt.setName('datetime')
+          .setDescription('Date and time in JST (e.g. 2026-12-31 23:59:59)')
+          .setRequired(true))
+        .addStringOption((opt) => opt.setName('content')
+          .setDescription('The message to send')
+          .setRequired(true)
+          .setMaxLength(2000))
+        .addChannelOption((opt) => opt.setName('channel')
+          .setDescription('The channel to send (default: this channel)')
+          .addChannelTypes(ChannelType.GuildText)))
+      .addSubcommand((sub) => sub.setName('list')
+        .setDescription('list scheduled one-shot time signals'))
+      .addSubcommand((sub) => sub.setName('cancel')
+        .setDescription('cancel a scheduled one-shot time signal')
+        .addIntegerOption((opt) => opt.setName('id')
+          .setDescription('The ID shown by /signal oneshot list')
+          .setRequired(true)
+          .setMinValue(1)))),
   new SlashCommandBuilder()
     .setName('mine')
     .setDescription('It\'s mine!')
@@ -74,14 +96,16 @@ const commands = [
   .map((command) => command.toJSON());
 const constants = require('../constants');
 // list
-const SIGNAL_GUILD_ID_LIST = [
-  constants.GUILDS.KAKUNINYOU_TEST_GUILD_ID,
-  constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID,
-  constants.GUILDS.FARM_SERVER_GUILD_ID,
-  constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID,
-];
+// DEPLOY_GUILD_IDS (カンマ区切り) で登録先を上書きできる。テスト用ボットで試すときなど
+const SIGNAL_GUILD_ID_LIST = process.env.DEPLOY_GUILD_IDS
+  ? process.env.DEPLOY_GUILD_IDS.split(',').map((id) => id.trim())
+  : [
+    constants.GUILDS.KAKUNINYOU_TEST_GUILD_ID,
+    constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID,
+    constants.GUILDS.FARM_SERVER_GUILD_ID,
+    constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID,
+  ];
 
-const clientId = '749274949348229150';
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
 // スラッシュコマンドをギルドに登録
@@ -90,14 +114,19 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
   try {
     logger.info('Started refreshing application (/) commands.');
 
-    SIGNAL_GUILD_ID_LIST.forEach(async (guild) => {
-      await rest.put(
-        Routes.applicationGuildCommands(clientId, guild),
-        { body: commands },
-      ).catch((error) => logger.error(error));
+    // アプリケーション ID はトークンから取得する
+    const { id: clientId } = await rest.get(Routes.currentApplication());
+    const results = await Promise.allSettled(SIGNAL_GUILD_ID_LIST.map((guild) => rest.put(
+      Routes.applicationGuildCommands(clientId, guild),
+      { body: commands },
+    )));
+    results.forEach((result, i) => {
+      if (result.status === 'rejected') {
+        logger.error(result.reason, 'failed to register commands to guild %s', SIGNAL_GUILD_ID_LIST[i]);
+      }
     });
 
-    logger.info('Successfully reloaded application (/) commands.');
+    logger.info('Reloaded application (/) commands for %s.', clientId);
   } catch (error) {
     logger.error(error);
   }
