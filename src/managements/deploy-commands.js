@@ -37,10 +37,8 @@ const commands = [
   new SlashCommandBuilder()
     .setName('signal')
     .setDescription('managements time signals')
-    /* eslint no-bitwise: ["error", {"allow":["|"]}] */
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator
-      | PermissionFlagsBits.ManageChannels
-      | PermissionFlagsBits.ManageThreads)
+    // 複数指定するとすべてを持つ人にしか表示されないので、チャンネル管理だけにする
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
     .addSubcommand((sub) => sub.setName('register')
       .setDescription('register to timesignal')
       .addChannelOption((opt) => opt.setName('channel')
@@ -104,6 +102,7 @@ const SIGNAL_GUILD_ID_LIST = process.env.DEPLOY_GUILD_IDS
     constants.GUILDS.TAMOKUTEKI_TOIRE_GUILD_ID,
     constants.GUILDS.FARM_SERVER_GUILD_ID,
     constants.GUILDS.FARM_PUBLIC_SERVER_GUILD_ID,
+    constants.GUILDS.TERUTERU_SANDBOX_GUILD_ID,
   ];
 
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
